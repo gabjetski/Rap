@@ -6,31 +6,45 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <form class="" action="index.html" method="post">
-      <h1>Register</h1>
-      <p>Please fill in this form to create an account.</p>
+  <h2>Anmelde Form</h2>
 
-      <label for="username"><b>Your Username</b></label>
-      <input type="text" placeholder="Enter Email" name="email" id="email" required>
+  <button class="register-button" onclick="openForm()">Login</button>
 
-      <label for="email"><b>Your Email</b></label>
-      <input type="text" placeholder="Enter Email" name="email" id="email" required>
+  <div class="form-popup" id="myForm">
+    <form action="index.html" class="form-container">
+      <h1 class="logininhalt">Register</h1>
+      <p class="fillin">Please fill in this form to create an account.</p>
+      <div class="textinhalt">
 
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+        <label for="username"><b>Your Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" required>
 
-      <label for="psw-repeat"><b>Repeat Password</b></label>
-      <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+        <label for="email"><b>Your Email</b></label>
+        <input type="text" placeholder="Enter Email" name="email" required>
 
-      <div class="">
-        <input type="checkbox" class="" id="terms-checkbox" required="" tabindex="0" aria-checked="false" required>
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
-        <label for="terms-checkbox">I have read and agree to the <a href="#">Terms of service</a>.</label><br>
+        <label for="psw-repeat"><b>Repeat Password</b></label>
+        <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+
+        <button type="submit" class="newAccbtn">Registrieren</button>
+        <button type="button" class="cancelbtn" onclick="closeForm()">Abbrechen</button>
+
+
       </div>
-
-      <button type="submit" class="registerbtn">Register</button>
     </form>
+  </div>
 
-    <a href="index.html">home</a>
+  <script>
+    function openForm() {
+      document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+      document.getElementById("myForm").style.display = "none";
+    }
+  </script>
+
   </body>
 </html>

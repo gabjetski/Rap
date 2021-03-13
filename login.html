@@ -5,21 +5,39 @@
     <title>Register Form</title>
     <link rel="stylesheet" href="style.css">
   </head>
+
   <body>
-    <div class="loginForm">
-      <form class="" action="index.html" method="post">
-        <h1>Log In</h1>
+  <h2>Anmelde Form</h2>
 
-        <label for="username"><b>Email or Username</b></label>
-        <input type="text" placeholder="Enter Email" name="email" id="input-username" required>
+  <button class="register-button" onclick="openForm()">Login</button>
+  <button class="newKonto-button" onclick="openForm()">Registrieren</button>
 
-        <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+  <div class="form-popup" id="myForm">
+    <form action="index.html" class="form-container">
+      <h1 class="logininhalt">Login</h1>
+      <div class="textinhalt">
+      <label for="username"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" required>
 
-        <button type="submit" class="loginbtn">Login</button>
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
-      </form>
-      <a href="index.html">back</a>
-    </div>
+      <button type="submit" class="loginbtn">Login</button>
+        <button type="submit" class="newAccbtn">Register</button>
+      <button type="button" class="cancelbtn" onclick="closeForm()">Abbrechen</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function openForm() {
+      document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+      document.getElementById("myForm").style.display = "none";
+    }
+  </script>
+
   </body>
 </html>

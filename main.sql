@@ -1,3 +1,5 @@
+----------------------DATABASE------------------------
+
 DROP DATABASE IF EXISTS rap;
 CREATE DATABASE rap;
 USE rap;
@@ -111,3 +113,39 @@ CREATE OR REPLACE TABLE Feed(
         REFERENCES Files(pk_files_id) ON DELETE CASCADE
 );
 
+
+----------------------TESTDATA------------------------
+
+INSERT INTO user ( FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
+VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
+        ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123');
+
+
+----------------------Data Definition Statements------------------------
+
+-- Procedure to create User
+    CREATE OR REPLACE PROCEDURE createUser(
+        IN `p_first_name` VARCHAR(30), 
+        IN `p_last_name` VARCHAR(30), 
+        IN `p_username` VARCHAR(20), 
+        IN `p_email` VARCHAR(50), 
+        IN `p_passwort` VARCHAR(30), 
+        OUT `p_id` INT) 
+        BEGIN
+        DECLARE v_usernameCheck INT;
+        DECLARE v_mailCheck INT;
+        SELECT COUNT(pk_user_id) INTO v_usernameCheck FROM user
+        WHERE Username = p_username;
+        SELECT COUNT(pk_user_id) INTO v_mailCheck FROM user
+        WHERE Email = p_email;
+        IF (v_usernameCheck > 0) THEN
+            SET p_id = -1;
+        ELSEIF (v_mailCheck > 0) THEN
+            SET p_id = -2;
+        ELSE
+            INSERT INTO USER (FirstName, LastName, Username, Email, Passwort)
+            VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort);
+            SELECT pk_user_id INTO p_id FROM user
+            WHERE Username = p_username;
+        END IF;
+    END;
