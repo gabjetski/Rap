@@ -124,28 +124,89 @@ VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hans
 ----------------------Data Definition Statements------------------------
 
 -- Procedure to create User
-    CREATE OR REPLACE PROCEDURE createUser(
-        IN `p_first_name` VARCHAR(30), 
-        IN `p_last_name` VARCHAR(30), 
-        IN `p_username` VARCHAR(20), 
-        IN `p_email` VARCHAR(50), 
-        IN `p_passwort` VARCHAR(30), 
-        OUT `p_id` INT) 
-        BEGIN
-        DECLARE v_usernameCheck INT;
-        DECLARE v_mailCheck INT;
-        SELECT COUNT(pk_user_id) INTO v_usernameCheck FROM user
+-- Output: 0-infinity -> User ID
+--         -1 -> username taken
+--         -2 -> email taken
+--         -3 -> non valid email
+--         -4 -> username is valid email
+
+CREATE OR REPLACE PROCEDURE createUser(
+    IN `p_first_name` VARCHAR(30), 
+    IN `p_last_name` VARCHAR(30), 
+    IN `p_username` VARCHAR(20), 
+    IN `p_email` VARCHAR(50), 
+    IN `p_passwort` VARCHAR(30), 
+    OUT `p_id` INT) 
+    BEGIN
+    DECLARE v_usernameCheck INT;
+    DECLARE v_mailCheck INT;
+    DECLARE v_validMailCheck INT;
+    DECLARE v_usernameMailCheck INT;
+    SELECT COUNT(pk_user_id) INTO v_usernameCheck FROM user
+    WHERE Username = p_username;
+    SELECT COUNT(pk_user_id) INTO v_mailCheck FROM user
+    WHERE Email = p_email;
+    SELECT p_email REGEXP "[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" INTO v_validMailCheck; 
+    SELECT p_username REGEXP "[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" INTO v_usernameMailCheck; 
+    IF (v_usernameCheck > 0) THEN
+        SET p_id = -1;
+    ELSEIF (v_mailCheck > 0) THEN
+        SET p_id = -2;
+    ELSEIF (v_validMailCheck = 0) THEN
+        SET p_id = -3;
+    ELSEIF (v_usernameMailCheck = 1) THEN
+        SET p_id = -4;
+    ELSE
+        INSERT INTO USER (FirstName, LastName, Username, Email, Passwort)
+        VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort);
+        SELECT pk_user_id INTO p_id FROM user
         WHERE Username = p_username;
-        SELECT COUNT(pk_user_id) INTO v_mailCheck FROM user
-        WHERE Email = p_email;
-        IF (v_usernameCheck > 0) THEN
-            SET p_id = -1;
-        ELSEIF (v_mailCheck > 0) THEN
-            SET p_id = -2;
-        ELSE
-            INSERT INTO USER (FirstName, LastName, Username, Email, Passwort)
-            VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort);
-            SELECT pk_user_id INTO p_id FROM user
-            WHERE Username = p_username;
-        END IF;
-    END;
+    END IF;
+END;
+
+-- Procedure to login
+-- Output: 0-infinity -> User ID
+--         -1 -> input doesnt match any, no such user
+--         -2 -> input is taken as both
+--         -3 -> else
+--         -4 -> password incorrect
+
+#Frage: wollen wir wenn zb Passwort falsch ist hinschreiben: 'Passwort falsch' oder 'Falsche Eingabe'
+#Passwort falsch is zwar für den user per se angenehmer aber ist für bösewichte hilfreich, leichter in andere accs zu kommen...
+
+CREATE OR REPLACE PROCEDURE loginUser(
+    IN `p_input` VARCHAR(50), 
+    IN `p_passwort` VARCHAR(30), 
+    OUT `p_id` INT) 
+    BEGIN
+    DECLARE v_usernameCheck INT;
+    DECLARE v_validEmail INT;
+    DECLARE v_mailCheck INT;
+    DECLARE v_corrPassword INT;
+
+    SELECT COUNT(pk_user_id) INTO v_usernameCheck FROM user
+    WHERE Username = p_input;
+    SELECT p_input REGEXP "[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" INTO v_validEmail; 
+    SELECT COUNT(pk_user_id) INTO v_mailCheck FROM user
+    WHERE Email = p_input;
+
+    IF (v_usernameCheck != 1 AND v_mailCheck != 1) THEN
+        SET p_id = -1;
+    ELSEIF (v_usernameCheck = 1 AND v_mailCheck = 1) THEN
+        SET p_id = -2;
+    ELSEIF (v_validEmail = 1 AND v_mailCheck = 1) THEN
+        SELECT pk_user_id INTO p_id FROM user WHERE Email = p_input;
+    ELSEIF (v_validEmail = 0 AND v_usernameCheck = 1) THEN
+        SELECT pk_user_id INTO p_id FROM user WHERE Username = p_input;
+    ELSE
+        SET p_id = -3;
+    END IF;
+
+    IF (p_id > 0) THEN
+        SELECT Passwort INTO v_corrPassword FROM user WHERE pk_user_id = p_id;
+    END IF;
+
+    IF (p_passwort != v_corrPassword) THEN
+        SET p_id = -4;
+    END IF;
+END;
