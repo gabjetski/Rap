@@ -125,27 +125,28 @@ a {
   opacity: 0.9;
 }
 
-#loginForm {
-  display: none;
+#blocker1 {
   position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   content: ' ';
   background: rgba(0,0,0,.5);
-  cursor: pointer;
+}
+#blocker2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  content: ' ';
+  background: rgba(0,0,0,.5);
 }
 
+#loginForm {
+  display: none;
+}
 #registerForm {
   display: none;
-  position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  content: ' ';
-  background: rgba(0,0,0,.5);
-  text-align: center;
-  cursor: pointer;
 }

@@ -13,6 +13,7 @@
 
   <body>
   <h2>Rap Plattform</h2>
+
   <?php 
     if (isset($_GET['reset'])) {
         session_destroy();
@@ -22,12 +23,12 @@
     if (isset($_GET['registerSubmit'])) {
 
         $stmtCreateUser = $pdo->prepare("CALL createUser(?, ?, ?, ?, ?, ?, @id)");
-        $stmtCreateUser->bindParam(1, htmlspecialchars($_GET['firstName']), PDO::PARAM_STR, 4000); 
-        $stmtCreateUser->bindParam(2, htmlspecialchars($_GET['lastName']), PDO::PARAM_STR, 4000); 
-        $stmtCreateUser->bindParam(3, htmlspecialchars($_GET['username']), PDO::PARAM_STR, 4000); 
-        $stmtCreateUser->bindParam(4, htmlspecialchars($_GET['email']), PDO::PARAM_STR, 5000); 
-        $stmtCreateUser->bindParam(5, sha1(htmlspecialchars($_GET['psw'])), PDO::PARAM_STR, 4000); 
-        $stmtCreateUser->bindParam(6, sha1(htmlspecialchars($_GET['psw-repeat'])), PDO::PARAM_STR, 4000); 
+        $stmtCreateUser->bindParam(1, $_GET['firstName'], PDO::PARAM_STR, 4000); 
+        $stmtCreateUser->bindParam(2, $_GET['lastName'], PDO::PARAM_STR, 4000); 
+        $stmtCreateUser->bindParam(3, $_GET['username'], PDO::PARAM_STR, 4000); 
+        $stmtCreateUser->bindParam(4, $_GET['email'], PDO::PARAM_STR, 5000); 
+        $stmtCreateUser->bindParam(5, sha1($_GET['psw']), PDO::PARAM_STR, 4000); 
+        $stmtCreateUser->bindParam(6, sha1($_GET['psw-repeat']), PDO::PARAM_STR, 4000); 
         
         // 调用存储过程  !!Wichtig!! 
         $stmtCreateUser->execute();
@@ -87,21 +88,22 @@
     }
         
 ?>
+
   
   <div id="loginForm">
     <div id="blocker1" onclick="closeLogin()"></div>
     <div class="form-popup">
-      <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
+    <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
         <h1>Login</h1>
         <div>
-          <label for="input"><b>Email/Username</b></label>
-          <input type="text" placeholder="Enter Email or Username" name="input" required>
+          <label for="username"><b>Email/Username</b></label>
+          <input type="text" placeholder="Enter Email or Username" name="email" required>
 
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+          <label for="login-psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="login-psw" id="login-psw" required>
 
-          <button type="submit" class="loginButton" name="loginSubmit" value="Login">Login</button>
-            <button type="submit" class="signupButton" onclick="openRegister(); closeLogin()">You don't have an account yet? Sign Up </button>
+          <button type="submit" class="loginButton">Login</button>
+            <button type="submit" class="signupButton" onclick="openRegister()">You don't have an account yet? Sign Up </button>
           <button type="button" class="cancelButton" onclick="closeLogin()">Cancel</button>
         </div>
       </form>
@@ -112,31 +114,32 @@
   <div id="registerForm">
     <div id="blocker2" onclick="closeRegister()"></div>
     <div class="form-popup">
-      <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
+      <form action="index.html">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
-        <div>
-          <label for="firstName"><b>Your First Name</b></label>
-          <input type="text" placeholder="Enter First Name" name="firstName" required>
+        <fieldset>
+            <label for="firstName"><b>Your First Name</b></label>
+            <input type="text" placeholder="Enter First Name" name="firstName" required>
 
-          <label for="lastName"><b>Your Last Name</b></label>
-          <input type="text" placeholder="Enter Last Name" name="lastName" required>
+            <label for="lastName"><b>Your Last Name</b></label>
+            <input type="text" placeholder="Enter Last Name" name="lastName" required>
 
-          <label for="username"><b>Your Username</b></label>
-          <input type="text" placeholder="Enter Username" name="username" required>
+            <label for="username"><b>Your Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required>
 
-          <label for="email"><b>Your Email</b></label>
-          <input type="text" placeholder="Enter Email" name="email" required>
+            <label for="email"><b>Your Email</b></label>
+            <input type="text" placeholder="Enter Email" name="email" required>
 
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
 
-          <label for="psw-repeat"><b>Repeat Password</b></label>
-          <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
 
-          <button type="submit" class="newAccountButton" name="registerSubmit" value="Register">Sign Up</button>
-          <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
-        </div>
+            <button type="submit" class="newAccountButton" onclick="validatePassword()">Sign Up</button>
+            <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Sign In here</button>
+            <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
+        </fieldset>
       </form>
     </div>
   </div>
@@ -163,17 +166,23 @@
       register.style.display = "none";
     }
 
-    let password = document.getElementById("psw"), confirm_password = document.getElementById("psw_repeat");
+    let password = document.getElementById("psw");
+    let confirm_password = document.getElementById("psw-repeat");
+
+    function validatePassword(){
+      if(password.value != confirm_password.value) {
+        confirm_password.setCustomValidity("Passwords Don't Match");
+      } else {
+        confirm_password.setCustomValidity('');
+      }
+    }
 
   </script>
-
-<form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" class="form-container">
+  <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" class="form-container">
         <input type="submit" value="Reset" name="reset">
     </form>
-
   </body>
 </html>
-
 <?php 
         $pdo = null;
     } catch (PDOException $e) {
@@ -181,4 +190,3 @@
     die();
     }
 ?>
-

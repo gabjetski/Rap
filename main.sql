@@ -123,12 +123,13 @@ VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hans
 
 ----------------------Data Definition Statements------------------------
 
--- Procedure to create User
--- Output: 0-infinity -> User ID
---         -1 -> username taken
---         -2 -> email taken
---         -3 -> non valid email
---         -4 -> username is valid email
+#-- Procedure to create User
+#-- Output: 0-infinity -> User ID
+#--         -1 -> username taken
+#--         -2 -> email taken
+#--         -3 -> non valid email
+#--         -4 -> username is valid email
+#--         -5 -> passwords doesnt match
 
 CREATE OR REPLACE PROCEDURE createUser(
     IN `p_first_name` VARCHAR(30), 
@@ -136,6 +137,7 @@ CREATE OR REPLACE PROCEDURE createUser(
     IN `p_username` VARCHAR(20), 
     IN `p_email` VARCHAR(50), 
     IN `p_passwort` VARCHAR(30), 
+    IN `p_passwort_sec` VARCHAR(30), 
     OUT `p_id` INT) 
     BEGIN
     DECLARE v_usernameCheck INT;
@@ -157,22 +159,26 @@ CREATE OR REPLACE PROCEDURE createUser(
     ELSEIF (v_usernameMailCheck = 1) THEN
         SET p_id = -4;
     ELSE
-        INSERT INTO USER (FirstName, LastName, Username, Email, Passwort)
-        VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort);
-        SELECT pk_user_id INTO p_id FROM user
-        WHERE Username = p_username;
+        IF (p_passwort = p_passwort_sec) THEN
+            INSERT INTO USER (FirstName, LastName, Username, Email, Passwort)
+            VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort);
+            SELECT pk_user_id INTO p_id FROM user
+            WHERE Username = p_username;
+        ELSE
+            SET p_id = -5;
+        END IF;
     END IF;
 END;
 
--- Procedure to login
--- Output: 0-infinity -> User ID
---         -1 -> input doesnt match any, no such user
---         -2 -> input is taken as both
---         -3 -> else
---         -4 -> password incorrect
+#-- Procedure to login
+#-- Output: 0-infinity -> User ID
+#--         -1 -> input doesnt match any, no such user
+#--         -2 -> input is taken as both
+#--         -3 -> else
+#--         -4 -> password incorrect
 
-#Frage: wollen wir wenn zb Passwort falsch ist hinschreiben: 'Passwort falsch' oder 'Falsche Eingabe'
-#Passwort falsch is zwar für den user per se angenehmer aber ist für bösewichte hilfreich, leichter in andere accs zu kommen...
+#-- Frage: wollen wir wenn zb Passwort falsch ist hinschreiben: 'Passwort falsch' oder 'Falsche Eingabe'
+#-- Passwort falsch is zwar für den user per se angenehmer aber ist für bösewichte hilfreich, leichter in andere accs zu kommen...
 
 CREATE OR REPLACE PROCEDURE loginUser(
     IN `p_input` VARCHAR(50), 
