@@ -9,15 +9,30 @@
     <meta charset="utf-8">
     <title>Register Form</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
   </head>
-
+  <!-- Onload Funktion (wird immer beim Aufruf der Seite geladen) -->
+  <script type="text/javascript">
+    function funk(){
+      alert('k');
+    }
+    </script>
+    
+  <?php if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
+    require "loginError.php";
+    var_dump($_SESSION);
+    /*echo '<script type="text/javascript">
+          window.onload = openLogin;
+          </script>';*/
+  }
+?>
   <body>
   <h2>Rap Plattform</h2>
 
   <?php 
     if (isset($_GET['reset'])) {
         session_destroy();
-        header('Location:main.php');
+        header('Location:index.php');
     }
     var_dump($_SESSION);
     if (isset($_GET['registerSubmit'])) {
@@ -42,12 +57,12 @@
         }
         if ($id < 0) {
             $_SESSION['registerError'] = $id;
-            header('Location:main.php');
+            header('Location:index.php');
         }else{
             $_SESSION['userID'] = $id;
             unset($_SESSION['registerError']);
             unset($_SESSION['loginError']);
-            header('Location:main.php');
+            header('Location:index.php');
         }
     }
     elseif (isset($_GET['loginSubmit'])) {
@@ -68,14 +83,15 @@
         }
         if ($id < 0) {
             $_SESSION['loginError'] = $id;
-            header('Location:main.php');
+            header('Location:index.php');
         }else{
             $_SESSION['userID'] = $id;
             unset($_SESSION['loginError']);
             unset($_SESSION['registerError']);
-            header('Location:main.php');
+            header('Location:index.php');
         }
     }
+
     if (!isset($_SESSION['userID'])) {
         echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
     }elseif($_SESSION['userID'] > 0){
@@ -90,94 +106,69 @@
 ?>
 
   
+  <!-- Login Form, das Formular zum Anmelden mit Username bzw. E-Mail und dem Passwort (nur für bereits registrierte User) -->
   <div id="loginForm">
     <div id="blocker1" onclick="closeLogin()"></div>
     <div class="form-popup">
     <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
         <h1>Login</h1>
         <div>
+          <!-- Username bzw. Email Adresse -->
           <label for="username"><b>Email/Username</b></label>
-          <input type="text" placeholder="Enter Email or Username" name="email" required>
+          <input type="text" placeholder="Enter Email or Username" name="input" id="login-input" required>
 
+          <!-- Password -->
           <label for="login-psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="login-psw" id="login-psw" required>
+          <input type="password" placeholder="Enter Password" name="psw" id="login-psw" required>
 
-          <button type="submit" class="loginButton">Login</button>
-            <button type="submit" class="signupButton" onclick="openRegister()">You don't have an account yet? Sign Up </button>
+          <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen". -->
+          <button type="submit" class="loginButton" name="loginSubmit" value="Login">Login</button>
+          <button type="submit" class="signupButton" onclick="openRegister()">You don't have an account yet? Sign Up </button>
           <button type="button" class="cancelButton" onclick="closeLogin()">Cancel</button>
         </div>
       </form>
     </div>
   </div>
 
-  
+  <!-- Register Form, das Formular, das es Besuchern der Website erlaubt, einen Account zu erstellen. -->
   <div id="registerForm">
     <div id="blocker2" onclick="closeRegister()"></div>
     <div class="form-popup">
-      <form action="index.html">
+    <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
         <fieldset>
+            <!-- First Name -->
             <label for="firstName"><b>Your First Name</b></label>
-            <input type="text" placeholder="Enter First Name" name="firstName" required>
-
+            <input type="text" placeholder="Enter First Name" name="firstName" pattern="^[a-zA-Z]+$" title="Use a real first name" required>
+            <!-- Last Name -->
             <label for="lastName"><b>Your Last Name</b></label>
-            <input type="text" placeholder="Enter Last Name" name="lastName" required>
-
+            <input type="text" placeholder="Enter Last Name" name="lastName" pattern="^[a-zA-Z]+$" title="Use a real last name" required>
+            <!-- Username -->
             <label for="username"><b>Your Username</b></label>
             <input type="text" placeholder="Enter Username" name="username" required>
-
+            <!-- Email -->
             <label for="email"><b>Your Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" required>
-
+            <input type="text" placeholder="Enter Email" name="email" pattern ="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Must contain a valid mail" required>
+            <!-- Password -->
             <label for="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" name="psw" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
-
+            <!-- Password Repeat -->
             <label for="psw-repeat"><b>Repeat Password</b></label>
             <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+            <!-- TOS agreement -->
+            <label for="tos"><b>You must read and agree to our <a href="./agb.html" target="_blank">Terms of Service</a> in order to create an account.</b></label>
+            <input type="checkbox" name="tos" required></input>
 
-            <button type="submit" class="newAccountButton" onclick="validatePassword()">Sign Up</button>
-            <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Sign In here</button>
+            <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
+            <button type="submit" class="newAccountButton" onclick="validatePassword()" name="registerSubmit" value="Register">Sign Up</button>
+            <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here</button>
             <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
         </fieldset>
       </form>
     </div>
   </div>
-
-  <script>
-    const login = document.getElementById("loginForm");
-    const register = document.getElementById("registerForm");
-
-    function openLogin() {
-      login.style.display = "block";
-      register.style.display = "none";
-    }
-
-    function closeLogin() {
-      login.style.display = "none";
-    }
-
-    function openRegister() {
-      register.style.display = "block";
-      login.style.display = "none";
-    }
-
-    function closeRegister() {
-      register.style.display = "none";
-    }
-
-    let password = document.getElementById("psw");
-    let confirm_password = document.getElementById("psw-repeat");
-
-    function validatePassword(){
-      if(password.value != confirm_password.value) {
-        confirm_password.setCustomValidity("Passwords Don't Match");
-      } else {
-        confirm_password.setCustomValidity('');
-      }
-    }
-
-  </script>
+  
   <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" class="form-container">
         <input type="submit" value="Reset" name="reset">
     </form>
