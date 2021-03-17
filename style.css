@@ -150,3 +150,9 @@ a {
 #registerForm {
   display: none;
 }
+
+/* Errors, thrown by database when register or login*/
+.error {
+  color: red;
+  font-size: 15px;
+}

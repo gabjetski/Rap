@@ -83,6 +83,7 @@
         }
         if ($id < 0) {
             $_SESSION['loginError'] = $id;
+            $_SESSION['errGet'] = $_GET;
             header('Location:index.php');
         }else{
             $_SESSION['userID'] = $id;
@@ -110,7 +111,7 @@
   <div id="loginForm">
     <div id="blocker1" onclick="closeLogin()"></div>
     <div class="form-popup">
-    <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
         <h1>Login</h1>
         <div>
           <!-- Username bzw. Email Adresse -->
@@ -122,8 +123,8 @@
           <input type="password" placeholder="Enter Password" name="psw" id="login-psw" required>
 
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen". -->
-          <button type="submit" class="loginButton" name="loginSubmit" value="Login">Login</button>
-          <button type="submit" class="signupButton" onclick="openRegister()">You don't have an account yet? Sign Up </button>
+          <button type="submit" class="loginButton" name="loginSubmit" value="Login" id="loginButton">Login</button>
+          <button type="submit" class="signupButton" onclick="openRegister()">You don't have an account yet? Sign Up here!</button>
           <button type="button" class="cancelButton" onclick="closeLogin()">Cancel</button>
         </div>
       </form>
@@ -134,7 +135,7 @@
   <div id="registerForm">
     <div id="blocker2" onclick="closeRegister()"></div>
     <div class="form-popup">
-    <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
         <fieldset>
@@ -146,13 +147,13 @@
             <input type="text" placeholder="Enter Last Name" name="lastName" pattern="^[a-zA-Z]+$" title="Use a real last name" required>
             <!-- Username -->
             <label for="username"><b>Your Username</b></label>
-            <input type="text" placeholder="Enter Username" name="username" required>
+            <input type="text" placeholder="Enter Username" name="username" id="regUsername" required>
             <!-- Email -->
             <label for="email"><b>Your Email</b></label>
             <input type="text" placeholder="Enter Email" name="email" pattern ="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Must contain a valid mail" required>
             <!-- Password -->
             <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="psw" id="psw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+            <input type="password" placeholder="Enter Password" name="psw" id="psw" pattern="([^\w\s*]\d)([a-z])([A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
             <!-- Password Repeat -->
             <label for="psw-repeat"><b>Repeat Password</b></label>
             <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
@@ -161,8 +162,8 @@
             <input type="checkbox" name="tos" required></input>
 
             <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
-            <button type="submit" class="newAccountButton" onclick="validatePassword()" name="registerSubmit" value="Register">Sign Up</button>
-            <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here</button>
+            <button type="submit" class="newAccountButton" onclick="validatePassword(); wrongUsernameLength()" name="registerSubmit" value="Register">Sign Up</button>
+            <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here!</button>
             <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
         </fieldset>
       </form>

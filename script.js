@@ -24,6 +24,12 @@ function closeRegister() {
     register.style.display = "none";
 }
 
+function error(id, msg) {
+    let oldCode = document.getElementById(id).innerHTML;
+    let newcode = '<p class="error>'+msg+'</p>'+oldCode;
+    document.getElementById(id).innerHTML = newcode;
+}
+
 // Funktion, um beim Registrieren zu checken, ob die Passwörter übereinstimmen
 function validatePassword(){
     let password = document.getElementById("psw");
@@ -35,3 +41,23 @@ function validatePassword(){
     confirm_password.setCustomValidity('');
     }
 }
+
+//console.log(document.getElementById('regUsername').value.length);
+// Funktionen der Username Validations
+    // Funktion, wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind 
+    function wrongUsernameLength(){
+        let registerUsername = document.getElementById("regUsername");
+        const pattern = new RegExp(/^[a-zA-Z0-9_.\-]+$/);
+
+        console.log(pattern.test(registerUsername.value));
+
+        if(registerUsername.value.length < 3){
+            registerUsername.setCustomValidity("Username has to be between 3 and 20 characters long");
+        } else if(registerUsername.value.length > 20){
+            registerUsername.setCustomValidity("Username has to be between 3 and 20 characters long");
+        } else if(pattern.test(registerUsername.value) === false) {
+            registerUsername.setCustomValidity("Invalid characters, please make sure to only use _ . and -");
+        } else {
+            registerUsername.setCustomValidity("");
+        }
+    }
