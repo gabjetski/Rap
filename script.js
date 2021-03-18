@@ -32,24 +32,42 @@ function error(id, msg) {
 
 // Funktion, um beim Registrieren zu checken, ob die Passwörter übereinstimmen
 function validatePassword(){
-    let password = document.getElementById("psw");
-    let confirm_password = document.getElementById("psw-repeat");
+    let password = document.getElementById("register-psw");
+    let confirm_password = document.getElementById("register-psw-repeat");
 
-    if(password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Passwords Don't Match");
+    if(password.value === confirm_password.value) {
+    confirm_password.setCustomValidity("");
     } else {
-    confirm_password.setCustomValidity('');
+    confirm_password.setCustomValidity("Passwords Don't Match");
     }
 }
 
-//console.log(document.getElementById('regUsername').value.length);
-// Funktionen der Username Validations
-    // Funktion, wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind 
-    function wrongUsernameLength(){
-        let registerUsername = document.getElementById("regUsername");
-        const pattern = new RegExp(/^[a-zA-Z0-9_.\-]+$/);
 
-        console.log(pattern.test(registerUsername.value));
+// Funktionen der Password Validations 
+    // Funktion, wenn das Passwort zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind
+    function wrongPassword(){ 
+        let password  = document.getElementById("register-psw");
+        const patternSpecial = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-z0-9!?{}@#$%^&*_.-]{7,30}/);
+        const pattern = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{7,30}$/)
+        
+        if(password.value.length < 7){
+            password.setCustomValidity("Password has to be between 7 and 30 characters long");
+        } else if (password.value.length > 30){
+            password.setCustomValidity("Username has to be between 7 and 30 characters long");
+        } else if (patternSpecial.test(password.value) === false){
+            password.setCustomValidity("We are sorry but we dont allow to use this special character");
+        } else if(pattern.test(password.value) === false){
+            password.setCustomValidity("Please make sure to use at least one upper and lowercase character and at least one digit");
+        } else {s
+            password.setCustomValidity("");
+        }
+    } 
+
+    // Funktionen der Username Validations
+    // Funktion, wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind 
+    function wrongUsername(){
+        let registerUsername = document.getElementById("register-username");
+        const pattern = new RegExp(/^[a-zA-Z0-9_.\-]+$/);
 
         if(registerUsername.value.length < 3){
             registerUsername.setCustomValidity("Username has to be between 3 and 20 characters long");
