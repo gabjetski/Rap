@@ -1,5 +1,5 @@
-<?php 
-    session_start(); 
+<?php
+    session_start();
     try {
         $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
 
@@ -21,9 +21,9 @@
       alert('k');
     }
     </script>
-    
+
   <?php if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
-    
+
     var_dump($_SESSION['errGet']);
     echo '<br>';
     require "loginError.php";
@@ -37,7 +37,7 @@
   <body>
   <h2>Rap Plattform</h2>
 
-  <?php 
+  <?php
     if (isset($_GET['reset'])) {
         session_destroy();
         header('Location:index.php');
@@ -50,14 +50,14 @@
       array_walk_recursive($_GET, "filter");
       if (preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/',$_GET['psw'])) {
           $stmtCreateUser = $pdo->prepare("CALL createUser(?, ?, ?, ?, ?, ?, @id)");
-          $stmtCreateUser->bindParam(1, $_GET['firstName'], PDO::PARAM_STR, 4000); 
-          $stmtCreateUser->bindParam(2, $_GET['lastName'], PDO::PARAM_STR, 4000); 
-          $stmtCreateUser->bindParam(3, $_GET['username'], PDO::PARAM_STR, 4000); 
-          $stmtCreateUser->bindParam(4, $_GET['email'], PDO::PARAM_STR, 5000); 
-          $stmtCreateUser->bindParam(5, sha1($_GET['psw']), PDO::PARAM_STR, 4000); 
-          $stmtCreateUser->bindParam(6, sha1($_GET['psw-repeat']), PDO::PARAM_STR, 4000); 
-          
-          // 调用存储过程  !!Wichtig!! 
+          $stmtCreateUser->bindParam(1, $_GET['firstName'], PDO::PARAM_STR, 4000);
+          $stmtCreateUser->bindParam(2, $_GET['lastName'], PDO::PARAM_STR, 4000);
+          $stmtCreateUser->bindParam(3, $_GET['username'], PDO::PARAM_STR, 4000);
+          $stmtCreateUser->bindParam(4, $_GET['email'], PDO::PARAM_STR, 5000);
+          $stmtCreateUser->bindParam(5, sha1($_GET['psw']), PDO::PARAM_STR, 4000);
+          $stmtCreateUser->bindParam(6, sha1($_GET['psw-repeat']), PDO::PARAM_STR, 4000);
+
+          // 调用存储过程  !!Wichtig!!
           $stmtCreateUser->execute();
 
           $sql = "SELECT @id AS id";
@@ -88,10 +88,10 @@
       array_walk_recursive($_GET, "filter");
 
         $stmtLoginUser = $pdo->prepare("CALL loginUser(?, ?, @id)");
-        $stmtLoginUser->bindParam(1, $_GET['input'], PDO::PARAM_STR, 5000); 
-        $stmtLoginUser->bindParam(2, sha1($_GET['psw']), PDO::PARAM_STR, 4000); 
-        
-        // 调用存储过程  !!Wichtig!! 
+        $stmtLoginUser->bindParam(1, $_GET['input'], PDO::PARAM_STR, 5000);
+        $stmtLoginUser->bindParam(2, sha1($_GET['psw']), PDO::PARAM_STR, 4000);
+
+        // 调用存储过程  !!Wichtig!!
         $stmtLoginUser->execute();
 
         $sql = "SELECT @id AS id";
@@ -123,10 +123,10 @@
         }
         echo '<div class="openForm">'.$_SESSION['userID'].' - '.$_SESSION['userUName'].'</div>';
     }
-        
+
 ?>
 
-  
+
   <!-- Login Form, das Formular zum Anmelden mit Username bzw. E-Mail und dem Passwort (nur für bereits registrierte User) -->
   <div id="loginForm">
     <div id="blocker1" onclick="closeLogin()"></div>
@@ -178,7 +178,7 @@
             <label for="psw-repeat"><b>Repeat Password</b></label>
             <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required value="passW1234567">
             <!-- TOS agreement -->
-            <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a>.</b></label>
+            <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
             <input type="checkbox" name="tos" id="register-tos" required checked></input>
 
             <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
@@ -189,7 +189,7 @@
       </form>
     </div>
   </div>
-  
+
   <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" class="form-container">
         <input type="submit" value="Reset" name="reset">
     </form>
@@ -198,7 +198,7 @@
     </form>
   </body>
 </html>
-<?php 
+<?php
         $pdo = null;
     } catch (PDOException $e) {
     print "Error!: " . $e->getMessage() . "<br/>";
