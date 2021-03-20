@@ -101,6 +101,30 @@ if (isset($_SESSION['loginError'])) {
                             'register-lastName' => $_SESSION['errGet']['lastName'],
                             'register-username' => $_SESSION['errGet']['username'],
                             'register-email' => $_SESSION['errGet']['email']];
+            $errMsg = 'Please use a real first name!';
+            break;
+        case '-6':
+            $posErrWarning = 'register-psw';
+            $errValues = [  'register-firstName' => $_SESSION['errGet']['firstName'],
+                            'register-lastName' => $_SESSION['errGet']['lastName'],
+                            'register-username' => $_SESSION['errGet']['username'],
+                            'register-email' => $_SESSION['errGet']['email']];
+            $errMsg = 'Please use a real last name!';
+            break;
+        case '-7':
+            $posErrWarning = 'register-psw';
+            $errValues = [  'register-firstName' => $_SESSION['errGet']['firstName'],
+                            'register-lastName' => $_SESSION['errGet']['lastName'],
+                            'register-username' => $_SESSION['errGet']['username'],
+                            'register-email' => $_SESSION['errGet']['email']];
+            $errMsg = 'Please make sure that your username is between 3 and 20 characters long and contains only letters, numbers and _ . or -';
+            break;
+        case '-8':
+            $posErrWarning = 'register-psw';
+            $errValues = [  'register-firstName' => $_SESSION['errGet']['firstName'],
+                            'register-lastName' => $_SESSION['errGet']['lastName'],
+                            'register-username' => $_SESSION['errGet']['username'],
+                            'register-email' => $_SESSION['errGet']['email']];
             $errMsg = 'Passwords doent match!';
             break;
     
@@ -132,5 +156,4 @@ window.onload =function(){
 </script>
 <?php
 }
-?>
 ?>

@@ -47,19 +47,20 @@ function validatePassword(){
     // Funktion, wenn das Passwort zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind
     function wrongPassword(){ 
         let password  = document.getElementById("register-psw");
-        const patternSpecial = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-z0-9!?{}@#$%^&*_.-]{7,30}/);
-        const pattern = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{7,30}$/)
+        //const patternSpecial = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-z0-9!?{}@#$%^&*_.-]{7,30}/);
+        const pattern = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/);
+        const patternSpecial = new RegExp(/^[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/);
         
         if(password.value.length < 7){
             password.setCustomValidity("Password has to be between 7 and 30 characters long");
         } else if (password.value.length > 30){
             password.setCustomValidity("Username has to be between 7 and 30 characters long");
-        } else if (patternSpecial.test(password.value) === false){
-            password.setCustomValidity("We are sorry but we dont allow to use this special character");
-        } else if(pattern.test(password.value) === false){
+        } else if(patternSpecial.test(password.value) === true && pattern.test(password.value) === false){
             password.setCustomValidity("Please make sure to use at least one upper and lowercase character and at least one digit");
-        } else {s
+        } else if(patternSpecial.test(password.value) === true && pattern.test(password.value) === true){
             password.setCustomValidity("");
+        } else if(pattern.test(password.value) === false){
+            password.setCustomValidity("We are sorry but we dont allow to use this special character");
         }
     } 
 
@@ -67,7 +68,7 @@ function validatePassword(){
     // Funktion, wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind 
     function wrongUsername(){
         let registerUsername = document.getElementById("register-username");
-        const pattern = new RegExp(/^[a-zA-Z0-9_.\-]+$/);
+        const pattern = new RegExp(/^[a-zA-Z0-9ÄÜÖäüö_.-]{3,20}$/);
 
         if(registerUsername.value.length < 3){
             registerUsername.setCustomValidity("Username has to be between 3 and 20 characters long");
