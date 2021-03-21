@@ -1,8 +1,9 @@
 <?php
     session_start();
     try {
+      //database connection
         $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
-
+      //function to htmlspecialchar Arrays -> prevent injections
         function filter(&$value) {
           $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
         }
@@ -15,29 +16,23 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
   </head>
-  <!-- Onload Funktion (wird immer beim Aufruf der Seite geladen) -->
-  <script type="text/javascript">
-    function funk(){
-      alert('k');
-    }
-    </script>
+  
+  <?php 
+  //implement loginError.php if Procedure calls error (id < 0)
+  if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
 
-  <?php if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
-
-    var_dump($_SESSION['errGet']);
-    echo '<br>';
+    //var_dump($_SESSION['errGet']);
+    //echo '<br>';
     require "loginError.php";
-    echo '<br>';
-    var_dump($_SESSION);
-    /*echo '<script type="text/javascript">
-          window.onload = openLogin;
-          </script>';*/
+    //echo '<br>';
+    //var_dump($_SESSION);
   }
 ?>
   <body>
   <h2>Rap Plattform</h2>
 
   <?php
+  //Reset or reload page
     if (isset($_GET['reset'])) {
         session_destroy();
         header('Location:index.php');
@@ -45,77 +40,104 @@
     if (isset($_GET['head'])) {
       //session_destroy();
       header('Location:index.php');
-  }
+    }
+    //Go to form without JS Validations to test Serverside Validations
+    if (isset($_GET['withoutValidations'])) {
+      session_destroy();
+      header('Location:index_ohneValidations.php');
+    }
+    //if register Button is pressed
     if (isset($_GET['registerSubmit'])) {
+      //htmlspecialchar Get Array to store it safely
       array_walk_recursive($_GET, "filter");
+      //check if password match Validations (Password-Validation already here and not in SQL cause the database only gets it hashed [shq])
       if (preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/',$_GET['psw'])) {
-          $stmtCreateUser = $pdo->prepare("CALL createUser(?, ?, ?, ?, ?, ?, @id)");
-          $stmtCreateUser->bindParam(1, $_GET['firstName'], PDO::PARAM_STR, 4000);
-          $stmtCreateUser->bindParam(2, $_GET['lastName'], PDO::PARAM_STR, 4000);
-          $stmtCreateUser->bindParam(3, $_GET['username'], PDO::PARAM_STR, 4000);
-          $stmtCreateUser->bindParam(4, $_GET['email'], PDO::PARAM_STR, 5000);
-          $stmtCreateUser->bindParam(5, sha1($_GET['psw']), PDO::PARAM_STR, 4000);
-          $stmtCreateUser->bindParam(6, sha1($_GET['psw-repeat']), PDO::PARAM_STR, 4000);
+        //Prepare Procedure call
+        $stmtCreateUser = $pdo->prepare("CALL createUser(?, ?, ?, ?, ?, ?, @id)");
+        //define the in-parameters
+        $stmtCreateUser->bindParam(1, $_GET['firstName'], PDO::PARAM_STR, 4000);
+        $stmtCreateUser->bindParam(2, $_GET['lastName'], PDO::PARAM_STR, 4000);
+        $stmtCreateUser->bindParam(3, $_GET['username'], PDO::PARAM_STR, 4000);
+        $stmtCreateUser->bindParam(4, $_GET['email'], PDO::PARAM_STR, 5000);
+        $stmtCreateUser->bindParam(5, sha1($_GET['psw']), PDO::PARAM_STR, 4000);
+        $stmtCreateUser->bindParam(6, sha1($_GET['psw-repeat']), PDO::PARAM_STR, 4000);
 
-          // 调用存储过程  !!Wichtig!!
-          $stmtCreateUser->execute();
+        // 调用存储过程  !!Wichtig!!
+        $stmtCreateUser->execute();
 
-          $sql = "SELECT @id AS id";
-          $stmtGetId = $pdo->prepare($sql);
-          $stmtGetId->execute();
-
-          foreach($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row){
-              $id = $row['id'];
-          }
-          if ($id < 0) {
-              $_SESSION['registerError'] = $id;
-              $_SESSION['errGet'] = $_GET;
-              header('Location:index.php');
-          }else{
-              $_SESSION['userID'] = $id;
-              unset($_SESSION['registerError']);
-              unset($_SESSION['loginError']);
-              unset($_SESSION['errGet']);
-              header('Location:index.php');
-            }
-      }else{
-        $_SESSION['registerError'] = '-10';   //------------------------------------- id -10 just temporarily
+        //Select the out parameter into variable
+        $sql = "SELECT @id AS id";
+        $stmtGetId = $pdo->prepare($sql);
+        $stmtGetId->execute();
+        foreach($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row){
+            $id = $row['id'];
+        }
+        //check if id is negative which means an error is thrown
+        if ($id < 0) {
+            $_SESSION['registerError'] = $id;
+            $_SESSION['errGet'] = $_GET;
+            header('Location:index.php');
+        }
+        //else log in
+        else{
+            $_SESSION['userID'] = $id;
+            unset($_SESSION['registerError']);
+            unset($_SESSION['loginError']);
+            unset($_SESSION['errGet']);
+            header('Location:index.php');
+        }
+      }
+      //if password doesnt match validations
+      else{
+        //also set error
+        $_SESSION['registerError'] = '-10';
         $_SESSION['errGet'] = $_GET;
         header('Location:index.php');
       }
     }
+    //if login button is pressed
     elseif (isset($_GET['loginSubmit'])) {
+      //htmlspecialchar Get Array to store it safely
       array_walk_recursive($_GET, "filter");
+      
+      //Prepare Procedure call
+      $stmtLoginUser = $pdo->prepare("CALL loginUser(?, ?, @id)");
+      //define the in-parameters
+      $stmtLoginUser->bindParam(1, $_GET['input'], PDO::PARAM_STR, 5000);
+      $stmtLoginUser->bindParam(2, sha1($_GET['psw']), PDO::PARAM_STR, 4000);
 
-        $stmtLoginUser = $pdo->prepare("CALL loginUser(?, ?, @id)");
-        $stmtLoginUser->bindParam(1, $_GET['input'], PDO::PARAM_STR, 5000);
-        $stmtLoginUser->bindParam(2, sha1($_GET['psw']), PDO::PARAM_STR, 4000);
+      // 调用存储过程  !!Wichtig!!
+      $stmtLoginUser->execute();
 
-        // 调用存储过程  !!Wichtig!!
-        $stmtLoginUser->execute();
-
-        $sql = "SELECT @id AS id";
-        $stmtGetId = $pdo->prepare($sql);
-        $stmtGetId->execute();
-
-        foreach($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row){
-            $id = $row['id'];
-        }
-        if ($id < 0) {
-            $_SESSION['loginError'] = $id;
-            $_SESSION['errGet'] = $_GET;
-            header('Location:index.php');
-        }else{
-            $_SESSION['userID'] = $id;
-            unset($_SESSION['loginError']);
-            unset($_SESSION['registerError']);
-            header('Location:index.php');
-        }
+      //Select the out parameter into variable
+      $sql = "SELECT @id AS id";
+      $stmtGetId = $pdo->prepare($sql);
+      $stmtGetId->execute();
+      foreach($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row){
+          $id = $row['id'];
+      }
+      
+      //check if id is negative which means an error is thrown
+      if ($id < 0) {
+          $_SESSION['loginError'] = $id;
+          $_SESSION['errGet'] = $_GET;
+          header('Location:index.php');
+      }
+      //else log in
+      else{
+          $_SESSION['userID'] = $id;
+          unset($_SESSION['loginError']);
+          unset($_SESSION['registerError']);
+          header('Location:index.php');
+      }
     }
 
+    //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
         echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
-    }elseif($_SESSION['userID'] > 0){
+    }
+    //show username and id if logged in
+    elseif($_SESSION['userID'] > 0){
         $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = ".$_SESSION['userID']);
         $stmntGetUserInfos->execute();
         foreach($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -125,8 +147,6 @@
     }
 
 ?>
-
-
   <!-- Login Form, das Formular zum Anmelden mit Username bzw. E-Mail und dem Passwort (nur für bereits registrierte User) -->
   <div id="loginForm">
     <div id="blocker1" onclick="closeLogin()"></div>
@@ -190,18 +210,22 @@
     </div>
   </div>
 
-  <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" class="form-container">
+  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
         <input type="submit" value="Reset" name="reset">
     </form>
-    <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="get" class="form-container">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
         <input type="submit" value="Head" name="head">
+    </form>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
+        <input type="submit" value="withoutValidations" name="withoutValidations">
     </form>
   </body>
 </html>
 <?php
         $pdo = null;
     } catch (PDOException $e) {
-    print "Error!: " . $e->getMessage() . "<br/>";
-    die();
+      //catch potentual error
+      print "Error!: " . $e->getMessage() . "<br/>";
+      die();
     }
 ?>
