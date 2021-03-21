@@ -181,10 +181,10 @@
         <fieldset>
             <!-- First Name -->
             <label for="firstName"><b>Your First Name</b></label>
-            <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" pattern="^[a-zA-Z]+$" title="Use a real first name" required value="fName">
+            <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required value="fName">
             <!-- Last Name -->
             <label for="lastName"><b>Your Last Name</b></label>
-            <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" pattern="^[a-zA-Z]+$" title="Use a real last name" required value="lName">
+            <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required value="lName">
             <!-- Username -->
             <label for="username"><b>Your Username</b></label>
             <input type="text" placeholder="Enter Username" name="username" id="register-username" required value="user">
@@ -202,7 +202,7 @@
             <input type="checkbox" name="tos" id="register-tos" required checked></input>
 
             <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
-            <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword()" name="registerSubmit" value="Register">Sign Up</button>
+            <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName()" name="registerSubmit" value="Register">Sign Up</button>
             <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here!</button>
             <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
         </fieldset>

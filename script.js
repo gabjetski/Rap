@@ -80,3 +80,33 @@ function validatePassword(){
             registerUsername.setCustomValidity("");
         }
     }
+
+    function fName(){
+        let fName = document.getElementById("register-firstName");
+        const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
+
+        console.log(pattern.test(fName.value));
+        
+        if(fName.value.length < 1){
+            fName.setCustomValidity("Your first name can't be empty");
+        } else if(pattern.test(fName.value) === false){
+            fName.setCustomValidity("Please use a real first name");
+        } else {
+            fName.setCustomValidity("");
+        }
+    }
+
+    function lName(){
+        let lName = document.getElementById("register-lastName");
+        const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
+
+        console.log(pattern.test(fName.value));
+        
+        if(lName.value.length < 1){
+            lName.setCustomValidity("Your last name can't be empty");
+        } else if(pattern.test(lName.value) === false){
+            lName.setCustomValidity("Please use a real last name");
+        } else {
+            lName.setCustomValidity("");
+        }
+    }
