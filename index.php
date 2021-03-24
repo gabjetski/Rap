@@ -14,6 +14,7 @@
     <meta charset="utf-8">
     <title>Register Form</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="script.js" defer></script>
   </head>
   
@@ -30,7 +31,6 @@
 ?>
   <body>
   <h2>Rap Plattform</h2>
-
   <?php
   //Reset or reload page
     if (isset($_GET['reset'])) {
@@ -146,6 +146,8 @@
         echo '<div class="openForm">'.$_SESSION['userID'].' - '.$_SESSION['userUName'].'</div>';
     }
 
+    // Upload Icon für Testzwecke
+    echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
 ?>
   <!-- Login Form, das Formular zum Anmelden mit Username bzw. E-Mail und dem Passwort (nur für bereits registrierte User) -->
   <div id="loginForm">
@@ -229,3 +231,25 @@
       die();
     }
 ?>
+
+<!-- PopUp-Formulare für das Uploaden -->
+    <div id="uploadForm">
+    <div id="blocker1"></div>
+    <div class="form-popup">
+        <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
+        <h1>Upload</h1>
+        <div>
+          <!-- Free For Profit Upload -->
+          <label for="f4p"><b>Free For Profit</b></label>
+          <input type="radio" id="f4p" name="category" value="FreeForProfit">
+          <!-- Tagged Upload -->
+          <label for="tagged"><b>Tagged</b></label>
+          <input type="radio" id="tagged" name="category" value="Tagged">
+
+          <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+          <button type="button" class="continueButton" name="Continue" value="Continue" id="continue">Weiter</button>
+          <button type="button" class="cancelButton" onclick="closeUpload()">Cancel</button> 
+        </div>
+      </form>
+    </div>
+  </div> 

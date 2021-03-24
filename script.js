@@ -1,6 +1,7 @@
-// Funktionen, um die Formulare beim Klicken des Login/Register Button zu öffnen
+// Funktionen, um die Formulare beim Klicken des Login/Register/Upload Button zu öffnen
 const login = document.getElementById("loginForm");
 const register = document.getElementById("registerForm");
+const upload = document.getElementById("uploadForm");
 
 // Login Formular öffnen
 function openLogin() {
@@ -28,6 +29,16 @@ function error(id, msg) {
     let oldCode = document.getElementById(id).innerHTML;
     let newcode = '<p class="error>'+msg+'</p>'+oldCode;
     document.getElementById(id).innerHTML = newcode;
+}
+
+// Upload Formular öffnen 
+function openUpload(){
+    upload.style.display = "block";
+}
+
+// Upload Formular schließen
+function closeUpload(){
+    upload.style.display = "none";
 }
 
 // Funktion, um beim Registrieren zu checken, ob die Passwörter übereinstimmen

@@ -52,6 +52,11 @@ hr {
   right: 10px;
   top: 10px;
 }
+
+i{
+  float:right;
+}
+
 .registerbtn :hover {
   opacity: -1;
 }
@@ -86,6 +91,17 @@ a {
 }
 .signupButton :hover {
   opacity: -1;
+}
+
+.continueButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
 }
 
 .newAccountButton {
@@ -150,7 +166,9 @@ a {
 #registerForm {
   display: none;
 }
-
+#uploadForm {
+  display: none;
+}
 /* Errors, thrown by database when register or login*/
 .error {
   color: red;
