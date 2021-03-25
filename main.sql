@@ -1,4 +1,4 @@
-----------------------DATABASE------------------------
+#----------------------DATABASE------------------------
 
 DROP DATABASE IF EXISTS rap;
 CREATE DATABASE rap;
@@ -114,14 +114,14 @@ CREATE OR REPLACE TABLE Feed(
 );
 
 
-----------------------TESTDATA------------------------
+#----------------------TESTDATA------------------------
 
 INSERT INTO user ( FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
 VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
         ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123');
 
 
-----------------------Data Definition Statements------------------------
+#----------------------Data Definition Statements------------------------
 
 #-- Procedure to create User
 #-- Output: 0-infinity -> User ID
