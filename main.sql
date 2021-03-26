@@ -39,7 +39,7 @@ CREATE OR REPLACE TABLE Monetizing(
 
 CREATE OR REPLACE TABLE Files(
     pk_files_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-    Title VARCHAR(50) NOT NULL, 
+    Title VARCHAR(60) NOT NULL, 
     Path VARCHAR(100) NOT NULL, 
     Length TIME NOT NULL, 
     Tag1 VARCHAR(30),
@@ -47,7 +47,7 @@ CREATE OR REPLACE TABLE Files(
     Tag3 VARCHAR(30),
     Tag4 VARCHAR(30),
     Tag5 VARCHAR(30), 
-    Description VARCHAR(30), 
+    Description VARCHAR(120), 
     fk_user_id INTEGER NOT NULL, 
     fk_bpm_id INTEGER NOT NULL, 
     fk_key_signature_id INTEGER, 

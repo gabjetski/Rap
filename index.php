@@ -12,7 +12,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>RAP</title>
+    <title>Rap</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="script.js" defer></script>
@@ -29,7 +29,7 @@
     //var_dump($_SESSION);
   }
 ?>
-  <body>
+  <body>b
   <h2>Rap Plattform</h2>
   <?php
   //Reset or reload page
@@ -233,6 +233,7 @@
 ?>
 
 <!-- PopUp-Formulare für das Uploaden -->
+    <!-- Entscheidung zwischen Free4Profit und Tagged Upload -->
     <div id="uploadForm">
     <div id="blocker1"></div>
     <div class="form-popup">
@@ -240,15 +241,167 @@
         <h1>Upload</h1>
         <div>
           <!-- Free For Profit Upload -->
-          <label for="f4p"><b>Free For Profit</b></label>
-          <input type="radio" id="f4p" name="category" value="FreeForProfit">
+          <button type="button" id="f4p" class="continueButton" onclick="openF4P(); closeUpload();" name="F4P" value="f4p" class="continue">Free For Profit</button>
+
           <!-- Tagged Upload -->
-          <label for="tagged"><b>Tagged</b></label>
-          <input type="radio" id="tagged" name="category" value="Tagged">
+          <button type="button" id="tagged" class="continueButton" onclick="closeUpload(); openTagged();" name="Tagged" value="tagged" class="continue">Tagged</button>
 
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="button" class="continueButton" name="Continue" value="Continue" id="continue">Weiter</button>
           <button type="button" class="cancelButton" onclick="closeUpload()">Cancel</button> 
+        </div>
+      </form>
+    </div>
+  </div> 
+
+
+   <!-- PopUp-Formulare für das Uploaden -->
+    <!-- Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
+    <div id="f4pForm">
+    <div id="blocker1"></div>
+    <div class="form-popup">
+        <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
+        <h1>F4P Upload</h1>
+        <div>
+          <!-- Free For Profit Upload -->
+          <label for="beat"><b>Beat</b></label>
+          <input type="radio" id="beat" name="category2" value="Beat">
+          <!-- Free For Profit Upload -->
+          <label for="sample"><b>Sample</b></label>
+          <input type="radio" id="sample" name="category2" value="Sample">
+          <!-- BPM des Uploads -->
+          <label for="bpm"><b>BPM*</b></label>
+          <input type="text" id="bpm" name="information" value="" pattern="^\d{2,3}$" maxlength="3" required>
+          <!-- Key des Uploads -->
+          <label for="key"><b>Key</b></label>
+          <select name="key" id="key">
+            <option value="CM">C Major</option>
+            <option value="Cm">C minor</option>
+            <option value="DbM">Db Major</option>
+            <option value="C#m">C# minor</option>
+            <option value="DM">D Major</option>
+            <option value="Dm">D minor</option>
+            <option value="EbM">Eb Major</option>
+            <option value="D#m">D# minor</option>
+            <option value="EM">E Major</option>
+            <option value="Em">E minor</option>
+            <option value="FM">F Major</option>
+            <option value="fm">F minor</option>
+            <option value="GbM">Gb Major</option>
+            <option value="F#m">F# minor</option>
+            <option value="GM">G Major</option>
+            <option value="Gm">G minor</option>
+            <option value="AbM">Ab Major</option>
+            <option value="G#m">G# minor</option>
+            <option value="AM">A Major</option>
+            <option value="Am">A minor</option>
+            <option value="BbM">Bb Major</option>
+            <option value="A#m">A# minor</option>
+            <option value="BM">B Major</option>
+            <option value="bm">B minor</option>
+          </select>
+          <!-- Title des Uploads -->
+          <label for="title"><b>Title*</b></label>
+          <input type="text" id="title" name="information" required maxlength="60">
+          <p>Maximum 60 Characters allowed</p>
+          <!-- Notizen -->
+          <label for="notes"><b>Notes</b></label>
+          <input type="text" id="notes" name="information" maxlength="120">
+          <p>Maximum 120 Characters allowed</p>
+          <!-- Tags -->
+          <label for="tags"><b>Tags (5)</b></label>
+          <input type="text" id="tags" name="information" value="">
+
+          <!-- File Upload -->
+          <label for="file"><b> File</b></label>
+          <input type="file" accept=".mp3" id="dateien" name="files[]" multiple />
+
+          <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+          <button type="button" class="continueButton" onclick="" name="Continue" value="Continue" class="continue">Continue</button>
+          <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
+          <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button> 
+        </div>
+      </form>
+    </div>
+  </div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <!-- PopUp-Formulare für das Uploaden -->
+    <!-- Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
+    <div id="taggedForm">
+    <div id="blocker1"></div>
+    <div class="form-popup">
+        <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
+        <h1>Tagged Upload</h1>
+        <div>
+        <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b<i class="fa fa-download"> Download A Free Tag</i></label></a> 
+        <label for="tagInfo"><b>Learn More About Tags</b></label><br>
+          <!-- Free For Profit Upload -->
+          <label for="beat"><b>Beat</b></label>
+          <input type="radio" id="beat" name="category2" value="Beat">
+          <!-- Free For Profit Upload -->
+          <label for="sample"><b>Sample</b></label>
+          <input type="radio" id="sample" name="category2" value="Sample">
+          <!-- BPM des Uploads -->
+          <label for="bpm"><b>BPM</b></label>
+          <input type="text" id="bpm" name="information" value="" pattern="^\d{2,3}$">
+          <!-- Key des Uploads -->
+          <label for="key"><b>Key</b></label>
+          <select name="key" id="key">
+            <option value="CM">C Major</option>
+            <option value="Cm">C minor</option>
+            <option value="DbM">Db Major</option>
+            <option value="C#m">C# minor</option>
+            <option value="DM">D Major</option>
+            <option value="Dm">D minor</option>
+            <option value="EbM">Eb Major</option>
+            <option value="D#m">D# minor</option>
+            <option value="EM">E Major</option>
+            <option value="Em">E minor</option>
+            <option value="FM">F Major</option>
+            <option value="fm">F minor</option>
+            <option value="GbM">Gb Major</option>
+            <option value="F#m">F# minor</option>
+            <option value="GM">G Major</option>
+            <option value="Gm">G minor</option>
+            <option value="AbM">Ab Major</option>
+            <option value="G#m">G# minor</option>
+            <option value="AM">A Major</option>
+            <option value="Am">A minor</option>
+            <option value="BbM">Bb Major</option>
+            <option value="A#m">A# minor</option>
+            <option value="BM">B Major</option>
+            <option value="bm">B minor</option>
+          </select>
+          <!-- Title des Uploads -->
+          <label for="title"><b>Title</b></label>
+          <input type="text" id="title" name="information" value="">
+          <!-- Notizen -->
+          <label for="notes"><b>Notes</b></label>
+          <input type="text" id="notes" name="information" value="">
+          <!-- Tags -->
+          <br>
+          <label for="tags"><b>Tags</b></label>
+          <input type="text" id="tags" name="information" value="">
+
+          <!-- File Upload -->
+          <label for="file"><b> File</b></label>
+          <input type="file" onclick="restrictedUpload()" accept=".mp3" id="dateien" name="files[]" multiple />          
+
+          <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+          <button type="button" class="continueButton" onclick="" name="Continue" value="Continue" class="continue" onclick="trackName();">Continue</button>
+          <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>
+          <button type="button" class="cancelButton" onclick="closeTagged();">Cancel</button> 
         </div>
       </form>
     </div>

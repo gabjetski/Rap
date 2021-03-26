@@ -122,7 +122,6 @@ a {
   position: fixed;
   border: 3px solid #292931;
   z-index: 9;
-  margin-top: 50px;
   height: auto;
   width: auto;
   text-align: center;
@@ -160,17 +159,37 @@ a {
   background: rgba(0,0,0,.5);
 }
 
+/* Setzen aller Forms auf none, damit sie nicht bei jedem Refresh angezeigt werden */
 #loginForm {
   display: none;
 }
+
 #registerForm {
   display: none;
 }
+
 #uploadForm {
   display: none;
 }
+
+#categoryForm{
+  display:none;
+}
+
+#f4pForm{
+  display: none;
+}
+
+#taggedForm{
+  display: none;
+}
+
 /* Errors, thrown by database when register or login*/
 .error {
   color: red;
   font-size: 15px;
+}
+
+#tagDownload:hover{
+  color:red;
 }

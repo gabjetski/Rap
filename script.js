@@ -2,6 +2,10 @@
 const login = document.getElementById("loginForm");
 const register = document.getElementById("registerForm");
 const upload = document.getElementById("uploadForm");
+const f4p = document.getElementById("f4pForm");
+const tag = document.getElementById("taggedForm");
+
+
 
 // Login Formular öffnen
 function openLogin() {
@@ -40,6 +44,26 @@ function openUpload(){
 function closeUpload(){
     upload.style.display = "none";
 }
+
+// Upload Formular mit weiteren Informationen zum Beat öffnen - F4P Version
+function openF4P(){
+    f4p.style.display = "block";
+}
+
+// Upload Formular mit weiteren Informationen zum Beat schließen - F4P Version
+function closeF4P(){
+    f4p.style.display = "none";
+}
+
+// Upload Formular mit weiteren Informationen zum Beat öffnen - Tagged Version
+function openTagged(){
+    tag.style.display = "block";
+}
+
+function closeTagged(){
+    tag.style.display = "none";
+}
+
 
 // Funktion, um beim Registrieren zu checken, ob die Passwörter übereinstimmen
 function validatePassword(){
@@ -121,3 +145,44 @@ function validatePassword(){
             lName.setCustomValidity("");
         }
     }
+
+    function restrictedUpload(file) {
+     var Filesize = file.files[0].size;
+     if (Filesize > 100 * 1024){ //MIB
+         alert("Filesize exceeds 100MIB");
+     }
+    }    
+
+    // Funktionen, die checken, ob beim Upload Formular Radio Buttons ausgewählt wurden
+    // Funktion für den ersten Kategorien Check (zwischen F4P und Tagged)
+    function f4pUpload(){
+        let f4pForm = document.getElementById("f4pForm");
+    }
+
+
+    //  Funktion für den zweiten Kategorien Check (zwischen Beat, Sample und Snippet
+    // File Uploadd 
+    function dateiauswahl(evt) {
+		// FileList-Objekt des input-Elements auslesen, auf dem 
+		// das change-Event ausgelöst wurde (event.target)
+		var files = evt.target.files;
+		// Deklarierung eines Array Objekts mit Namen "fragmente". Hier werden die Bausteine
+		// für die erzeugte Listenausgabe gesammelt.
+		var fragmente = [];
+		// Zählschleife; bei jedem Durchgang den Namen, Typ und 
+		// die Dateigröße der ausgewählten Dateien zum Array hinzufügen
+		for (var i = 0, f; f = files[i]; i++) {
+			fragmente.push('<li><strong>', f.name, '</strong> (', f.type || 'n/a',
+				') - ', f.size, ' bytes</li>');
+		}
+		// Alle Fragmente im fragmente Array aneinanderhängen, in eine unsortierte Liste einbetten
+		// und das alles als HTML-Inhalt in das output-Elements mit id='dateiListe' einsetzen.
+		document.getElementById('dateiListe')
+			.innerHTML = '<ul>' + fragmente.join('') + '</ul>';
+	}
+	// UI-Events erst registrieren wenn das DOM bereit ist!
+document.addEventListener("DOMContentLoaded", function () {
+	// Falls neue Eingabe, neuer Aufruf der Auswahlfunktion
+	document.getElementById('dateien')
+		.addEventListener('change', dateiauswahl, false);
+});
