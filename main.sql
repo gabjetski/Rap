@@ -23,8 +23,9 @@ CREATE OR REPLACE TABLE BPM(
 
 CREATE OR REPLACE TABLE KeySignature(
     pk_key_signature_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-    root_note VARCHAR(1), 
-    Addition VARCHAR(10)
+    root_note VARCHAR(2), 
+    Addition VARCHAR(10),
+    short VARCHAR(3)
 );
 
 CREATE OR REPLACE TABLE UploadType(
@@ -116,9 +117,34 @@ CREATE OR REPLACE TABLE Feed(
 
 #----------------------TESTDATA------------------------
 
-INSERT INTO user ( FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
-VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
-        ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123');
+#-- Procedure to create BPM Values
+
+CREATE OR REPLACE PROCEDURE bpmValues()
+BEGIN
+DECLARE v_counter INTEGER;
+    SET v_counter = 30;
+  WHILE v_counter <= 240 DO
+  INSERT INTO bpm (pk_bpm_id) VALUE  (v_counter);
+  SET v_counter = v_counter + 1;
+  END WHILE;
+END;
+
+INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
+    VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
+            ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123');
+CALL bpmValues();
+INSERT INTO `keysignature` (`pk_key_signature_id`, `root_note`, `Addition`) 
+    VALUES (NULL, 'C', 'Major'), 
+            (NULL, 'C', 'minor');
+INSERT INTO `uploadtype` (`pk_upload_type_id`, `Name`) 
+    VALUES (NULL, 'Beat'), 
+            (NULL, 'Sample'), 
+            (NULL, 'Snippet');
+INSERT INTO `monetizing` (`pk_monet_id`, `Name`) 
+    VALUES (NULL, 'Free for Profit'), 
+            (NULL, 'Tagged');
+INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
+    VALUES (NULL, 'Dummy1', 'dummy1', '00:03:02', 'hip', 'dirty', 'quirky', 'corny', 'sad', 'fucking lit', '24', '69', '1', '1', '1');
 
 
 #----------------------Data Definition Statements------------------------

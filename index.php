@@ -271,7 +271,7 @@
           <!-- BPM des Uploads -->
           <label for="bpm"><b>BPM*</b></label>
           <input type="text" id="bpm" name="information" value="" pattern="^\d{2,3}$" maxlength="3" required>
-          <!-- Key des Uploads -->
+          <!-- Key des Uploads ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="key"><b>Key</b></label>
           <select name="key" id="key">
             <option value="CM">C Major</option>
