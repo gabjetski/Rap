@@ -196,8 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function hashtags(e){
     document.addEventListener('keyup', event => {
-        if (event.code === 'Space') {
-          console.log("space")
+        if (event.code === 'Space') { 
+          console.log("space"); //dafuqqq???????? Was soll das? Warum??? LG Gerhart
         }
       })
 }
