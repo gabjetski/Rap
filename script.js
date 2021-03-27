@@ -4,6 +4,7 @@ const register = document.getElementById("registerForm");
 const upload = document.getElementById("uploadForm");
 const f4p = document.getElementById("f4pForm");
 const tag = document.getElementById("taggedForm");
+const tagInfo = document.getElementById("tagInfo");
 
 
 
@@ -13,7 +14,7 @@ function openLogin() {
     register.style.display = "none";
 }
 
-// Login Formular schließen 
+// Login Formular schließen
 function closeLogin() {
     login.style.display = "none";
 }
@@ -22,6 +23,15 @@ function closeLogin() {
 function openRegister() {
     register.style.display = "block";
     login.style.display = "none";
+}
+
+// Tag Info öffnen
+function openTagInfo() {
+  tagInfo.style.display = "block";
+}
+
+function closeTagInfo() {
+  tagInfo.style.display = "none";
 }
 
 // Register Formular schließen
@@ -35,7 +45,7 @@ function error(id, msg) {
     document.getElementById(id).innerHTML = newcode;
 }
 
-// Upload Formular öffnen 
+// Upload Formular öffnen
 function openUpload(){
     upload.style.display = "block";
 }
@@ -78,14 +88,14 @@ function validatePassword(){
 }
 
 
-// Funktionen der Password Validations 
+// Funktionen der Password Validations
     // Funktion, wenn das Passwort zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind
-    function wrongPassword(){ 
+    function wrongPassword(){
         let password  = document.getElementById("register-psw");
         //const patternSpecial = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-z0-9!?{}@#$%^&*_.-]{7,30}/);
         const pattern = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/);
         const patternSpecial = new RegExp(/^[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/);
-        
+
         if(password.value.length < 7){
             password.setCustomValidity("Password has to be between 7 and 30 characters long");
         } else if (password.value.length > 30){
@@ -97,10 +107,10 @@ function validatePassword(){
         } else if(pattern.test(password.value) === false){
             password.setCustomValidity("We are sorry but we dont allow to use this special character");
         }
-    } 
+    }
 
     // Funktionen der Username Validations
-    // Funktion, wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind 
+    // Funktion, wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind
     function wrongUsername(){
         let registerUsername = document.getElementById("register-username");
         const pattern = new RegExp(/^[a-zA-Z0-9ÄÜÖäüö_.-]{3,20}$/);
@@ -121,7 +131,7 @@ function validatePassword(){
         const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
 
         console.log(pattern.test(fName.value));
-        
+
         if(fName.value.length < 1){
             fName.setCustomValidity("Your first name can't be empty");
         } else if(pattern.test(fName.value) === false){
@@ -136,7 +146,7 @@ function validatePassword(){
         const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
 
         console.log(pattern.test(fName.value));
-        
+
         if(lName.value.length < 1){
             lName.setCustomValidity("Your last name can't be empty");
         } else if(pattern.test(lName.value) === false){
@@ -151,18 +161,18 @@ function validatePassword(){
      if (Filesize > 100 * 1024){ //MIB
          alert("Filesize exceeds 100MIB");
      }
-    }    
+    }
 
     //  Funktion für den zweiten Kategorien Check (zwischen Beat, Sample und Snippet
-    // File Uploadd 
+    // File Uploadd
     function dateiauswahl(evt) {
-		// FileList-Objekt des input-Elements auslesen, auf dem 
+		// FileList-Objekt des input-Elements auslesen, auf dem
 		// das change-Event ausgelöst wurde (event.target)
 		var files = evt.target.files;
 		// Deklarierung eines Array Objekts mit Namen "fragmente". Hier werden die Bausteine
 		// für die erzeugte Listenausgabe gesammelt.
 		var fragmente = [];
-		// Zählschleife; bei jedem Durchgang den Namen, Typ und 
+		// Zählschleife; bei jedem Durchgang den Namen, Typ und
 		// die Dateigröße der ausgewählten Dateien zum Array hinzufügen
 		for (var i = 0, f; f = files[i]; i++) {
 			fragmente.push('<li><strong>', f.name, '</strong> (', f.type || 'n/a',
@@ -181,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// Funktion, die nach jedem Space ein Hashtag in den Text gibt 
+// Funktion, die nach jedem Space ein Hashtag in den Text gibt
 
 
 function hashtags(e){

@@ -184,6 +184,10 @@ a {
   display: none;
 }
 
+#tagInfo {
+  display: none;
+}
+
 /* Errors, thrown by database when register or login*/
 .error {
   color: red;
