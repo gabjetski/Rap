@@ -153,13 +153,6 @@ function validatePassword(){
      }
     }    
 
-    // Funktionen, die checken, ob beim Upload Formular Radio Buttons ausgewählt wurden
-    // Funktion für den ersten Kategorien Check (zwischen F4P und Tagged)
-    function f4pUpload(){
-        let f4pForm = document.getElementById("f4pForm");
-    }
-
-
     //  Funktion für den zweiten Kategorien Check (zwischen Beat, Sample und Snippet
     // File Uploadd 
     function dateiauswahl(evt) {
@@ -186,3 +179,37 @@ document.addEventListener("DOMContentLoaded", function () {
 	document.getElementById('dateien')
 		.addEventListener('change', dateiauswahl, false);
 });
+
+
+// Funktion, die nach jedem Space ein Hashtag in den Text gibt 
+
+
+function hashtags(e){
+    document.addEventListener('keyup', event => {
+        if (event.code === 'Space') {
+          console.log("space")
+        }
+      })
+}
+
+
+function makeHashtag(){
+    let str = document.getElementById("notes").value;
+    let wordArray = str.split(' ').filter(char => char !== "");
+    let result = "#";
+
+    if(wordArray.length === 0){
+        return false;
+    }
+    result = result + wordArray.map(word => {
+        let capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+        return capitalizedWord;
+    }).join('');
+
+    if(result.length > 100){
+        return false;
+    } else {
+        console.log(result);
+        return result;
+    }
+};

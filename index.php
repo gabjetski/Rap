@@ -29,7 +29,7 @@
     //var_dump($_SESSION);
   }
 ?>
-  <body>b
+  <body>
   <h2>Rap Plattform</h2>
   <?php
   //Reset or reload page
@@ -306,10 +306,12 @@
           <!-- Notizen -->
           <label for="notes"><b>Notes</b></label>
           <input type="text" id="notes" name="information" maxlength="120">
+          <button id="noteButton" onclick="makeHashtag();">Press Me</button>
           <p>Maximum 120 Characters allowed</p>
           <!-- Tags -->
           <label for="tags"><b>Tags (5)</b></label>
-          <input type="text" id="tags" name="information" value="">
+          <textarea id="tags" rows="4" cols="50" onkeyup="hashtags();" name="information" value=""></textarea>
+          <p id="testtest"></p>
 
           <!-- File Upload -->
           <label for="file"><b> File</b></label>
