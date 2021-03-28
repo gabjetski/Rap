@@ -2,7 +2,8 @@
 const login = document.getElementById("loginForm");
 const register = document.getElementById("registerForm");
 const upload = document.getElementById("uploadForm");
-const f4p = document.getElementById("f4pForm");
+const uploadLogin = document.getElementById("uploadLoginForm");
+const f4p = document.getElementById("freeForProfitForm");
 const tag = document.getElementById("taggedForm");
 const tagInfo = document.getElementById("tagInfo");
 
@@ -53,6 +54,15 @@ function openUpload(){
 // Upload Formular schließen
 function closeUpload(){
     upload.style.display = "none";
+}
+// Upload Formular öffnen
+function openUploadLogin(){
+    uploadLogin.style.display = "block";
+}
+
+// Upload Formular schließen
+function closeUploadLogin(){
+    uploadLogin.style.display = "none";
 }
 
 // Upload Formular mit weiteren Informationen zum Beat öffnen - F4P Version
@@ -163,33 +173,7 @@ function validatePassword(){
      }
     }
 
-    //  Funktion für den zweiten Kategorien Check (zwischen Beat, Sample und Snippet
-    // File Uploadd
-    function dateiauswahl(evt) {
-		// FileList-Objekt des input-Elements auslesen, auf dem
-		// das change-Event ausgelöst wurde (event.target)
-		var files = evt.target.files;
-		// Deklarierung eines Array Objekts mit Namen "fragmente". Hier werden die Bausteine
-		// für die erzeugte Listenausgabe gesammelt.
-		var fragmente = [];
-		// Zählschleife; bei jedem Durchgang den Namen, Typ und
-		// die Dateigröße der ausgewählten Dateien zum Array hinzufügen
-		for (var i = 0, f; f = files[i]; i++) {
-			fragmente.push('<li><strong>', f.name, '</strong> (', f.type || 'n/a',
-				') - ', f.size, ' bytes</li>');
-		}
-		// Alle Fragmente im fragmente Array aneinanderhängen, in eine unsortierte Liste einbetten
-		// und das alles als HTML-Inhalt in das output-Elements mit id='dateiListe' einsetzen.
-		document.getElementById('dateiListe')
-			.innerHTML = '<ul>' + fragmente.join('') + '</ul>';
-	}
-	// UI-Events erst registrieren wenn das DOM bereit ist!
-document.addEventListener("DOMContentLoaded", function () {
-	// Falls neue Eingabe, neuer Aufruf der Auswahlfunktion
-	document.getElementById('dateien')
-		.addEventListener('change', dateiauswahl, false);
-});
-
+  
 
 // Funktion, die nach jedem Space ein Hashtag in den Text gibt
 
@@ -197,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function hashtags(e){
     document.addEventListener('keyup', event => {
         if (event.code === 'Space') { 
-          console.log("space"); //dafuqqq???????? Was soll das? Warum??? LG Gerhart
+          console.log("space");
         }
       })
 }
@@ -223,3 +207,53 @@ function makeHashtag(){
         return result;
     }
 };
+
+// Funktion um alle Einträge im Form zu löschen 
+function clearF4PForm(){
+    document.getElementById("fSample").checked = false;
+    document.getElementById("fBeat").checked = false;
+    document.getElementById("fTitle").value = '';
+    document.getElementById("fBpm").value = '';
+    document.getElementById("fNotes").value = '';
+    document.getElementById("fTags").value = '';
+    document.getElementById("fFile").value = '';
+}
+
+function clearTaggedForm(){
+    document.getElementById("tSample").checked = false;
+    document.getElementById("tBeat").checked = false;
+    document.getElementById("tSnippet").checked = false;
+    document.getElementById("tTitle").value = '';
+    document.getElementById("tBpm").value = '';
+    document.getElementById("tNotes").value = '';
+    document.getElementById("tTags").value = '';
+    document.getElementById("tFile").value = '';
+}
+
+
+
+// Funktion, um keine Buchstaben in BPM schreiben zu können
+function setInputFilter(textbox, inputFilter) {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+      textbox.addEventListener(event, function() {
+        if (inputFilter(this.value)) {
+          this.oldValue = this.value;
+          this.oldSelectionStart = this.selectionStart;
+          this.oldSelectionEnd = this.selectionEnd;
+        } else if (this.hasOwnProperty("oldValue")) {
+          this.value = this.oldValue;
+          this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+        } else {
+          this.value = "";
+        }
+      });
+    });
+  }
+
+
+    setInputFilter(document.getElementById("fBpm"), function(value) {
+        return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
+
+        
+    setInputFilter(document.getElementById("tBpm"), function(value) {
+        return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });

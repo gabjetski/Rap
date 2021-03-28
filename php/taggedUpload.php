@@ -1,21 +1,21 @@
 <?php
-$title_replaced = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $_POST['f4pUpload-title']);
+$title_replaced = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $_POST['taggedUpload-title']);
 //htmlspecialchar Get Array to store it safely
 array_walk_recursive($_POST, "filter");
 
-if (strtolower(pathinfo($_FILES['f4pUpload-file']['name'],PATHINFO_EXTENSION)) != 'mp3') {
+if (strtolower(pathinfo($_FILES['taggedUpload-file']['name'],PATHINFO_EXTENSION)) != 'mp3') {
     echo "File must be a mp3 file";
-}else if ($_FILES["f4pUpload-file"]["size"] > 104857600) {
+}else if ($_FILES["taggedUpload-file"]["size"] > 104857600) {
     echo "Sorry, your file is too large.";
   }
 else{
 
 //split tags
-$tagsSplitted = explode("|", $_POST['f4pUpload-tags']);
+$tagsSplitted = explode("|", $_POST['taggedUpload-tags']);
 //Prepare Procedure call
-$stmntUploadF4P = $pdo->prepare("CALL addTrack(?, ?, '00:04:20', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'f4p', @id);");
+$stmntUploadF4P = $pdo->prepare("CALL addTrack(?, ?, '00:04:20', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'tagged', @id);");
 //define the in-parameters
-$stmntUploadF4P->bindParam(1, $_POST['f4pUpload-title'], PDO::PARAM_STR, 4000);
+$stmntUploadF4P->bindParam(1, $_POST['taggedUpload-title'], PDO::PARAM_STR, 4000);
 $stmntUploadF4P->bindParam(2, $title_replaced, PDO::PARAM_STR, 4000);
 //do we really need length
 $stmntUploadF4P->bindParam(3, $tagsSplitted[0], PDO::PARAM_STR, 4000);
@@ -23,11 +23,11 @@ $stmntUploadF4P->bindParam(4, $tagsSplitted[1], PDO::PARAM_STR, 4000);
 $stmntUploadF4P->bindParam(5, $tagsSplitted[2], PDO::PARAM_STR, 4000);
 $stmntUploadF4P->bindParam(6, $tagsSplitted[3], PDO::PARAM_STR, 4000);
 $stmntUploadF4P->bindParam(7, $tagsSplitted[4], PDO::PARAM_STR, 4000);
-$stmntUploadF4P->bindParam(8, $_POST['f4pUpload-desc'], PDO::PARAM_STR, 12000);
+$stmntUploadF4P->bindParam(8, $_POST['taggedUpload-desc'], PDO::PARAM_STR, 12000);
 $stmntUploadF4P->bindParam(9, $_SESSION['userID'], PDO::PARAM_STR, 5000);
-$stmntUploadF4P->bindParam(10, $_POST['f4pUpload-bpm'], PDO::PARAM_STR, 4000);
-$stmntUploadF4P->bindParam(11, $_POST['f4pUpload-key'], PDO::PARAM_STR, 4000);
-$stmntUploadF4P->bindParam(12, $_POST['f4pUpload-type'], PDO::PARAM_STR, 4000);
+$stmntUploadF4P->bindParam(10, $_POST['taggedUpload-bpm'], PDO::PARAM_STR, 4000);
+$stmntUploadF4P->bindParam(11, $_POST['taggedUpload-key'], PDO::PARAM_STR, 4000);
+$stmntUploadF4P->bindParam(12, $_POST['taggedUpload-type'], PDO::PARAM_STR, 4000);
 
 var_dump($stmntUploadF4P);
 // 调用存储过程  !!Wichtig!!
@@ -48,8 +48,8 @@ if ($id > 0) {
     $target_file = 'uploads/'.$id.'#'.$target_file.'.mp3';
     var_dump($target_file);
     
-  if (move_uploaded_file($_FILES["f4pUpload-file"]["tmp_name"], $target_file)) {
-    echo "The file ". htmlspecialchars( basename( $_FILES["f4pUpload-file"]["name"])). " has been uploaded.";
+  if (move_uploaded_file($_FILES["taggedUpload-file"]["tmp_name"], $target_file)) {
+    echo "The file ". htmlspecialchars( basename( $_FILES["taggedUpload-file"]["name"])). " has been uploaded.";
   } else {
     echo "Sorry, there was an error uploading your file.";
   }

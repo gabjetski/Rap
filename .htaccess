@@ -1,0 +1,4 @@
+RewriteEngine on 
+RewriteRule ^feed$ index.php?page=home [NC]
+RewriteRule ^home$ index.php?page=home [NC]
+RewriteRule ^all index.php [NC]

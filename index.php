@@ -27,6 +27,7 @@
   <body>
   <h2>Rap Plattform</h2>
   <?php
+  // ANCHOR: PHP Zeugs
   //Reset or reload page
     if (isset($_GET['reset'])) {
         session_destroy();
@@ -49,13 +50,16 @@
     elseif (isset($_GET['loginSubmit'])) {
       require "php/login.php";
     }
-
     if (isset($_POST['f4pUpload-submit'])) {
       require "php/f4pUpload.php";
+    }
+    if (isset($_POST['taggedUpload-submit'])) {
+      require "php/taggedUpload.php";
     }
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
         echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
+        echo '<i class="fa fa-upload fa-3x" onclick="openUploadLogin()"></i>';
     }
     //show username and id if logged in
     elseif($_SESSION['userID'] > 0){
@@ -65,12 +69,15 @@
             $_SESSION['userUName'] = $row['Username'];
         }
         echo '<div class="openForm">'.$_SESSION['userID'].' - '.$_SESSION['userUName'].'</div>';
+        echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
 
     // Upload Icon für Testzwecke
-    echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
 ?>
+  <!-- SECTION PopUps -->
   <!-- Login Form, das Formular zum Anmelden mit Username bzw. E-Mail und dem Passwort (nur für bereits registrierte User) -->
+  <!-- ANCHOR: Login Form  -->
+  <!-- Login Form-->
   <div id="loginForm">
     <div id="blocker1" onclick="closeLogin()"></div>
     <div class="form-popup">
@@ -95,6 +102,7 @@
   </div>
 
   <!-- Register Form, das Formular, das es Besuchern der Website erlaubt, einen Account zu erstellen. -->
+  <!-- ANCHOR: Register Form  -->
   <div id="registerForm">
     <div id="blocker2" onclick="closeRegister()"></div>
     <div class="form-popup">
@@ -134,6 +142,24 @@
   </div>
 
 <!-- PopUp-Formulare für das Uploaden -->
+  <!-- Hinweis das man sich anmelden muss -->
+  <div id="uploadLoginForm">
+      <div id="blocker1" onclick="closeUploadLogin();"></div>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">
+          <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
+          <h1>Upload</h1>
+          <div>
+            You have to log in befor Uploading to *our name*!
+            <!-- Free For Profit Upload -->
+            <button type="button" id="f4p" class="continueButton" onclick="openLogin(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Log In</button>
+            <button type="button" id="f4p" class="continueButton" onclick="openRegister(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Register</button>
+
+            <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+            <button type="button" class="cancelButton" onclick="closeUploadLogin()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <!-- Entscheidung zwischen Free4Profit und Tagged Upload -->
   <div id="uploadForm">
     <div id="blocker1" onclick="closeUpload();"></div>
@@ -145,7 +171,7 @@
           <button type="button" id="f4p" class="continueButton" onclick="openF4P(); closeUpload();" name="F4P" value="f4p" class="continue">Free For Profit</button>
 
           <!-- Tagged Upload -->
-          <button type="button" id="tagged" class="continueButton" onclick="closeUpload(); openTagged();" name="Tagged" value="tagged" class="continue">Tagged</button>
+          <button type="button" id="taggedButton" class="continueButton" onclick="closeUpload(); openTagged();" name="Tagged" value="tagged" class="continue">Tagged</button>
 
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="button" class="cancelButton" onclick="closeUpload()">Cancel</button>
@@ -153,28 +179,30 @@
       </form>
     </div>
   </div>
+
+
    <!-- PopUp-Formulare für das Uploaden -->
-    <!-- Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
-  <div id="f4pForm">
+   <!-- ANCHOR FreeForProfit Upload Formular-->
+    <!-- FreeForProfit - Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
+  <div id="freeForProfitForm">
     <div id="blocker1" onclick="closeF4P();"></div>
-      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
-        <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
+      <form id="f4pForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
         <h1>F4P Upload</h1>
         <div>
-          <!-- Free For Profit Upload -->
-          <label for="beat"><b>Beat</b></label>
-          <input type="radio" id="beat" name="f4pUpload-type" value="beat" required>
-          <!-- Free For Profit Upload -->
-          <label for="sample"><b>Sample</b></label>
-          <input type="radio" id="sample" name="f4pUpload-type" value="sample" required>
-          <!-- BPM des Uploads -->
-          <label for="bpm"><b>BPM*</b></label>
-          <input type="text" id="bpm" name="f4pUpload-bpm" value="" pattern="^\d{2,3}$" maxlength="3" required>
-          <!-- Key des Uploads ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
-          <label for="key"><b>Key</b></label>
-          <select name="f4pUpload-key" id="key">
-            <option value="" disabled selected>Select a key</option>
-            <option value="C">C Major</option>
+          <!-- FreeForProfit Upload - Auswahl Beat -->
+          <label for="fBeat"><b>Beat</b></label>
+          <input type="radio" id="fBeat" name="f4pUpload-type" value="beat" required checked>
+          <!-- FreeForProfit Upload - Auswahl Beat -->
+          <label for="fSample"><b>Sample</b></label>
+          <input type="radio" id="fSample" name="f4pUpload-type" value="sample" required>
+          <!-- FreeForProfit  Upload - BPM -->
+          <label for="fBpm"><b>BPM*</b></label>
+          <input type="text" id="fBpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" required>
+          <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
+          <label for="fKey"><b>Key</b></label>
+          <select name="f4pUpload-key" id="fKey">
+            <option value="" disabled>Select a key</option>
+            <option value="C" selected>C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db">Db Major</option>
             <option value="C#m">C# minor</option>
@@ -199,24 +227,23 @@
             <option value="B">B Major</option>
             <option value="bm">B minor</option>
           </select>
-          <!-- Title des Uploads -->
-          <label for="title"><b>Title*</b></label>
-          <input type="text" id="title" name="f4pUpload-title" required maxlength="60">
+          <!-- FreeForProfit - Title des Uploads -->
+          <label for="fTitle"><b>Title*</b></label>
+          <input type="text" id="fTitle" name="f4pUpload-title" required maxlength="60" value="Hallo">
           <p>Maximum 60 Characters allowed</p>
-          <!-- Notizen -->
-          <label for="notes"><b>Notes</b></label>
-          <input type="text" id="notes" name="f4pUpload-desc" maxlength="120">
+          <!-- FreeForProfit - Notizen -->
+          <label for="fNotes"><b>Notes</b></label>
+          <input type="text" id="fNotes" name="f4pUpload-desc" maxlength="120">
+          <!-- FIXME Hashtag Funktion -->
           <button type="button" id="noteButton" onclick="makeHashtag();">Press Me</button>
           <p>Maximum 120 Characters allowed</p>
-          <!-- Tags -->
-          <label for="tags"><b>Tags (5)</b></label>
-          <textarea id="tags" rows="4" cols="50" onkeyup="hashtags();" name="f4pUpload-tags" value=""></textarea>
-          <p id="testtest"></p>
-
-          <!-- File Upload -->
-          <label for="file"><b> File</b></label>
-          <input type="file" accept=".mp3" id="dateien" name="f4pUpload-file" multiple />
-
+          <!-- FreeForProfit - Tags -->
+          <label for="fTags"><b>Tags (5)</b></label>
+          <textarea id="fTags" rows="4" cols="50" onkeyup="hashtags();" name="f4pUpload-tags" value=""></textarea>
+          <!-- FreeForProfit - File Upload -->
+          <label for="fFile"><b>File</b></label>
+          <input type="file" accept=".mp3" id="fFile" name="f4pUpload-file" multiple />
+          <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" class="continue">Finish</button>
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
@@ -227,30 +254,36 @@
   </div>
 
    <!-- PopUp-Formulare für das Uploaden -->
+   <!-- ANCHOR Tagged Upload Formular-->
     <!-- Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
   <div id="taggedForm">
     <div id="blocker1" onclick="closeTagged();"></div>
-      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">
+      <form id="tForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
         <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
         <h1>Tagged Upload</h1>
         <div>
-        <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b<i class="fa fa-download"> Download A Free Tag</i></label></a>
-        <label for="tagInfo"><b><button class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
-          <!-- Free For Profit Upload -->
-          <label for="beat"><b>Beat</b></label>
-          <input type="radio" id="beat" name="category2" value="Beat">
-          <!-- Free For Profit Upload -->
-          <label for="sample"><b>Sample</b></label>
-          <input type="radio" id="sample" name="category2" value="Sample">
-          <!-- BPM des Uploads -->
-          <label for="bpm"><b>BPM</b></label>
-          <input type="text" id="bpm" name="information" value="" pattern="^\d{2,3}$">
-          <!-- Key des Uploads -->
-          <label for="key"><b>Key</b></label>
-          <select name="key" id="key">
+  
+          <!-- Free Tag zum Downloaden, falls eigenes Tag vorhanden ist -->
+          <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b<i class="fa fa-download"> Download A Free Tag</i></label></a>
+          <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
+          <!-- Tagged Upload - Auswahl Beat -->
+          <label for="tBeat"><b>Beat</b></label>
+          <input type="radio" id="tBeat" name="taggedUpload-type" value="beat" checked>
+          <!-- Tagged Upload - Auswahl Sample -->
+          <label for="tSample"><b>Sample</b></label>
+          <input type="radio" id="tSample" name="taggedUpload-type" value="sample">
+          <!-- Tagged Upload - Auswahl Snippet-->
+          <label for="tSnippet"><b>Snippet</b></label>
+          <input type="radio" id="tSnippet" name="taggedUpload-type" value="snippet">
+          <!-- Tagged Upload - BPM -->
+          <label for="tBpm"><b>BPM</b></label>
+          <input type="text" id="tBpm" name="taggedUpload-bpm" pattern="^\d{2,3}$" value="123">
+          <!-- Tagged Upload - Key -->
+          <label for="tKey"><b>Key</b></label>
+          <select name="taggedUpload-key" id="tKey">
             <option value="C">C Major</option>
             <option value="Cm">C minor</option>
-            <option value="Db">Db Major</option>
+            <option value="Db" selected>Db Major</option>
             <option value="C#m">C# minor</option>
             <option value="D">D Major</option>
             <option value="Dm">D minor</option>
@@ -259,7 +292,7 @@
             <option value="E">E Major</option>
             <option value="Em">E minor</option>
             <option value="F">F Major</option>
-            <option value="fm">F minor</option>
+            <option value="Fm">F minor</option>
             <option value="Gb">Gb Major</option>
             <option value="F#m">F# minor</option>
             <option value="G">G Major</option>
@@ -271,25 +304,27 @@
             <option value="Bb">Bb Major</option>
             <option value="A#m">A# minor</option>
             <option value="B">B Major</option>
-            <option value="bm">B minor</option>
+            <option value="Bm">B minor</option>
           </select>
           <!-- Title des Uploads -->
-          <label for="title"><b>Title</b></label>
-          <input type="text" id="title" name="information" value="">
+          <label for="tTitle"><b>Title*</b></label>
+          <input type="text" id="tTitle" name="taggedUpload-title" required maxlength="60" value="Hallo">
+          <p>Maximum 60 Characters allowed</p>
           <!-- Notizen -->
-          <label for="notes"><b>Notes</b></label>
-          <input type="text" id="notes" name="information" value="">
+          <label for="tNotes"><b>Notes</b></label>
+          <input type="text" id="tNotes" name="taggedUpload-desc" maxlength="120" value="Nice">
+          <!-- FIXME Hashtag Funktion -->
+          <button type="button" id="noteButton" onclick="makeHashtag();">Press Me</button>
+          <p>Maximum 120 Characters allowed</p>
           <!-- Tags -->
-          <br>
-          <label for="tags"><b>Tags</b></label>
-          <input type="text" id="tags" name="information" value="">
-
+          <label for="tTags"><b>Tags (5)</b></label>
+          <textarea id="tTags" rows="4" cols="50" onkeyup="hashtags();" name="taggedUpload-tags"></textarea>
           <!-- File Upload -->
-          <label for="file"><b> File</b></label>
-          <input type="file" onclick="restrictedUpload()" accept=".mp3" id="dateien" name="files[]" multiple />
-
+          <label for="tFile"><b> File</b></label>
+          <input type="file" accept=".mp3" id="tFile" name="taggedUpload-file" multiple />
+          <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="button" class="continueButton" onclick="" name="Continue" value="Continue" class="continue" onclick="trackName();">Continue</button>
+          <button type="submit" class="continueButton" onclick="" name="taggedUpload-submit" value="Continue" class="continue">Finish</button>
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeTagged();">Cancel</button>
         </div>
@@ -311,6 +346,15 @@
       </div>
     </div>
   </div>
+
+  <!-- !SECTION
+  SECTION Body 
+  ANCHOR: Feed-->
+  <?php 
+  if (!isset($_GET['page']) || $_GET['page'] == 'home') {
+    require 'php/feed.php';
+  }
+  ?>
 
   <!------------------always at bottom for testing--------------- -->
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">

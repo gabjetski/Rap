@@ -171,12 +171,15 @@ a {
 #uploadForm {
   display: none;
 }
+#uploadLoginForm {
+  display: none;
+}
 
 #categoryForm{
   display:none;
 }
 
-#f4pForm{
+#freeForProfitForm{
   display: none;
 }
 

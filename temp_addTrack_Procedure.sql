@@ -1,5 +1,6 @@
  CREATE OR REPLACE PROCEDURE addTrack(
     IN `p_title` VARCHAR(60),
+    IN `p_title_replaced` VARCHAR(30),
     IN `p_length` TIME,
     IN `p_tag1` VARCHAR(30),
     IN `p_tag2` VARCHAR(30),
@@ -69,7 +70,7 @@
         LIMIT 1;
         SET p_id = p_id +1;
 
-        SET v_path_name = CONCAT(p_id, '#', LEFT(p_title , 10), '.mp3'); 
+        SET v_path_name = CONCAT(p_id, '#', LEFT(p_title_replaced , 10), '.mp3'); 
 
         INSERT INTO `files` (`Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
             VALUES (p_title, v_path_name, p_length, p_tag1, p_tag2, p_tag3, p_tag4, p_tag5, p_description, p_user_id, p_bpm, v_key_id, v_upload_type, v_monet);
