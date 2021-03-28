@@ -29,7 +29,7 @@ $stmntUploadF4P->bindParam(10, $_POST['taggedUpload-bpm'], PDO::PARAM_STR, 4000)
 $stmntUploadF4P->bindParam(11, $_POST['taggedUpload-key'], PDO::PARAM_STR, 4000);
 $stmntUploadF4P->bindParam(12, $_POST['taggedUpload-type'], PDO::PARAM_STR, 4000);
 
-var_dump($stmntUploadF4P);
+//var_dump($stmntUploadF4P);
 // 调用存储过程  !!Wichtig!!
 $stmntUploadF4P->execute();
 
@@ -42,11 +42,11 @@ foreach($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row){
 }
 //check if id is negative which means an error is thrown
 if ($id > 0) {
-    var_dump($_FILES);
+    //var_dump($_FILES);
     $target_file = substr($title_replaced, 0, 10);
     $target_file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $target_file);
     $target_file = 'uploads/'.$id.'#'.$target_file.'.mp3';
-    var_dump($target_file);
+    //var_dump($target_file);
     
   if (move_uploaded_file($_FILES["taggedUpload-file"]["tmp_name"], $target_file)) {
     echo "The file ". htmlspecialchars( basename( $_FILES["taggedUpload-file"]["name"])). " has been uploaded.";

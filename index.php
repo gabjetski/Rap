@@ -79,7 +79,7 @@
   <!-- ANCHOR: Login Form  -->
   <!-- Login Form-->
   <div id="loginForm">
-    <div id="blocker1" onclick="closeLogin()"></div>
+    <div class="blocker1" onclick="closeLogin()"></div>
     <div class="form-popup">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
         <h1>Login</h1>
@@ -144,15 +144,15 @@
 <!-- PopUp-Formulare für das Uploaden -->
   <!-- Hinweis das man sich anmelden muss -->
   <div id="uploadLoginForm">
-      <div id="blocker1" onclick="closeUploadLogin();"></div>
+      <div class="blocker1" onclick="closeUploadLogin();"></div>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">
           <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
           <h1>Upload</h1>
           <div>
-            You have to log in befor Uploading to *our name*!
+            You have to log in before Uploading to *our name*!
             <!-- Free For Profit Upload -->
-            <button type="button" id="f4p" class="continueButton" onclick="openLogin(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Log In</button>
-            <button type="button" id="f4p" class="continueButton" onclick="openRegister(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Register</button>
+            <button type="button"  id="f4p" class="continueButton" onclick="openLogin(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Log In</button>
+            <button type="button"  id="f4p" class="continueButton" onclick="openRegister(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Register</button>
 
             <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
             <button type="button" class="cancelButton" onclick="closeUploadLogin()">Cancel</button>
@@ -162,7 +162,7 @@
     </div>
     <!-- Entscheidung zwischen Free4Profit und Tagged Upload -->
   <div id="uploadForm">
-    <div id="blocker1" onclick="closeUpload();"></div>
+    <div class="blocker1" onclick="closeUpload();"></div>
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">
         <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
         <h1>Upload</h1>
@@ -185,7 +185,7 @@
    <!-- ANCHOR FreeForProfit Upload Formular-->
     <!-- FreeForProfit - Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
   <div id="freeForProfitForm">
-    <div id="blocker1" onclick="closeF4P();"></div>
+    <div class="blocker1" onclick="closeF4P();"></div>
       <form id="f4pForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
         <h1>F4P Upload</h1>
         <div>
@@ -235,17 +235,17 @@
           <label for="fNotes"><b>Notes</b></label>
           <input type="text" id="fNotes" name="f4pUpload-desc" maxlength="120">
           <!-- FIXME Hashtag Funktion -->
-          <button type="button" id="noteButton" onclick="makeHashtag();">Press Me</button>
+          <button type="button" id="fNoteButton" onclick="makeHashtag();">Press Me</button>
           <p>Maximum 120 Characters allowed</p>
           <!-- FreeForProfit - Tags -->
           <label for="fTags"><b>Tags (5)</b></label>
           <textarea id="fTags" rows="4" cols="50" onkeyup="hashtags();" name="f4pUpload-tags" value=""></textarea>
           <!-- FreeForProfit - File Upload -->
           <label for="fFile"><b>File</b></label>
-          <input type="file" accept=".mp3" id="fFile" name="f4pUpload-file" multiple />
+          <input type="file" accept=".mp3" id="fFile" name="f4pUpload-file" required/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" class="continue">Finish</button>
+          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" class="continue" onclick="closeF4P(); openUploadSuccess();">Finish</button>
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
         </div>
@@ -257,7 +257,7 @@
    <!-- ANCHOR Tagged Upload Formular-->
     <!-- Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
   <div id="taggedForm">
-    <div id="blocker1" onclick="closeTagged();"></div>
+    <div class="blocker1" onclick="closeTagged();"></div>
       <form id="tForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
         <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
         <h1>Tagged Upload</h1>
@@ -314,17 +314,17 @@
           <label for="tNotes"><b>Notes</b></label>
           <input type="text" id="tNotes" name="taggedUpload-desc" maxlength="120" value="Nice">
           <!-- FIXME Hashtag Funktion -->
-          <button type="button" id="noteButton" onclick="makeHashtag();">Press Me</button>
+          <button type="button" id="tNoteButton" onclick="makeHashtag();">Press Me</button>
           <p>Maximum 120 Characters allowed</p>
           <!-- Tags -->
           <label for="tTags"><b>Tags (5)</b></label>
           <textarea id="tTags" rows="4" cols="50" onkeyup="hashtags();" name="taggedUpload-tags"></textarea>
           <!-- File Upload -->
           <label for="tFile"><b> File</b></label>
-          <input type="file" accept=".mp3" id="tFile" name="taggedUpload-file" multiple />
+          <input type="file" accept=".mp3" id="tFile" name="taggedUpload-file" required />
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" onclick="" name="taggedUpload-submit" value="Continue" class="continue">Finish</button>
+          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" onclick="closeTagged(); openUploadSuccess();">Finish</button>
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeTagged();">Cancel</button>
         </div>
@@ -333,7 +333,7 @@
   </div>
 
   <div id="tagInfo">
-    <div id="blocker1" onclick="closeTagInfo();"></div>
+    <div class="blocker1" onclick="closeTagInfo();"></div>
     <div class="form-popup">
       <div>
         <h1>Why should I use tags?</h1>
@@ -346,6 +346,16 @@
       </div>
     </div>
   </div>
+
+  <div id="uploadSuccess">
+    <div class="blocker1" onclick="closeUploadSuccess();"></div>
+    <div class="form-popup">
+      <div>
+        <h1>LESSS GOOOOO</h1>
+      </div>
+    </div>
+  </div>
+  
 
   <!-- !SECTION
   SECTION Body 

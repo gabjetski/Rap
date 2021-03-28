@@ -132,6 +132,7 @@ END;
 INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
     VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
             ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123');
+            ('fName', 'lName', 'user', 'email@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL);
 CALL bpmValues();
 
 # -- TODO Nochmal überprüfen mit index.php Zeile 284 beginnend, 4 Augen Prinzip ^^ 
@@ -168,7 +169,6 @@ INSERT INTO `uploadtype` (`pk_upload_type_id`, `Name`)
 INSERT INTO `monetizing` (`pk_monet_id`, `Name`) 
     VALUES (NULL, 'Free for Profit'), 
             (NULL, 'Tagged');
-CALL addTrack('Dummy1','Dummy1', '00:03:02', 'hip', 'dirty', 'quirky', 'corny', 'sad', 'fucking lit', '1', '69', 'C', 'beat', 'f4p', @id);
 
 #--INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
 #--    VALUES (NULL, 'Dummy1', 'dummy1', '00:03:02', 'hip', 'dirty', 'quirky', 'corny', 'sad', 'fucking lit', '1', '69', '1', '1', '1');
@@ -311,9 +311,9 @@ END;
     IN `p_description` VARCHAR(120),
     IN `p_user_id` INTEGER,
     IN `p_bpm` INTEGER,
-    IN `p_key` INTEGER,
-    IN `p_type`INTEGER,
-    IN `p_monet` INTEGER,
+    IN `p_key` VARCHAR(30),
+    IN `p_type`VARCHAR(30),
+    IN `p_monet` VARCHAR(30),
     OUT `p_id` INT)
     BEGIN
     DECLARE v_bpm_if INT;
@@ -369,7 +369,11 @@ END;
         SELECT pk_files_id INTO p_id FROM files 
         ORDER BY pk_files_id DESC
         LIMIT 1;
-        SET p_id = p_id +1;
+        IF (p_id IS NULL) THEN
+            SET p_id = 1;
+        ELSE 
+            SET p_id = p_id +1;
+        END IF;
 
         SET v_path_name = CONCAT(p_id, '#', LEFT(p_title_replaced , 10), '.mp3'); 
 
@@ -377,3 +381,5 @@ END;
             VALUES (p_title, v_path_name, p_length, p_tag1, p_tag2, p_tag3, p_tag4, p_tag5, p_description, p_user_id, p_bpm, v_key_id, v_upload_type, v_monet);
     END IF;
 END;
+
+#--CALL addTrack('Dummy1','Dummy1', '00:03:02', 'hip', 'dirty', 'quirky', 'corny', 'sad', 'fucking lit', '1', '69', 'C', 'beat', 'f4p', @id);

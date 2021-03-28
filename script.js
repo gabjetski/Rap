@@ -6,6 +6,7 @@ const uploadLogin = document.getElementById("uploadLoginForm");
 const f4p = document.getElementById("freeForProfitForm");
 const tag = document.getElementById("taggedForm");
 const tagInfo = document.getElementById("tagInfo");
+const uploadSuccess = document.getElementById("uploadSuccess");
 
 
 
@@ -29,6 +30,10 @@ function openRegister() {
 // Tag Info öffnen
 function openTagInfo() {
   tagInfo.style.display = "block";
+}
+
+function openUploadSuccess() {
+    uploadSuccess.style.display = "block";
 }
 
 function closeTagInfo() {
@@ -82,6 +87,10 @@ function openTagged(){
 
 function closeTagged(){
     tag.style.display = "none";
+}
+
+function closeUploadSuccess() {
+    uploadSuccess.style.display = "none";
 }
 
 
@@ -188,7 +197,7 @@ function hashtags(e){
 
 
 function makeHashtag(){
-    let str = document.getElementById("notes").value;
+    let str = document.getElementById("fNotes").value;
     let wordArray = str.split(' ').filter(char => char !== "");
     let result = "#";
 
@@ -217,6 +226,7 @@ function clearF4PForm(){
     document.getElementById("fNotes").value = '';
     document.getElementById("fTags").value = '';
     document.getElementById("fFile").value = '';
+    document.getElementById("fKey").value='';
 }
 
 function clearTaggedForm(){
@@ -228,6 +238,8 @@ function clearTaggedForm(){
     document.getElementById("tNotes").value = '';
     document.getElementById("tTags").value = '';
     document.getElementById("tFile").value = '';
+    document.getElementById("tKey").value='';
+
 }
 
 

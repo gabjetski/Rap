@@ -140,7 +140,7 @@ a {
   opacity: 0.9;
 }
 
-#blocker1 {
+.blocker1 {
   position: fixed;
   top: 0;
   left: 0;
@@ -188,6 +188,10 @@ a {
 }
 
 #tagInfo {
+  display: none;
+}
+
+#uploadSuccess {
   display: none;
 }
 

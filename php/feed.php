@@ -3,10 +3,12 @@ $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_u
 $stmntGetSongs->execute();
 
 foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
+    $path = htmlspecialchars($row['Path']);
+    echo $path.' ---- '.$row['Path'];
     echo "<div>
         {$row['Title']} - by {$row['Username']}<br>
         <audio controls>
-            <source src=\"uploads/{$row['Path']}\" type=\"audio/mpeg\">
+            <source src=\"/uploads/{$path}\" type=\"audio/mpeg\">
             Your browser does not support the audio element.
         </audio> 
         <hr>
