@@ -128,10 +128,11 @@ DECLARE v_counter INTEGER;
   SET v_counter = v_counter + 1;
   END WHILE;
 END;
-
+INSERT INTO `user` (`pk_user_id`, `FirstName`, `LastName`, `Username`, `Email`, `Passwort`, `Bio`, `Insta`, `Twitter`, `Soundcloud`) 
+    VALUES (1, 'Guest', 'Guest', 'guest', 'guest', 'guest', NULL, NULL, NULL, NULL);
 INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
     VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
-            ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123');
+            ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123'),
             ('fName', 'lName', 'user', 'email@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL);
 CALL bpmValues();
 
@@ -169,9 +170,15 @@ INSERT INTO `uploadtype` (`pk_upload_type_id`, `Name`)
 INSERT INTO `monetizing` (`pk_monet_id`, `Name`) 
     VALUES (NULL, 'Free for Profit'), 
             (NULL, 'Tagged');
+INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
+    VALUES (1, 'Test', '1#Test.mp3', '00:04:20', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
+            (2, 'Â²Â³$$&amp;%Â§@â‚¬', '2#.mp3', '00:04:20', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
+            (3, 'Testt5itelderlangeistsehrlange,sehr,sehr,lange', '3#Testt5itel.mp3', '00:04:20', '', NULL, NULL, NULL, NULL, '', 3, 123, 14, 1, 1),
+            (4, 'R u dumb, stupid or dumb huh', '4#R u dumb, .mp3', '00:04:20', 'R u dumb, stupid or dumb huh ', ' R u ', NULL, NULL, NULL, 'R u dumb, stupid or dumb huh', 3, 123, 1, 1, 1);
 
-#--INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
-#--    VALUES (NULL, 'Dummy1', 'dummy1', '00:03:02', 'hip', 'dirty', 'quirky', 'corny', 'sad', 'fucking lit', '1', '69', '1', '1', '1');
+INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`) 
+    VALUES (NULL, '1', '1'), 
+            (NULL, '2', '1');
 
 
 #----------------------Data Definition Statements------------------------
@@ -383,3 +390,33 @@ END;
 END;
 
 #--CALL addTrack('Dummy1','Dummy1', '00:03:02', 'hip', 'dirty', 'quirky', 'corny', 'sad', 'fucking lit', '1', '69', 'C', 'beat', 'f4p', @id);
+
+#-- Procedure to store download
+#-- Output: 0-infinity -> udf ID
+#--         -1 -> 
+#--         -2 -> 
+ CREATE OR REPLACE PROCEDURE download(
+    IN `p_track_id` INT,
+    IN `p_user_id` INT, 
+    OUT `p_id` INT) 
+    BEGIN
+    DECLARE v_count_track INT;
+    DECLARE v_count_user INT;
+
+    SELECT COUNT(pk_files_id) INTO v_count_track FROM files
+    WHERE pk_files_id = p_track_id;
+    SELECT COUNT(pk_user_id) INTO v_count_user FROM user
+    WHERE pk_user_id = p_user_id;
+    IF (v_count_track != 1) THEN
+        SET p_id = -1;
+    ELSEIF (v_count_user != 1) THEN
+        SET p_id = -2;
+    ELSE
+        INSERT INTO user_downloaded_file (fk_user_id, fk_files_id)
+            VALUES (p_user_id, p_track_id);
+        SELECT pk_udf_id INTO p_id FROM user_downloaded_file 
+        WHERE fk_user_id = p_user_id AND fk_files_id = p_track_id
+        ORDER BY pk_udf_id DESC
+        LIMIT 1;
+    END IF;
+END;

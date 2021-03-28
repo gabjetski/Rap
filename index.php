@@ -56,6 +56,19 @@
     if (isset($_POST['taggedUpload-submit'])) {
       require "php/taggedUpload.php";
     }
+    if (isset($_GET['downloaded_file'])) {
+      require "php/download.php";
+    }
+    if(isset($_SESSION['downloadError'])){
+      echo "<br>";
+      echo "<br>";
+      echo $_SESSION['downloadError'];
+      echo "<br>";
+      var_dump($_SESSION['downloadError_GET']);
+      echo "<br>";
+      echo "<br>";
+    }
+    //var_dump($_SESSION);
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
         echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
