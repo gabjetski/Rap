@@ -1,4 +1,5 @@
 <?php
+// TODO Comment code
 $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
 $stmntGetSongs->execute();
 
@@ -31,7 +32,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         {$path}<br>
         {$row['Title']} - by {$row['Username']}<br>
         <audio controls>
-            <source src=\"/uploads/{$path}\" type=\"audio/mpeg\">
+            <source src=\"./uploads/{$path}\" type=\"audio/mpeg\">
             Your browser does not support the audio element.
         </audio>
         <a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\">Download</a> 

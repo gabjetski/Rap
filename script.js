@@ -10,13 +10,14 @@ const uploadSuccess = document.getElementById("uploadSuccess");
 
 
 
-// Login Formular öffnen
+// Login
+    // Formular öffnen
 function openLogin() {
     login.style.display = "block";
     register.style.display = "none";
 }
 
-// Login Formular schließen
+    // Formular schließen
 function closeLogin() {
     login.style.display = "none";
 }
@@ -182,41 +183,52 @@ function validatePassword(){
      }
     }
 
-  
+// FIXME wenn man manchmal tags löscht, und dann ein neues reinschreibt, hört es bei 4 auf (disabled Textarea)
+// TODO wenn ein Tag eine Max Länge von X hat, ein neues Tag machen (automatisch Space)
+function makeHashtag(){
+    let str = document.getElementById('fTags').value;
+    str = str.replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.@#£\/]/g, '');
+    let tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#'+'$1');
+    document.getElementById('fTags').value = tagged;
+    let hashtags = str.match(/[#]/g);
+}
 
-// Funktion, die nach jedem Space ein Hashtag in den Text gibt
-
-
-function hashtags(e){
-    document.addEventListener('keyup', event => {
-        if (event.code === 'Space') { 
-          console.log("space");
+let count;
+function countWord() {
+    let words = document.getElementById("fTags").value;
+    count = 0;
+    var split = words.split(' ');
+    for (var i = 0; i < split.length; i++) {
+        if (split[i] != "") {
+            count += 1;
         }
-      })
+    }
+    document.addEventListener('keyup', event => {
+        if (event.code === 'Space' && count == 5) { 
+            document.getElementById("fTags").disabled = true;
+        }
+      });
+    document.getElementById("show")
+        .innerHTML = count;
 }
 
 
-function makeHashtag(){
-    let str = document.getElementById("fNotes").value;
-    let wordArray = str.split(' ').filter(char => char !== "");
-    let result = "#";
+// Funktion, um Max Länge von Notes nicht zu überschreiten
+document.getElementById('fNotes').onkeyup = function () {
+    document.getElementById('count').innerHTML = "Characters left: " + (200 - this.value.length);
+  };
 
-    if(wordArray.length === 0){
-        return false;
-    }
-    result = result + wordArray.map(word => {
-        let capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-        return capitalizedWord;
-    }).join('');
+// FIXME Funktion, um zu erlauben, Tags zu editen 
+function editTags(){
+    
+}
 
-    if(result.length > 100){
-        return false;
-    } else {
-        console.log(result);
-        return result;
-    }
-};
-
+function notesLength(){
+    let maxL = 60
+    document.getElementById("fNotes").keyup(function(e){
+        document.getElementById("count").text("Cha Left: " + (maxL - $(this).val().length));
+    })
+}
 // Funktion um alle Einträge im Form zu löschen 
 function clearF4PForm(){
     document.getElementById("fSample").checked = false;
@@ -225,6 +237,9 @@ function clearF4PForm(){
     document.getElementById("fBpm").value = '';
     document.getElementById("fNotes").value = '';
     document.getElementById("fTags").value = '';
+    count = 0;
+    document.getElementById("fTags").disabled= false;
+
     document.getElementById("fFile").value = '';
     document.getElementById("fKey").value='';
 }
@@ -237,6 +252,7 @@ function clearTaggedForm(){
     document.getElementById("tBpm").value = '';
     document.getElementById("tNotes").value = '';
     document.getElementById("tTags").value = '';
+    document.getElementById("tTags").disable= false;
     document.getElementById("tFile").value = '';
     document.getElementById("tKey").value='';
 

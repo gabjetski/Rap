@@ -48,7 +48,7 @@ CREATE OR REPLACE TABLE Files(
     Tag3 VARCHAR(30),
     Tag4 VARCHAR(30),
     Tag5 VARCHAR(30), 
-    Description VARCHAR(120), 
+    Description VARCHAR(200), 
     fk_user_id INTEGER NOT NULL, 
     fk_bpm_id INTEGER NOT NULL, 
     fk_key_signature_id INTEGER, 
@@ -315,7 +315,7 @@ END;
     IN `p_tag3` VARCHAR(30),
     IN `p_tag4` VARCHAR(30),
     IN `p_tag5` VARCHAR(30),
-    IN `p_description` VARCHAR(120),
+    IN `p_description` VARCHAR(200),
     IN `p_user_id` INTEGER,
     IN `p_bpm` INTEGER,
     IN `p_key` VARCHAR(30),
@@ -412,8 +412,8 @@ END;
     ELSEIF (v_count_user != 1) THEN
         SET p_id = -2;
     ELSE
-        INSERT INTO user_downloaded_file (fk_user_id, fk_files_id)
-            VALUES (p_user_id, p_track_id);
+        INSERT INTO user_downloaded_file (fk_user_id, fk_files_id, time)
+            VALUES (p_user_id, p_track_id, SYSDATE());
         SELECT pk_udf_id INTO p_id FROM user_downloaded_file 
         WHERE fk_user_id = p_user_id AND fk_files_id = p_track_id
         ORDER BY pk_udf_id DESC

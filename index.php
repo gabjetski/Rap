@@ -68,6 +68,12 @@
       echo "<br>";
       echo "<br>";
     }
+    if (isset($_SESSION['uploadSuccess'])) {
+      echo "File - {$_SESSION['uploadSuccess']} was succesfully uploaded";
+    }elseif (isset($_SESSION['uploadError'])) {
+      echo "There was an Error while uploading the file {$_SESSION['uploadError']['name']}<br>
+            Error-id: {$_SESSION['uploadError']['id']}";
+    }
     //var_dump($_SESSION);
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
@@ -84,6 +90,9 @@
         echo '<div class="openForm">'.$_SESSION['userID'].' - '.$_SESSION['userUName'].'</div>';
         echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
+    //var_dump($_SESSION);
+    echo "<br><br>";
+    var_dump($_SESSION['tags']);
 
     // Upload Icon für Testzwecke
 ?>
@@ -164,8 +173,8 @@
           <div>
             You have to log in before Uploading to *our name*!
             <!-- Free For Profit Upload -->
-            <button type="button"  id="f4p" class="continueButton" onclick="openLogin(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Log In</button>
-            <button type="button"  id="f4p" class="continueButton" onclick="openRegister(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Register</button>
+            <button type="button"  id="a" class="continueButton" onclick="openLogin(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Log In</button>
+            <button type="button"  id="b" class="continueButton" onclick="openRegister(); closeUploadLogin();" name="F4P" value="f4p" class="continue">Register</button>
 
             <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
             <button type="button" class="cancelButton" onclick="closeUploadLogin()">Cancel</button>
@@ -243,22 +252,27 @@
           <!-- FreeForProfit - Title des Uploads -->
           <label for="fTitle"><b>Title*</b></label>
           <input type="text" id="fTitle" name="f4pUpload-title" required maxlength="60" value="Hallo">
-          <p>Maximum 60 Characters allowed</p>
+          <p>Maximum 200 Characters allowed</p>
           <!-- FreeForProfit - Notizen -->
           <label for="fNotes"><b>Notes</b></label>
-          <input type="text" id="fNotes" name="f4pUpload-desc" maxlength="120">
+          <textarea id="fNotes" rows="4" cols="50" maxlength="200" name="f4pUpload-desc"></textarea>
+          <div id="count">Characters left: 200</div>
+          <div id="msg"></div>
           <!-- FIXME Hashtag Funktion -->
-          <button type="button" id="fNoteButton" onclick="makeHashtag();">Press Me</button>
           <p>Maximum 120 Characters allowed</p>
           <!-- FreeForProfit - Tags -->
           <label for="fTags"><b>Tags (5)</b></label>
-          <textarea id="fTags" rows="4" cols="50" onkeyup="hashtags();" name="f4pUpload-tags" value=""></textarea>
+          <textarea id="fTags" rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea>
+          <p> Word Count:
+          <span id="show">0</span>
+          </p>
+          <button type="button" onclick="editTags();">Edit Tags </button>
           <!-- FreeForProfit - File Upload -->
           <label for="fFile"><b>File</b></label>
           <input type="file" accept=".mp3" id="fFile" name="f4pUpload-file" required/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" class="continue" onclick="closeF4P(); openUploadSuccess();">Finish</button>
+          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" class="continue" onclick="openUploadSuccess();">Finish</button>
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
         </div>
@@ -325,19 +339,18 @@
           <p>Maximum 60 Characters allowed</p>
           <!-- Notizen -->
           <label for="tNotes"><b>Notes</b></label>
-          <input type="text" id="tNotes" name="taggedUpload-desc" maxlength="120" value="Nice">
+          <textarea id="tNotes" rows="4" cols="50" name="taggedUpload-desc"></textarea>
           <!-- FIXME Hashtag Funktion -->
-          <button type="button" id="tNoteButton" onclick="makeHashtag();">Press Me</button>
           <p>Maximum 120 Characters allowed</p>
           <!-- Tags -->
           <label for="tTags"><b>Tags (5)</b></label>
-          <textarea id="tTags" rows="4" cols="50" onkeyup="hashtags();" name="taggedUpload-tags"></textarea>
+          <textarea id="tTags" rows="4" cols="50" name="taggedUpload-tags"></textarea>
           <!-- File Upload -->
           <label for="tFile"><b> File</b></label>
           <input type="file" accept=".mp3" id="tFile" name="taggedUpload-file" required />
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" onclick="closeTagged(); openUploadSuccess();">Finish</button>
+          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" onclick="openUploadSuccess();">Finish</button>
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeTagged();">Cancel</button>
         </div>
@@ -373,11 +386,14 @@
   <!-- !SECTION
   SECTION Body 
   ANCHOR: Feed-->
+  <div class="feed">
+  <br><hr><hr>
   <?php 
   if (!isset($_GET['page']) || $_GET['page'] == 'home') {
     require 'php/feed.php';
   }
   ?>
+  </div>
 
   <!------------------always at bottom for testing--------------- -->
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">

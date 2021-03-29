@@ -1,4 +1,5 @@
 <?php
+// TODO Check if I can delete it
 var_dump($_GET);
 $filename = $_GET['downloaded_file'];
 //$filename = str_replace('%23','#',$filename);
