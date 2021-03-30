@@ -289,7 +289,7 @@
         <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
         <h1>Tagged Upload</h1>
         <div>
-  
+
           <!-- Free Tag zum Downloaden, falls eigenes Tag vorhanden ist -->
           <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b<i class="fa fa-download"> Download A Free Tag</i></label></a>
           <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
@@ -377,18 +377,20 @@
     <div class="blocker1" onclick="closeUploadSuccess();"></div>
     <div class="form-popup">
       <div>
-        <h1>LESSS GOOOOO</h1>
+        <h1>Congratulation!</h1>
+        <h2>Your upload completed succesfully</h2>
+        <button type="button" class="continueButton" onclick="closeUploadSuccess();" name="viewTrack" value="viewTrack" class="continue">View Your rack here</button>
       </div>
     </div>
   </div>
-  
+
 
   <!-- !SECTION
-  SECTION Body 
+  SECTION Body
   ANCHOR: Feed-->
   <div class="feed">
   <br><hr><hr>
-  <?php 
+  <?php
   if (!isset($_GET['page']) || $_GET['page'] == 'home') {
     require 'php/feed.php';
   }
