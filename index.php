@@ -252,6 +252,7 @@
           <!-- FreeForProfit - Title des Uploads -->
           <label for="fTitle"><b>Title*</b></label>
           <input type="text" id="fTitle" name="f4pUpload-title" required maxlength="60" value="Hallo">
+          <button type="button" onclick="checkBanWords();"> Blacklist Check </button>
           <p>Maximum 200 Characters allowed</p>
           <!-- FreeForProfit - Notizen -->
           <label for="fNotes"><b>Notes</b></label>
