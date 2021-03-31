@@ -292,9 +292,10 @@ function setInputFilter(textbox, inputFilter) {
 function checkBanWords()
 {
   // Alle Wörter in Lowercase, damit wir nicht auf Case aufpassen müssen
-  var bannedWords = ['faggot', 'nigga', 'penis'];
-  var titleValue = document.getElementById('fTitle');
-  
+  let bannedWords = ['faggot', 'nigga', 'penis'];
+  let titleValue = document.getElementById('fTitle');
+  let str = titleValue.value.replace(/\s+/g, '');
+  console.log(str);
   for(let i=0; i<bannedWords.length; i++) {
   // ~ ist eine Local Negation, so wird nur das Wort angezeigt was wirklich falsch ist
   // bei faggot würden dann alle anderen Wörter auch in der Console auftauchen, ~ verhindert es
@@ -303,7 +304,7 @@ function checkBanWords()
     if (~titleValue.value.toLowerCase().indexOf(bannedWords[i])){
       console.log(bannedWords[i] + ' is not allowed!');
       // FIXME Validation geht noch nicht?
-      titleValue.setCustomValidity(bannedWords[i] + 'Not allowed!');
+      titleValue.setCustomValidity(bannedWords[i] + ' is not allowed!');
       
     }
   }
