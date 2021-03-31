@@ -218,17 +218,14 @@ document.getElementById('fNotes').onkeyup = function () {
     document.getElementById('count').innerHTML = "Characters left: " + (200 - this.value.length);
   };
 
+
 // FIXME Funktion, um zu erlauben, Tags zu editen 
 function editTags(){
     
 }
 
-function notesLength(){
-    let maxL = 60
-    document.getElementById("fNotes").keyup(function(e){
-        document.getElementById("count").text("Cha Left: " + (maxL - $(this).val().length));
-    })
-}
+
+
 // Funktion um alle Einträge im Form zu löschen 
 function clearF4PForm(){
     document.getElementById("fSample").checked = false;
@@ -287,27 +284,9 @@ function setInputFilter(textbox, inputFilter) {
         return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
 
 
-
-
-function checkBanWords()
-{
-  // Alle Wörter in Lowercase, damit wir nicht auf Case aufpassen müssen
-  let bannedWords = ['faggot', 'nigga', 'penis'];
-  let titleValue = document.getElementById('fTitle');
-  let str = titleValue.value.replace(/\s+/g, '');
-  console.log(str);
-  for(let i=0; i<bannedWords.length; i++) {
-  // ~ ist eine Local Negation, so wird nur das Wort angezeigt was wirklich falsch ist
-  // bei faggot würden dann alle anderen Wörter auch in der Console auftauchen, ~ verhindert es
-  // Input vom Title wird in Lowercase umgewandelt, um alle Cases zu überprüfen
-
-    if (~titleValue.value.toLowerCase().indexOf(bannedWords[i])){
-      console.log(bannedWords[i] + ' is not allowed!');
-      // FIXME Validation geht noch nicht?
-      titleValue.setCustomValidity(bannedWords[i] + ' is not allowed!');
-      
-    }
-  }
+function addDownloadCount(id) {
+    const count = document.getElementById('downloads'+id);
+    const oldNumber = count.innerHTML;
+    count.innerHTML = parseInt(oldNumber,10) + 1;
+    //alert(oldNumber);
 }
-
-

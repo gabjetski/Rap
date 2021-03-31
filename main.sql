@@ -402,15 +402,21 @@ END;
     BEGIN
     DECLARE v_count_track INT;
     DECLARE v_count_user INT;
+    DECLARE v_count_same INT;
 
     SELECT COUNT(pk_files_id) INTO v_count_track FROM files
     WHERE pk_files_id = p_track_id;
     SELECT COUNT(pk_user_id) INTO v_count_user FROM user
     WHERE pk_user_id = p_user_id;
+    SELECT COUNT(pk_udf_id) INTO v_count_same FROM user_downloaded_file
+    WHERE fk_user_id = p_user_id AND fk_files_id = p_track_id;
+
     IF (v_count_track != 1) THEN
         SET p_id = -1;
     ELSEIF (v_count_user != 1) THEN
         SET p_id = -2;
+    ELSEIF (v_count_same > 0) THEN
+        SET p_id = -3;
     ELSE
         INSERT INTO user_downloaded_file (fk_user_id, fk_files_id, time)
             VALUES (p_user_id, p_track_id, SYSDATE());
