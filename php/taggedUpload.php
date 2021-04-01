@@ -61,11 +61,14 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
       if (move_uploaded_file($_FILES["taggedUpload-file"]["tmp_name"], $target_file)) {
         // if sucessful, store information in session and reload
         $_SESSION['uploadSuccess'] = basename( $_FILES["taggedUpload-file"]["name"]);
+        unset($_SESSION['uploadError']);
         header('Location:index.php');
       } else {
         // if not store error and information in session and reload
         $_SESSION['uploadError']['name'] = basename( $_FILES["taggedUpload-file"]["name"]);
         $_SESSION['uploadError']['id'] = $id;
+        $_SESSION['uploadError']['type'] = 'tagged';
+        $_SESSION['uploadError']['post'] = $_POST;
         header('Location:index.php');
       }
     }
@@ -73,6 +76,8 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
       // if other error store in session and reload
       $_SESSION['uploadError']['name'] = basename( $_FILES["taggedUpload-file"]["name"]);
       $_SESSION['uploadError']['id'] = $id;
+      $_SESSION['uploadError']['type'] = 'tagged';
+      $_SESSION['uploadError']['post'] = $_POST;
       header('Location:index.php');
     }
   }

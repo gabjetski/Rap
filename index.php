@@ -23,6 +23,9 @@
   if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
     require "php/loginError.php";
   }
+  if (isset($_SESSION['uploadError'])) {
+    require "php/uploadError.php";
+  }
 ?>
   <body>
   <h2>Rap Plattform</h2>
@@ -233,11 +236,11 @@
         }
          ?>];
         //let bannedWords = <?php //echo json_encode($blacklist); ?>;
-        let title = document.getElementById('fTitle');
+        let title = document.getElementById('f4pUpload-title');
   
         
         // Input vom Title wird in Lowercase umgewandelt, um alle Cases zu überprüfen, Spaces werden
-        let titleValue = document.getElementById('fTitle').value.replace(/\s+/g, '').toLowerCase();
+        let titleValue = document.getElementById('f4pUpload-title').value.replace(/\s+/g, '').toLowerCase();
         for(let i=0; i<bannedWords.length; i++) {
         // ~ ist eine Local Negation, so wird nur das Wort angezeigt was wirklich falsch ist
         // bei faggot würden dann alle anderen Wörter auch in der Console auftauchen, ~ verhindert es
@@ -259,17 +262,17 @@
         <h1>F4P Upload</h1>
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
-          <label for="fBeat"><b>Beat</b></label>
-          <input type="radio" id="fBeat" name="f4pUpload-type" value="beat" required checked>
+          <label for="f4pUpload-type-beat"><b>Beat</b></label>
+          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" required checked>
           <!-- FreeForProfit Upload - Auswahl Beat -->
-          <label for="fSample"><b>Sample</b></label>
-          <input type="radio" id="fSample" name="f4pUpload-type" value="sample" required>
+          <label for="f4pUpload-type-sample"><b>Sample</b></label>
+          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" required>
           <!-- FreeForProfit  Upload - BPM -->
-          <label for="fBpm"><b>BPM*</b></label>
-          <input type="text" id="fBpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" required>
+          <label for="f4pUpload-bpm"><b>BPM*</b></label>
+          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" required>
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
-          <label for="fKey"><b>Key</b></label>
-          <select name="f4pUpload-key" id="fKey">
+          <label for="f4pUpload-key"><b>Key</b></label>
+          <select name="f4pUpload-key" id="f4pUpload-key">
             <option value="" disabled>Select a key</option>
             <option value="C" selected>C Major</option>
             <option value="Cm">C minor</option>
@@ -297,27 +300,27 @@
             <option value="bm">B minor</option>
           </select>
           <!-- FreeForProfit - Title des Uploads -->
-          <label for="fTitle"><b>Title*</b></label>
-          <input type="text" id="fTitle" name="f4pUpload-title" required maxlength="60" value="Hallo">
+          <label for="f4pUpload-title"><b>Title*</b></label>
+          <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" value="Hallo">
           <button type="button" onclick="checkBanWords();"> Blacklist Check </button>
           <p>Maximum 200 Characters allowed</p>
           <!-- FreeForProfit - Notizen -->
-          <label for="fNotes"><b>Notes</b></label>
-          <textarea id="fNotes" rows="4" cols="50" maxlength="200" name="f4pUpload-desc"></textarea>
+          <label for="f4pUpload-notes"><b>Notes</b></label>
+          <textarea id="f4pUpload-notes" rows="4" cols="50" maxlength="200" name="f4pUpload-desc"></textarea>
           <div id="count">Characters left: 200</div>
           <div id="msg"></div>
           <!-- FIXME Hashtag Funktion -->
           <p>Maximum 120 Characters allowed</p>
           <!-- FreeForProfit - Tags -->
-          <label for="fTags"><b>Tags (5)</b></label>
-          <textarea id="fTags" rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea>
+          <label for="f4pUpload-tags"><b>Tags (5)</b></label>
+          <textarea id="f4pUpload-tags" rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea>
           <p> Word Count:
           <span id="show">0</span>
           </p>
           <button type="button" onclick="editTags();">Edit Tags </button>
           <!-- FreeForProfit - File Upload -->
-          <label for="fFile"><b>File</b></label>
-          <input type="file" accept=".mp3" id="fFile" name="f4pUpload-file" required/>
+          <label for="f4pUpload-file"><b>File</b></label>
+          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" required/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords();" class="continue">Finish</button>
@@ -343,20 +346,20 @@
           <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b<i class="fa fa-download"> Download A Free Tag</i></label></a>
           <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
           <!-- Tagged Upload - Auswahl Beat -->
-          <label for="tBeat"><b>Beat</b></label>
-          <input type="radio" id="tBeat" name="taggedUpload-type" value="beat" checked>
+          <label for="taggedUpload-type-beat"><b>Beat</b></label>
+          <input type="radio" id="taggedUpload-type-beat" name="taggedUpload-type" value="beat" checked>
           <!-- Tagged Upload - Auswahl Sample -->
-          <label for="tSample"><b>Sample</b></label>
-          <input type="radio" id="tSample" name="taggedUpload-type" value="sample">
+          <label for="taggedUpload-type-sample"><b>Sample</b></label>
+          <input type="radio" id="taggedUpload-type-sample" name="taggedUpload-type" value="sample">
           <!-- Tagged Upload - Auswahl Snippet-->
-          <label for="tSnippet"><b>Snippet</b></label>
-          <input type="radio" id="tSnippet" name="taggedUpload-type" value="snippet">
+          <label for="taggedUpload-type-snippet"><b>Snippet</b></label>
+          <input type="radio" id="taggedUpload-type-snippet" name="taggedUpload-type" value="snippet">
           <!-- Tagged Upload - BPM -->
-          <label for="tBpm"><b>BPM</b></label>
-          <input type="text" id="tBpm" name="taggedUpload-bpm" pattern="^\d{2,3}$" value="123">
+          <label for="taggedUpload-bpm"><b>BPM</b></label>
+          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" pattern="^\d{2,3}$" value="123">
           <!-- Tagged Upload - Key -->
-          <label for="tKey"><b>Key</b></label>
-          <select name="taggedUpload-key" id="tKey">
+          <label for="taggedUpload-key"><b>Key</b></label>
+          <select name="taggedUpload-key" id="taggedUpload-key">
             <option value="C">C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db" selected>Db Major</option>
@@ -383,20 +386,20 @@
             <option value="Bm">B minor</option>
           </select>
           <!-- Title des Uploads -->
-          <label for="tTitle"><b>Title*</b></label>
-          <input type="text" id="tTitle" name="taggedUpload-title" required maxlength="60" value="Hallo">
+          <label for="taggedUpload-title"><b>Title*</b></label>
+          <input type="text" id="taggedUpload-title" name="taggedUpload-title" required maxlength="60" value="Hallo">
           <p>Maximum 60 Characters allowed</p>
           <!-- Notizen -->
-          <label for="tNotes"><b>Notes</b></label>
-          <textarea id="tNotes" rows="4" cols="50" name="taggedUpload-desc"></textarea>
+          <label for="taggedUpload-notes"><b>Notes</b></label>
+          <textarea id="taggedUpload-notes" rows="4" cols="50" name="taggedUpload-desc"></textarea>
           <!-- FIXME Hashtag Funktion -->
           <p>Maximum 120 Characters allowed</p>
           <!-- Tags -->
-          <label for="tTags"><b>Tags (5)</b></label>
-          <textarea id="tTags" rows="4" cols="50" name="taggedUpload-tags"></textarea>
+          <label for="taggedUpload-tags"><b>Tags (5)</b></label>
+          <textarea id="taggedUpload-tags" rows="4" cols="50" name="taggedUpload-tags"></textarea>
           <!-- File Upload -->
-          <label for="tFile"><b> File</b></label>
-          <input type="file" accept=".mp3" id="tFile" name="taggedUpload-file" required />
+          <label for="taggedUpload-file"><b> File</b></label>
+          <input type="file" accept=".mp3" id="taggedUpload-file" name="taggedUpload-file" required />
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue">Finish</button>

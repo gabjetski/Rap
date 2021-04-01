@@ -300,10 +300,13 @@ END;
 
 #-- Procedure to add Track
 #-- Output: 0-infinity -> Track ID
-#--         -1 -> 
-#--         -2 -> 
-#--         -3 -> 
-#--         -4 -> 
+#--         -1 -> BPM is out of range or not valid
+#--         -2 -> title non valid
+#--         -3 -> description non valid
+#--         -4 -> filename non valid
+#--         -5 -> error with uploadtype
+#--         -6 -> error with monettype
+#--         -7 -> error with key
 
 
  CREATE OR REPLACE PROCEDURE addTrack(
@@ -336,8 +339,9 @@ END;
     
     SELECT p_title REGEXP "^.{0,60}$" INTO v_title_pattern;
     SELECT p_description REGEXP "^.{0,120}$" INTO v_description_pattern;
-    #--SELECT p_path REGEXP "^[[:word:]\-. ]+\.(mp3)$" INTO v_file_name_pattern;
+    #-- FIXME filename-pattern: SELECT p_path REGEXP "^[[:word:]\-. ]+\.(mp3)$" INTO v_file_name_pattern;
 
+    #-- FIXME Talk about BPM Range
     IF (p_bpm >= 30 AND p_bpm <= 240) THEN
         SET v_bpm_if = 0;
     ELSE 

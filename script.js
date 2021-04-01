@@ -186,16 +186,16 @@ function validatePassword(){
 // FIXME wenn man manchmal tags löscht, und dann ein neues reinschreibt, hört es bei 4 auf (disabled Textarea)
 // TODO wenn ein Tag eine Max Länge von X hat, ein neues Tag machen (automatisch Space)
 function makeHashtag(){
-    let str = document.getElementById('fTags').value;
+    let str = document.getElementById('f4pUpload-tags').value;
     str = str.replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.@#£\/]/g, '');
     let tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#'+'$1');
-    document.getElementById('fTags').value = tagged;
+    document.getElementById('f4pUpload-tags').value = tagged;
     let hashtags = str.match(/[#]/g);
 }
 
 let count;
 function countWord() {
-    let words = document.getElementById("fTags").value;
+    let words = document.getElementById("f4pUpload-tags").value;
     count = 0;
     var split = words.split(' ');
     for (var i = 0; i < split.length; i++) {
@@ -205,7 +205,7 @@ function countWord() {
     }
     document.addEventListener('keyup', event => {
         if (event.code === 'Space' && count == 5) { 
-            document.getElementById("fTags").disabled = true;
+            document.getElementById("f4pUpload-tags").disabled = true;
         }
       });
     document.getElementById("show")
@@ -214,7 +214,7 @@ function countWord() {
 
 
 // Funktion, um Max Länge von Notes nicht zu überschreiten
-document.getElementById('fNotes').onkeyup = function () {
+document.getElementById('f4pUpload-notes').onkeyup = function () {
     document.getElementById('count').innerHTML = "Characters left: " + (200 - this.value.length);
   };
 
@@ -228,30 +228,30 @@ function editTags(){
 
 // Funktion um alle Einträge im Form zu löschen 
 function clearF4PForm(){
-    document.getElementById("fSample").checked = false;
-    document.getElementById("fBeat").checked = false;
-    document.getElementById("fTitle").value = '';
-    document.getElementById("fBpm").value = '';
-    document.getElementById("fNotes").value = '';
-    document.getElementById("fTags").value = '';
+    document.getElementById("f4pUpload-type-sample").checked = false;
+    document.getElementById("f4pUpload-type-beat").checked = false;
+    document.getElementById("f4pUpload-title").value = '';
+    document.getElementById("f4pUpload-bpm").value = '';
+    document.getElementById("f4pUpload-notes").value = '';
+    document.getElementById("f4pUpload-tags").value = '';
     count = 0;
-    document.getElementById("fTags").disabled= false;
+    document.getElementById("f4pUpload-tags").disabled= false;
 
-    document.getElementById("fFile").value = '';
-    document.getElementById("fKey").value='';
+    document.getElementById("f4pUpload-file").value = '';
+    document.getElementById("f4pUpload-key").value='';
 }
 
 function clearTaggedForm(){
-    document.getElementById("tSample").checked = false;
-    document.getElementById("tBeat").checked = false;
-    document.getElementById("tSnippet").checked = false;
-    document.getElementById("tTitle").value = '';
-    document.getElementById("tBpm").value = '';
-    document.getElementById("tNotes").value = '';
-    document.getElementById("tTags").value = '';
-    document.getElementById("tTags").disable= false;
-    document.getElementById("tFile").value = '';
-    document.getElementById("tKey").value='';
+    document.getElementById("taggedUpload-type-sample").checked = false;
+    document.getElementById("taggedUpload-type-beat").checked = false;
+    document.getElementById("taggedUpload-type-snippet").checked = false;
+    document.getElementById("taggedUpload-title").value = '';
+    document.getElementById("taggedUpload-bpm").value = '';
+    document.getElementById("taggedUpload-notes").value = '';
+    document.getElementById("taggedUpload-tags").value = '';
+    document.getElementById("taggedUpload-tags").disable= false;
+    document.getElementById("taggedUpload-file").value = '';
+    document.getElementById("taggedUpload-key").value='';
 
 }
 
@@ -276,11 +276,11 @@ function setInputFilter(textbox, inputFilter) {
   }
 
 
-    setInputFilter(document.getElementById("fBpm"), function(value) {
+    setInputFilter(document.getElementById("f4pUpload-bpm"), function(value) {
         return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
 
         
-    setInputFilter(document.getElementById("tBpm"), function(value) {
+    setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
         return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
 
 
