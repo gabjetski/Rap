@@ -186,7 +186,6 @@ function validatePassword(){
 // FIXME wenn man manchmal tags löscht, und dann ein neues reinschreibt, hört es bei 4 auf (disabled Textarea)
 // TODO wenn ein Tag eine Max Länge von X hat, ein neues Tag machen (automatisch Space)
 function makeHashtag(){
-    // new Line = \n
     let str = document.getElementById('f4pUpload-tags').value;
     str = str.replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.@#£\/]/g, '');
     let tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#'+'$1');
@@ -199,15 +198,20 @@ function countWord() {
     let words = document.getElementById("f4pUpload-tags").value;
     count = 0;
     let split = words.split(' ');
-    
+    for (let i = 0; i < split.length; i++) {
+        if (split[i] != "") {
+            count += 1;
+        }
+    }
     document.addEventListener('keyup', event => {
-        if (event.code === 'Space' && split.length >= 5) { 
+        if (event.code === 'Space' && count == 5) { 
             document.getElementById("f4pUpload-tags").disabled = true;
         }
       });
     document.getElementById("show")
-        .innerHTML = split.length;
+        .innerHTML = count;
 }
+
 
 // Funktion, um Max Länge von Notes nicht zu überschreiten
     // TODO nicht mit 200 sondern Variable
@@ -218,9 +222,8 @@ document.getElementById('f4pUpload-notes').onkeyup = function () {
 
 // FIXME Funktion, um zu erlauben, Tags zu editen 
 function editTags(){
-    let words = document.getElementById("f4pUpload-tags").value;
-    let split = words.split(' ');
-    console.log(split);
+    document.getElementById("f4pUpload-tags").disabled = false;
+    document.getElementById("editButton").disabled = false;
 }
 
 // Funktion um alle Einträge im Form zu löschen 
