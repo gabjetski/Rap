@@ -19,8 +19,8 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         $type = '';
     }
 
-    if (!isset($_SESSION['uploadError']['post']['f4pUpload-title'])) {
-        $_SESSION['uploadError']['post']['f4pUpload-title'] = 0;
+    if (!isset($_SESSION['uploadError']['post']['f4pUpload-key'])) {
+        $_SESSION['uploadError']['post']['f4pUpload-key'] = 0;
         echo 'loool';
     }
 

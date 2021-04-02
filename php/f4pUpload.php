@@ -76,7 +76,7 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
       $target_file = substr($title_replaced, 0, 10);
       $target_file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $target_file);
       //Filename is <Trackid>#<First 10 Chars of Trackname>
-      $target_file = 'uploads/'.$id.'#'.$target_file.'.mp3';
+      $target_file = '../uploads/'.$id.'#'.$target_file.'.mp3';
       
     //move file to destination
     if (move_uploaded_file($_FILES["f4pUpload-file"]["tmp_name"], $target_file)) {

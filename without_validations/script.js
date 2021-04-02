@@ -276,12 +276,12 @@ function setInputFilter(textbox, inputFilter) {
   }
 
 
-    setInputFilter(document.getElementById("f4pUpload-bpm"), function(value) {
+   /* setInputFilter(document.getElementById("f4pUpload-bpm"), function(value) {
         return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
 
         
-    setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
-        return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
+    /*setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
+        return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });*/
 
 
 function addDownloadCount(id) {

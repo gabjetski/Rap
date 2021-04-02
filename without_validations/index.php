@@ -62,7 +62,7 @@
     if (isset($_GET['downloaded_file'])) {
       require "../php/download.php";
     }
-    var_dump($_SESSION);
+    //var_dump($_SESSION);
     if(isset($_SESSION['downloadSuccess'])){
       require "../php/downloadSuccess.php";
     }elseif(isset($_SESSION['downloadError'])){
@@ -78,9 +78,9 @@
       echo "File - {$_SESSION['uploadSuccess']} was succesfully uploaded";
     }elseif (isset($_SESSION['uploadError'])) {
       echo "There was an Error while uploading the file {$_SESSION['uploadError']['name']}<br>
-            Error-id: {$_SESSION['uploadError']['id']}";
+            Error-id: {$_SESSION['uploadError']['id']}<br>";
     }
-    //var_dump($_SESSION);
+    var_dump($_SESSION['uploadError']);
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
         echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
@@ -263,10 +263,10 @@
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
-          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type">
+          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat">
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-sample"><b>Sample</b></label>
-          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type">
+          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample">
           <!-- FreeForProfit  Upload - BPM -->
           <label for="f4pUpload-bpm"><b>BPM*</b></label>
           <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm">
@@ -302,7 +302,7 @@
           <!-- FreeForProfit - Title des Uploads -->
           <label for="f4pUpload-title"><b>Title*</b></label>
           <input type="text" id="f4pUpload-title" name="f4pUpload-title">
-          <button type="button" onclick="checkBanWords();"> Blacklist Check </button>
+          <button type="button" > Blacklist Check </button>
           <p>Maximum 200 Characters allowed</p>
           <!-- FreeForProfit - Notizen -->
           <label for="f4pUpload-notes"><b>Notes</b></label>
@@ -323,7 +323,7 @@
           <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file"/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords();" class="continue" id="f4pUpload-submit">Finish</button>
+          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish"class="continue" id="f4pUpload-submit">Finish</button>
           <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
