@@ -313,7 +313,9 @@
           <p>Maximum 120 Characters allowed</p>
           <!-- FreeForProfit - Tags -->
           <label for="f4pUpload-tags"><b>Tags (5)</b></label>
-          <textarea id="f4pUpload-tags" rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea>
+          <input type="text" id="f4pUpload-tags" name="f4pUpload-tags" value="">
+          <h1 id="output"></h1>
+          <!-- <textarea  rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea> -->
           <p> Word Count:
           <span id="show">0</span>
           </p>

@@ -185,29 +185,33 @@ function validatePassword(){
 
 // FIXME wenn man manchmal tags löscht, und dann ein neues reinschreibt, hört es bei 4 auf (disabled Textarea)
 // TODO wenn ein Tag eine Max Länge von X hat, ein neues Tag machen (automatisch Space)
-function makeHashtag(){
+function makeHashtag(){/*
     // new Line = \n
     let str = document.getElementById('f4pUpload-tags').value;
     str = str.replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.@#£\/]/g, '');
     let tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#'+'$1');
     document.getElementById('f4pUpload-tags').value = tagged;
     let hashtags = str.match(/[#]/g);
-}
+*/}
 
-let count;
-function countWord() {
-    let words = document.getElementById("f4pUpload-tags").value;
-    count = 0;
-    let split = words.split(' ');
-    
-    document.addEventListener('keyup', event => {
-        if (event.code === 'Space' && split.length >= 5) { 
-            document.getElementById("f4pUpload-tags").disabled = true;
-        }
-      });
-    document.getElementById("show")
-        .innerHTML = split.length;
-}
+
+// "Funktion" für die Tags, um sie auszugeben und in einem Array zu speicher 
+// TODO Focus ins Input Field nach Enter, Enter disablen als submit für ganzes Form, Ende als Hashtag umwandeln 
+let tags = [];
+let words = document.getElementById("f4pUpload-tags").value;
+let i = 0;
+document.addEventListener('keyup', function(e){
+    if (e.code === 'Enter' && tags.length < 5) {
+        tags.push(document.getElementById("f4pUpload-tags").value);
+            console.log(tags);
+            document.getElementById("f4pUpload-tags").value = '';
+            document.getElementById('output').innerHTML += tags[i] + " ";
+            i++;
+            if (tags.length >= 5){
+                document.getElementById("f4pUpload-tags").disabled = true;
+            }
+    }
+  });
 
 // Funktion, um Max Länge von Notes nicht zu überschreiten
     // TODO nicht mit 200 sondern Variable
