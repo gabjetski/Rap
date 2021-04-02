@@ -13,71 +13,55 @@
 <?php 
 //-------select which error if login --------------------------------
 if ($_SESSION['uploadError']['type'] == 'f4p') {
+    if (isset($_SESSION['uploadError']['post']['f4pUpload-type'])) {
+        $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
+    }else{
+        $type = '';
+    }
+
+    if (!isset($_SESSION['uploadError']['post']['f4pUpload-title'])) {
+        $_SESSION['uploadError']['post']['f4pUpload-title'] = 0;
+        echo 'loool';
+    }
+
+    $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
+    $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
+                    'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
+                    'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
+                    'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-desc']];
     switch ($_SESSION['uploadError']['id']) {
         case '-1':  // -1 -> BPM is out of range or not valid
             //$posErrWarning = 'register-psw'; -------------------------------mark field(s) which are written here red -> idk if its possible
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
             $errMsg = 'Please enter valid BPM';
             //FIXME write what range of bpm is valid
             break;
         case '-2':  // -2 -> title non valid
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
             $errMsg = 'Please enter a valid title';
             break;
         case '-3':  // -3 -> description non valid
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
             $errMsg = 'Please enter a valid description';
             break;
         case '-4':  // -4 -> filename non valid
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
             $errMsg = 'Please enter a valid filename';
             break;
         case '-5':  // -5 -> error with uploadtype
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
-            $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us.<br> #1005';
+            $errMsg = 'Please select if your Upload is a Beat or a Sample';
             break;
         case '-6':  // -6 -> error with monettype
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
             $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us.<br> #1006';
             break;
         case '-7':  // -7 -> error with key
-            $type = $_SESSION['uploadError']['post']['f4pUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
-            $errValues = [  'f4pUpload-bpm' => $_SESSION['uploadError']['post']['f4pUpload-bpm'],
-                            'f4pUpload-key' => $_SESSION['uploadError']['post']['f4pUpload-key'],
-                            'f4pUpload-title' => $_SESSION['uploadError']['post']['f4pUpload-title'],
-                            'f4pUpload-notes' => $_SESSION['uploadError']['post']['f4pUpload-notes']];
             $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us. <br> #1007';
+            break;
+        case '-10':  // -10 -> file is empty
+            $errMsg = 'Please select a file!';
+            break;
+        case '-11':  // -11 -> file is no mp3
+            $errMsg = 'Please select a mp3 file!';
+            //var_dump($_FILES['f4pUpload-file']['size']);
+            break;
+        case '-12':  // -12 -> file to big
+            $errMsg = 'We are sorry, your file must not be above 100MB!';
             break;
     
         default:
@@ -102,7 +86,7 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         
         //show login-popup
         f4p.style.display = "block";
-        tagged.style.display = "none";
+        tag.style.display = "none";
     };
 </script>
 <?php
@@ -197,7 +181,7 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         //errorFun('loginButton', <?php // echo 'values, "'.$errMsg.'", "'.$posErrWarning.'"';?>); --- only if fields are highlighted 
         
         //show login-popup
-        tagged.style.display = "block";
+        tag.style.display = "block";
         f4p.style.display = "none";
     };
 </script>

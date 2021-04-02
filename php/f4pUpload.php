@@ -10,14 +10,33 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
   //htmlspecialchar Get Array to store it safely
   array_walk_recursive($_POST, "filter");
 
+  if($_FILES['f4pUpload-file']['size'] == 0){
+    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+    $_SESSION['uploadError']['id'] = -10;
+    $_SESSION['uploadError']['type'] = 'f4p';
+    $_SESSION['uploadError']['post'] = $_POST;
+    header('Location:index.php');
+  }
+
+
   //check if uploaded file is an MP3 File
   // FIXME Error handling
   if (strtolower(pathinfo($_FILES['f4pUpload-file']['name'],PATHINFO_EXTENSION)) != 'mp3') {
-      echo "File must be a mp3 file";
+    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+    $_SESSION['uploadError']['id'] = -11;
+    $_SESSION['uploadError']['type'] = 'f4p';
+    $_SESSION['uploadError']['post'] = $_POST;
+    header('Location:index.php');
+      //echo "File must be a mp3 file";
       //check if uploaded file is to large
       // FIXME Error handling
   }else if ($_FILES["f4pUpload-file"]["size"] > 104857600) {
-      echo "Sorry, your file is too large.";
+    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+    $_SESSION['uploadError']['id'] = -12;
+    $_SESSION['uploadError']['type'] = 'f4p';
+    $_SESSION['uploadError']['post'] = $_POST;
+    header('Location:index.php');
+      //echo "Sorry, your file is too large.";
     }
     // FIXME Check for length
   else{

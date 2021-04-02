@@ -170,7 +170,8 @@
   </div>
 
 <!-- PopUp-Formulare für das Uploaden -->
-  <!-- Hinweis das man sich anmelden muss -->
+  <!-- Hinweis das man sich anmelden muss 
+  FIXME von uploadLogin wenn man angemeldet ist wieder zurück zu upload form... vllt eintrag in session speichern den ich abfrage-->
   <div id="uploadLoginForm">
       <div class="blocker1" onclick="closeUploadLogin();"></div>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">

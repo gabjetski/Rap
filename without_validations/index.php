@@ -98,7 +98,7 @@
     }
     //var_dump($_SESSION);
     echo "<br><br>";
-    var_dump($_SESSION['tags']);
+    //var_dump($_SESSION['tags']);
 
     // Upload Icon für Testzwecke
 ?>
@@ -273,7 +273,7 @@
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="f4pUpload-key"><b>Key</b></label>
           <select name="f4pUpload-key" id="f4pUpload-key">
-            <option value="" disabled>Select a key</option>
+            <option value="0" disabled selected>Select a key</option>
             <option value="C">C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db">Db Major</option>
