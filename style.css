@@ -204,3 +204,19 @@ a {
 #tagDownload:hover{
   color:red;
 }
+
+/* Styling for player */
+.songPlayer {
+  background-color: #f5edd1;
+  padding: 20px;
+  border: solid 2px black;
+  border-radius: 10px;
+}
+
+.songPlayPause {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}

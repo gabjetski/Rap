@@ -17,7 +17,7 @@ function openLogin() {
     register.style.display = "none";
 }
 
-    // Formular schließen
+// Formular schließen
 function closeLogin() {
     login.style.display = "none";
 }
@@ -176,56 +176,115 @@ function validatePassword(){
         }
     }
 
-    function restrictedUpload(file) {
-     var Filesize = file.files[0].size;
-     if (Filesize > 100 * 1024){ //MIB
-         alert("Filesize exceeds 100MIB");
-     }
+    function radioButtonsF4P(){
+        let beat =document.getElementById("f4pUpload-type-beat");
+        let sample = document.getElementById("f4pUpload-type-sample");
+
+        if(beat.checked === false && sample.checked === false){
+            beat.setCustomValidity("Please select an option");
+        } else {
+            beat.setCustomValidity('');
+        }
     }
 
-// FIXME wenn man manchmal tags löscht, und dann ein neues reinschreibt, hört es bei 4 auf (disabled Textarea)
-// TODO wenn ein Tag eine Max Länge von X hat, ein neues Tag machen (automatisch Space)
-function makeHashtag(){/*
-    // new Line = \n
-    let str = document.getElementById('f4pUpload-tags').value;
-    str = str.replace(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.@#£\/]/g, '');
-    let tagged = str.replace(/#/g, '').replace(/([^" "]+)/g, '#'+'$1');
-    document.getElementById('f4pUpload-tags').value = tagged;
-    let hashtags = str.match(/[#]/g);
-*/}
+    function bpmF4P(){
+        let bpm = document.getElementById("f4pUpload-bpm");
 
+        if(bpm.value === ""){
+            bpm.setCustomValidity("Please enter your bpm");
+        } else {
+            bpm.setCustomValidity("");
+        }
+    }
+
+    function titleF4P(){
+        let title = document.getElementById("f4pUpload-title");
+        if (title.value === "") {
+            title.setCustomValidity("Please enter a title");
+        } else {
+            title.setCustomValidity("");
+        }
+    }
+
+    function fileF4P(){
+        let file = document.getElementById("f4pUpload-file");
+
+        if(file.value === ""){
+            file.setCustomValidity("Please upload a file");
+        } else {
+            file.setCustomValidity("");
+        }
+    }
+
+/* Make Hashtag 2
+function makeHashtag2(){
+    let str = document.getElementById("f4pUpload-tags").value;
+    let wordArray = str.split(' ').filter(char => char !== "");
+    let result = "#";
+
+    if(wordArray.length === 0){
+        return false;
+    }
+    result = result + wordArray.map(word => {
+        let capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+        return capitalizedWord;
+    }).join('');
+
+    if(result.length > 100){
+        return false;
+    } else {
+        console.log(result);
+        return result;
+    }
+}; */
 
 // "Funktion" für die Tags, um sie auszugeben und in einem Array zu speicher 
-// TODO Focus ins Input Field nach Enter, Enter disablen als submit für ganzes Form, Ende als Hashtag umwandeln 
+// TODO Focus ins Input Field nach Enter, Enter disablen als submit für ganzes Form, schön im HTML zeigen 
 let tags = [];
 let words = document.getElementById("f4pUpload-tags").value;
 let i = 0;
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter' && tags.length < 5) {
-        tags.push(document.getElementById("f4pUpload-tags").value);
-            console.log(tags);
-            document.getElementById("f4pUpload-tags").value = '';
-            document.getElementById('output').innerHTML += tags[i] + " ";
-            i++;
-            if (tags.length >= 5){
+        let str = document.getElementById("f4pUpload-tags").value;
+        let wordArray = str.split(' ').filter(char => char !== "");
+        let result = "#";
+
+        if(wordArray.length === 0){
+            return false;
+        }
+            result = result + wordArray.map(word => {
+            let capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+            return capitalizedWord;
+        }).join('');
+
+        tags.push(result);
+        console.log(tags);
+        document.getElementById("f4pUpload-tags").value = '';
+        document.getElementById('output').innerHTML += tags[i] + " ";
+        i++;
+        if (tags.length >= 5){
                 document.getElementById("f4pUpload-tags").disabled = true;
-            }
+                document.getElementById('f4pUpload-tags').onkeyup = function () {
+                    document.getElementById('countTags').innerHTML = "Characters left: " + 30;
+                  };
+            } 
+
     }
   });
 
+function noenter() {
+    return !(window.event && window.event.keyCode == 13); 
+}
 // Funktion, um Max Länge von Notes nicht zu überschreiten
     // TODO nicht mit 200 sondern Variable
 document.getElementById('f4pUpload-notes').onkeyup = function () {
-    document.getElementById('count').innerHTML = "Characters left: " + (200 - this.value.length);
+    document.getElementById('countNotes').innerHTML = "Characters left: " + (200 - this.value.length);
   };
 
+  document.getElementById('f4pUpload-tags').onkeyup = function () {
+    document.getElementById('countTags').innerHTML = "Characters left: " + (30 - this.value.length);
+  };
 
-// FIXME Funktion, um zu erlauben, Tags zu editen 
-function editTags(){
-    let words = document.getElementById("f4pUpload-tags").value;
-    let split = words.split(' ');
-    console.log(split);
-}
 
 // Funktion um alle Einträge im Form zu löschen 
 function clearF4PForm(){
@@ -235,11 +294,14 @@ function clearF4PForm(){
     document.getElementById("f4pUpload-bpm").value = '';
     document.getElementById("f4pUpload-notes").value = '';
     document.getElementById("f4pUpload-tags").value = '';
-    count = 0;
+    document.getElementById('countNotes').innerHTML = "Characters left: " + 200;
+    document.getElementById('countTags').innerHTML = "Characters left: " + 30;
     document.getElementById("f4pUpload-tags").disabled= false;
-
     document.getElementById("f4pUpload-file").value = '';
     document.getElementById("f4pUpload-key").value='';
+    tags = [];
+    i = 0;
+    document.getElementById('output').innerHTML = 'Tags: ';
 }
 
 function clearTaggedForm(){
@@ -277,12 +339,12 @@ function setInputFilter(textbox, inputFilter) {
   }
 
 
-    setInputFilter(document.getElementById("f4pUpload-bpm"), function(value) {
-        return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
+setInputFilter(document.getElementById("f4pUpload-bpm"), function(value) {
+    return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 999); });
 
-        
-    setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
-        return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 240); });
+    
+setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
+    return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 999); });
 
 
 function addDownloadCount(id) {

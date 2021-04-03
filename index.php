@@ -53,6 +53,7 @@
     elseif (isset($_GET['loginSubmit'])) {
       require "php/login.php";
     }
+    // FIXME edge :(((
     if (isset($_POST['f4pUpload-submit'])) {
       require "php/f4pUpload.php";
     }
@@ -264,13 +265,13 @@
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
-          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" required checked>
+          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" onkeypress="return noenter();" required checked>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-sample"><b>Sample</b></label>
-          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" required>
+          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" onkeypress="return noenter();" required>
           <!-- FreeForProfit  Upload - BPM -->
           <label for="f4pUpload-bpm"><b>BPM*</b></label>
-          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" required>
+          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" onkeypress="return noenter();" required>
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="f4pUpload-key"><b>Key</b></label>
           <select name="f4pUpload-key" id="f4pUpload-key">
@@ -302,31 +303,25 @@
           </select>
           <!-- FreeForProfit - Title des Uploads -->
           <label for="f4pUpload-title"><b>Title*</b></label>
-          <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" value="Hallo">
+          <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" onkeypress="return noenter();" value="Hallo">
           <button type="button" onclick="checkBanWords();"> Blacklist Check </button>
           <p>Maximum 200 Characters allowed</p>
           <!-- FreeForProfit - Notizen -->
           <label for="f4pUpload-notes"><b>Notes</b></label>
           <textarea id="f4pUpload-notes" rows="4" cols="50" maxlength="200" name="f4pUpload-desc"></textarea>
-          <div id="count">Characters left: 200</div>
-          <div id="msg"></div>
-          <!-- FIXME Hashtag Funktion -->
-          <p>Maximum 120 Characters allowed</p>
+          <div id="countNotes">Characters left: 200</div>
           <!-- FreeForProfit - Tags -->
           <label for="f4pUpload-tags"><b>Tags (5)</b></label>
-          <input type="text" id="f4pUpload-tags" name="f4pUpload-tags" value="">
-          <h1 id="output"></h1>
+          <input type="text" id="f4pUpload-tags" name="f4pUpload-tags" onkeypress="return noenter();" maxlength="30">
+          <h1 id="output">Tags: </h1>
           <!-- <textarea  rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea> -->
-          <p> Word Count:
-          <span id="show">0</span>
-          </p>
-          <button type="button" id="editButton" onclick="editTags();"> Edit Tags </button>
+          <div id="countTags">Characters left: 30</div>
           <!-- FreeForProfit - File Upload -->
           <label for="f4pUpload-file"><b>File</b></label>
-          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" required/>
+          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onkeypress="return noenter();" required/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords();" class="continue" id="f4pUpload-submit">Finish</button>
+          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords(); radioButtonsF4P();  bpmF4P(); titleF4P(); fileF4P();" class="continue" id="f4pUpload-submit">Finish</button>
           <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
