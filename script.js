@@ -216,6 +216,8 @@ function validatePassword(){
         }
     }
 
+
+
 /* Make Hashtag 2
 function makeHashtag2(){
     let str = document.getElementById("f4pUpload-tags").value;
@@ -243,6 +245,7 @@ function makeHashtag2(){
 let tags = [];
 let words = document.getElementById("f4pUpload-tags").value;
 let i = 0;
+let text = "";
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter' && tags.length < 5) {
         let str = document.getElementById("f4pUpload-tags").value;
@@ -257,10 +260,16 @@ document.addEventListener('keyup', function(e){
             return capitalizedWord;
         }).join('');
 
+        if(tags.length == 0){
+            text = "";
+        }
+
         tags.push(result);
         console.log(tags);
+        text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
         document.getElementById("f4pUpload-tags").value = '';
-        document.getElementById('output').innerHTML += tags[i] + " ";
+        let div = document.getElementById('output').innerHTML = text;
+        console.log(text);
         i++;
         if (tags.length >= 5){
                 document.getElementById("f4pUpload-tags").disabled = true;
@@ -272,9 +281,20 @@ document.addEventListener('keyup', function(e){
     }
   });
 
+
+  function deleteF4PTags(btnId){
+    btn = document.getElementById(btnId);
+    console.log(btnId);
+    btn.parentNode.parentNode.removeChild(btn.parentNode);
+  }
+
+  
+// Enter Funktion - Bei Drücken der Enter Taste wird das Formular nicht submittet
 function noenter() {
     return !(window.event && window.event.keyCode == 13); 
 }
+
+
 // Funktion, um Max Länge von Notes nicht zu überschreiten
     // TODO nicht mit 200 sondern Variable
 document.getElementById('f4pUpload-notes').onkeyup = function () {
@@ -302,6 +322,9 @@ function clearF4PForm(){
     tags = [];
     i = 0;
     document.getElementById('output').innerHTML = 'Tags: ';
+    let tagsListing = document.getElementsByClassName('tagsListing');
+    tagsListing.parentNode.removeChild(tagsListing);
+    
 }
 
 function clearTaggedForm(){

@@ -220,3 +220,28 @@ a {
 .hidden {
   display: none;
 }
+
+.tagsListing{
+  display:inline;
+  margin:10px;
+  border:1px solid black;
+}
+
+.fa-close{
+  float: none;
+  margin:10px;
+}
+
+.btn {
+  background-color: DodgerBlue; /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 15px; /* Some padding */
+  font-size: 12px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}

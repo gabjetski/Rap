@@ -313,7 +313,7 @@
           <!-- FreeForProfit - Tags -->
           <label for="f4pUpload-tags"><b>Tags (5)</b></label>
           <input type="text" id="f4pUpload-tags" name="f4pUpload-tags" onkeypress="return noenter();" maxlength="30">
-          <h1 id="output">Tags: </h1>
+          <div id="output">Tags: </div>
           <!-- <textarea  rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea> -->
           <div id="countTags">Characters left: 30</div>
           <!-- FreeForProfit - File Upload -->
@@ -341,7 +341,7 @@
         <div>
 
           <!-- Free Tag zum Downloaden, falls eigenes Tag vorhanden ist -->
-          <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b<i class="fa fa-download"> Download A Free Tag</i></label></a>
+          <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b><i class="fa fa-download"> Download A Free Tag</i></label></a>
           <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
           <!-- Tagged Upload - Auswahl Beat -->
           <label for="taggedUpload-type-beat"><b>Beat</b></label>
