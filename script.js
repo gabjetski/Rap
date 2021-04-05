@@ -246,11 +246,13 @@ let tags = [];
 let words = document.getElementById("f4pUpload-tags").value;
 let i = 0;
 let text = "";
+let splitText = [];
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter' && tags.length < 5) {
         let str = document.getElementById("f4pUpload-tags").value;
         let wordArray = str.split(' ').filter(char => char !== "");
         let result = "#";
+        splitText = [];
 
         if(wordArray.length === 0){
             return false;
@@ -266,7 +268,10 @@ document.addEventListener('keyup', function(e){
 
         tags.push(result);
         console.log(tags);
-        text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+        text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button> <button id='btnEdit" + i + "' class='btn editTags' type='button'><i class='fa fa-edit'></i></button>" + "</h1>";
+        let textReplaced = text.replace(/<h1/g, ",<h1");
+        splitText = textReplaced.split(",");
+        console.log(splitText);
         document.getElementById("f4pUpload-tags").value = '';
         let div = document.getElementById('output').innerHTML = text;
         console.log(text);
@@ -276,16 +281,24 @@ document.addEventListener('keyup', function(e){
                 document.getElementById('f4pUpload-tags').onkeyup = function () {
                     document.getElementById('countTags').innerHTML = "Characters left: " + 30;
                   };
-            } 
-
+            }
     }
   });
 
-
   function deleteF4PTags(btnId){
     btn = document.getElementById(btnId);
+    btnNum = parseInt(btnId.substring(3), 10);
+    tags.splice(btnNum, 1);
     console.log(btnId);
+    console.log(btnNum);
+    splitText[btnNum+1] = "";
+    console.log(splitText);
     btn.parentNode.parentNode.removeChild(btn.parentNode);
+    console.log(text);
+    text = splitText.toString();
+    text = text.replace(/,/g, '');
+    console.log(text);
+    console.log(tags);
   }
 
   
@@ -324,7 +337,6 @@ function clearF4PForm(){
     document.getElementById('output').innerHTML = 'Tags: ';
     let tagsListing = document.getElementsByClassName('tagsListing');
     tagsListing.parentNode.removeChild(tagsListing);
-    
 }
 
 function clearTaggedForm(){
