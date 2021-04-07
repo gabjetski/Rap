@@ -271,11 +271,13 @@ document.addEventListener('keyup', function(e){
         text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
         let textReplaced = text.replace(/<h1/g, ",<h1");
         splitText = textReplaced.split(",");
+        splitText.splice(0, 1);
         console.log(splitText);
         document.getElementById("f4pUpload-tags").value = '';
         let div = document.getElementById('output').innerHTML = text;
         console.log(text);
         i++;
+        console.log(i);
         if (tags.length >= 5){
                 document.getElementById("f4pUpload-tags").disabled = true;
                 document.getElementById('f4pUpload-tags').onkeyup = function () {
@@ -289,9 +291,22 @@ document.addEventListener('keyup', function(e){
     btn = document.getElementById(btnId);
     btnNum = parseInt(btnId.substring(3), 10);
     tags.splice(btnNum, 1);
-    console.log(btnId);
-    console.log(btnNum);
-    splitText[btnNum+1] = "";
+    console.log("Buton ID: " + btnId);
+    console.log("Splittext Index :" + splitText[btnNum]);
+    console.log("ButtonNumber: " + btnNum);
+    i --;
+    for(let k = btnNum+1; k < splitText.length; k++){
+       // if (btnNum != splitText.length-1) {
+            splitText[k] = "<h1 class='tagsListing' id='tag" + (k-1) + "'>" + tags[k-1] + "<button id='btn" + (k-1) + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+        //splitText[k+1] = "<h1 class='tagsListing' id='tag" + (k-1) + "'>" + tags[k-1] + "<button id='btn" + (k-1) + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+        console.log("K - 1: "+ k-1);
+    }
+    splitText[btnNum] = "";
+    for (let j = 0; j < splitText.length; j++){
+        if (splitText[j] == '') {
+            splitText.splice(j, 1);
+        }
+    }
     console.log(splitText);
     btn.parentNode.parentNode.removeChild(btn.parentNode);
     console.log(text);
@@ -299,6 +314,10 @@ document.addEventListener('keyup', function(e){
     text = text.replace(/,/g, '');
     console.log(text);
     console.log(tags);
+
+    if(tags.length < 5){
+        document.getElementById("f4pUpload-tags").disabled = false;
+    }
   }
 
   

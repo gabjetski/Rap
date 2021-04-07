@@ -108,7 +108,7 @@
   <!-- ANCHOR: Login Form  -->
   <!-- Login Form-->
   <div id="loginForm">
-    <div class="blocker1" onclick="closeLogin()"></div>
+    <div class="blocker" onclick="closeLogin()"></div>
     <div class="form-popup">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
         <h1>Login</h1>
@@ -133,7 +133,7 @@
   <!-- Register Form, das Formular, das es Besuchern der Website erlaubt, einen Account zu erstellen. -->
   <!-- ANCHOR: Register Form  -->
   <div id="registerForm">
-    <div id="blocker2" onclick="closeRegister()"></div>
+    <div id="blocker2" class="blocker" onclick="closeRegister()"></div>
     <div class="form-popup">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
         <h1>Register</h1>
@@ -318,6 +318,7 @@
           <div id="countTags">Characters left: 30</div>
           <!-- FreeForProfit - File Upload -->
           <label for="f4pUpload-file"><b>File</b></label>
+          <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
           <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onkeypress="return noenter();" required/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
@@ -397,6 +398,7 @@
           <textarea id="taggedUpload-tags" rows="4" cols="50" name="taggedUpload-tags"></textarea>
           <!-- File Upload -->
           <label for="taggedUpload-file"><b> File</b></label>
+          <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
           <input type="file" accept=".mp3" id="taggedUpload-file" name="taggedUpload-file" required />
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->

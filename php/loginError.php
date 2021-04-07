@@ -1,4 +1,6 @@
-<!-- only implemented if Login/Register throws error -->
+
+<!--FIXME Fett viel übersehen... bei register alle felder required
+    only implemented if Login/Register throws error -->
 <script type="text/javascript">
     //-------function for displaying errors --------------------------------
     function errorFun(form ,val, msg){

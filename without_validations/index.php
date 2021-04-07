@@ -34,6 +34,8 @@
   //Reset or reload page
     if (isset($_GET['reset'])) {
         session_destroy();
+        session_start();
+        $_SESSION['userID'] = '4';
         header('Location:index.php');
     }
     if (isset($_GET['head'])) {
@@ -44,6 +46,10 @@
     if (isset($_GET['withoutValidations'])) {
       session_destroy();
       header('Location:../index.php');
+    }
+    if (isset($_GET['fullReset'])) {
+      session_destroy();
+      header('Location:index.php');
     }
     //if register Button is pressed
     if (isset($_GET['registerSubmit'])) {
@@ -80,7 +86,6 @@
       echo "There was an Error while uploading the file {$_SESSION['uploadError']['name']}<br>
             Error-id: {$_SESSION['uploadError']['id']}<br>";
     }
-    var_dump($_SESSION['uploadError']);
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
         echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
@@ -114,11 +119,11 @@
         <div>
           <!-- Username bzw. Email Adresse -->
           <label for="username"><b>Email/Username</b></label>
-          <input type="text" placeholder="Enter Email or Username" name="input" id="login-input" required value="user">
+          <input type="text" placeholder="Enter Email or Username" name="input" id="login-input">
 
           <!-- Password -->
           <label for="login-psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" id="login-psw" required value="passW1234567">
+          <input type="password" placeholder="Enter Password" name="psw" id="login-psw">
 
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen". -->
           <button type="submit" class="loginButton" name="loginSubmit" value="Login" id="loginButton">Login</button>
@@ -140,28 +145,28 @@
         <fieldset>
             <!-- First Name -->
             <label for="firstName"><b>Your First Name</b></label>
-            <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required value="fName">
+            <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" >
             <!-- Last Name -->
             <label for="lastName"><b>Your Last Name</b></label>
-            <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required value="lName">
+            <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName">
             <!-- Username -->
             <label for="username"><b>Your Username</b></label>
-            <input type="text" placeholder="Enter Username" name="username" id="register-username" required value="user">
+            <input type="text" placeholder="Enter Username" name="username" id="register-username">
             <!-- Email -->
             <label for="email"><b>Your Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" id="register-email" pattern ="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Must contain a valid mail" required value="email@mail.com">
+            <input type="text" placeholder="Enter Email" name="email" id="register-email">
             <!-- Password -->
             <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required value="passW1234567">
+            <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" >
             <!-- Password Repeat -->
             <label for="psw-repeat"><b>Repeat Password</b></label>
-            <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required value="passW1234567">
+            <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat">
             <!-- TOS agreement -->
             <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
-            <input type="checkbox" name="tos" id="register-tos" required checked></input>
+            <input type="checkbox" name="tos" id="register-tos"></input>
 
             <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
-            <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName()" name="registerSubmit" value="Register">Sign Up</button>
+            <button type="submit" class="newAccountButton" id="registerButton" name="registerSubmit" value="Register">Sign Up</button>
             <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here!</button>
             <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
         </fieldset>
@@ -436,6 +441,23 @@
       </div>
     </div>
   </div>
+  <?php
+  //var_dump($_SESSION);
+    if (isset($_SESSION['uploadError'])) {
+      echo "Name: ";
+      var_dump($_SESSION['uploadError']['name']);
+      echo "<br><hr>ID: ";
+      var_dump($_SESSION['uploadError']['id']);
+      echo "<br><hr>Type: ";
+      var_dump($_SESSION['uploadError']['type']);
+      echo "<br><hr>Post: ";
+      var_dump($_SESSION['uploadError']['post']);
+      echo "<br><hr>Files: ";
+      var_dump($_SESSION['uploadError']['files']);
+      echo "<br><hr>";
+      echo "<br>";
+      # code...
+    } ?>
 
 
   <!-- !SECTION
@@ -445,12 +467,15 @@
   <br><hr><hr>
   <?php
   if (!isset($_GET['page']) || $_GET['page'] == 'home') {
-    require '../php/feed.php';
+    //require '../php/feed.php';
   }
   ?>
   </div>
 
   <!------------------always at bottom for testing--------------- -->
+  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
+      <input type="submit" value="Full Reset" name="fullReset">
+  </form>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
       <input type="submit" value="Reset" name="reset">
   </form>

@@ -1,5 +1,8 @@
 <?php
-//vheck if file was already uploaded with same information --> prevents from uploading twice throu page refresh 
+
+unset($_SESSION['uploadError']);
+
+//check if file was already uploaded with same information --> prevents from uploading twice throu page refresh 
 
 if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
 }else{
@@ -15,8 +18,9 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     $_SESSION['uploadError']['id'] = -10;
     $_SESSION['uploadError']['type'] = 'f4p';
     $_SESSION['uploadError']['post'] = $_POST;
+    $_SESSION['uploadError']['files'] = $_FILES;
     header('Location:index.php');
-  }
+  }else
 
 
   //check if uploaded file is an MP3 File
@@ -26,6 +30,7 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     $_SESSION['uploadError']['id'] = -11;
     $_SESSION['uploadError']['type'] = 'f4p';
     $_SESSION['uploadError']['post'] = $_POST;
+    $_SESSION['uploadError']['files'] = $_FILES;
     header('Location:index.php');
       //echo "File must be a mp3 file";
       //check if uploaded file is to large
@@ -35,9 +40,20 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     $_SESSION['uploadError']['id'] = -12;
     $_SESSION['uploadError']['type'] = 'f4p';
     $_SESSION['uploadError']['post'] = $_POST;
+    $_SESSION['uploadError']['files'] = $_FILES;
     header('Location:index.php');
       //echo "Sorry, your file is too large.";
-    }
+  }else if ($_POST['f4pUpload-bpm'] == '') {
+    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+    $_SESSION['uploadError']['id'] = -13;
+    $_SESSION['uploadError']['type'] = 'f4p';
+    $_SESSION['uploadError']['post'] = $_POST;
+    $_SESSION['uploadError']['files'] = $_FILES;
+    header('Location:index.php');
+    # code...
+  }
+
+
     // FIXME Check for length
   else{
 

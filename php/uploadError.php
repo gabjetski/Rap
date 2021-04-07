@@ -21,7 +21,7 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
 
     if (!isset($_SESSION['uploadError']['post']['f4pUpload-key'])) {
         $_SESSION['uploadError']['post']['f4pUpload-key'] = 0;
-        echo 'loool';
+        
     }
 
     $tags = $_SESSION['uploadError']['post']['f4pUpload-tags'];
@@ -63,12 +63,16 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         case '-12':  // -12 -> file to big
             $errMsg = 'We are sorry, your file must not be above 100MB!';
             break;
+        case '-13':  // -13 -> bpm not set
+            $errMsg = 'Please enter the bpm of the track!';
+            break;
     
         default:
             //$posErrWarning = '';
             $errMsg = '';
             break;
     }
+    //unset($_SESSION['uploadError']);
 ?>
 <script type="text/javascript">
     //funtion triggered onload

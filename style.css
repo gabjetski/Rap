@@ -140,16 +140,7 @@ a {
   opacity: 0.9;
 }
 
-.blocker1 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  content: ' ';
-  background: rgba(0,0,0,.5);
-}
-#blocker2 {
+.blocker {
   position: fixed;
   top: 0;
   left: 0;
@@ -245,4 +236,9 @@ a {
 /* Darker background on mouse-over */
 .btn:hover {
   background-color: RoyalBlue;
+}
+
+/* info popup for tracks*/
+.songInfo {
+  display: none;
 }
