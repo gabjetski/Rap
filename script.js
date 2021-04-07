@@ -268,7 +268,7 @@ document.addEventListener('keyup', function(e){
 
         tags.push(result);
         console.log(tags);
-        text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button> <button id='btnEdit" + i + "' class='btn editTags' type='button'><i class='fa fa-edit'></i></button>" + "</h1>";
+        text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
         let textReplaced = text.replace(/<h1/g, ",<h1");
         splitText = textReplaced.split(",");
         console.log(splitText);

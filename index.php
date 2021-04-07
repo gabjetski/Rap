@@ -65,7 +65,7 @@
     }
     var_dump($_SESSION);
     if(isset($_SESSION['downloadSuccess'])){
-      require "php/downloadSuccess.php";
+      // require "php/downloadSuccess.php";
     }elseif(isset($_SESSION['downloadError'])){
       echo "<br>";
       echo "<br>";
