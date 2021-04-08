@@ -22,9 +22,9 @@
     }
     </script>
     
-  <?php if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
+  <?php if (isset($_SESSION['registerError']['id']) || isset($_SESSION['loginError']['id'])){
     
-    var_dump($_SESSION['errGet']);
+    var_dump($_SESSION['registerError']['get']);
     echo '<br>';
     require "loginError.php";
     echo '<br>';
@@ -72,19 +72,19 @@
               $id = $row['id'];
           }
           if ($id < 0) {
-              $_SESSION['registerError'] = $id;
-              $_SESSION['errGet'] = $_GET;
+              $_SESSION['registerError']['id'] = $id;
+              $_SESSION['registerError']['get'] = $_GET;
               header('Location:index_ohneValidations.php');
           }else{
               $_SESSION['userID'] = $id;
-              unset($_SESSION['registerError']);
-              unset($_SESSION['loginError']);
-              unset($_SESSION['errGet']);
+              unset($_SESSION['registerError']['id']);
+              unset($_SESSION['loginError']['id']);
+              unset($_SESSION['registerError']['get']);
               header('Location:index_ohneValidations.php');
             }
       }else{
-        $_SESSION['registerError'] = '-10';   //------------------------------------- id -10 just temporarily
-        $_SESSION['errGet'] = $_GET;
+        $_SESSION['registerError']['id'] = '-10';   //------------------------------------- id -10 just temporarily
+        $_SESSION['registerError']['get'] = $_GET;
         header('Location:index_ohneValidations.php');
       }
     }
@@ -106,13 +106,13 @@
             $id = $row['id'];
         }
         if ($id < 0) {
-            $_SESSION['loginError'] = $id;
-            $_SESSION['errGet'] = $_GET;
+            $_SESSION['loginError']['id'] = $id;
+            $_SESSION['registerError']['get'] = $_GET;
             header('Location:index_ohneValidations.php');
         }else{
             $_SESSION['userID'] = $id;
-            unset($_SESSION['loginError']);
-            unset($_SESSION['registerError']);
+            unset($_SESSION['loginError']['id']);
+            unset($_SESSION['registerError']['id']);
             header('Location:index_ohneValidations.php');
         }
     }

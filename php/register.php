@@ -1,6 +1,34 @@
 <?php
 //htmlspecialchar Get Array to store it safely
 array_walk_recursive($_GET, "filter");
+
+if($_GET['firstName'] == ''){
+    $_SESSION['registerError']['id'] = '-11';
+    $_SESSION['registerError']['get'] = $_GET;
+    header('Location:index.php');
+}elseif($_GET['lastName'] == ''){
+    $_SESSION['registerError']['id'] = '-12';
+    $_SESSION['registerError']['get'] = $_GET;
+    header('Location:index.php');
+}elseif($_GET['username'] == ''){
+    $_SESSION['registerError']['id'] = '-13';
+    $_SESSION['registerError']['get'] = $_GET;
+    header('Location:index.php');
+}elseif($_GET['email'] == ''){
+    $_SESSION['registerError']['id'] = '-14';
+    $_SESSION['registerError']['get'] = $_GET;
+    header('Location:index.php');
+}elseif($_GET['psw'] == ''){
+    $_SESSION['registerError']['id'] = '-15';
+    $_SESSION['registerError']['get'] = $_GET;
+    header('Location:index.php');
+}elseif($_GET['tos'] == ''){
+    $_SESSION['registerError']['id'] = '-16';
+    $_SESSION['registerError']['get'] = $_GET;
+    header('Location:index.php');
+}else
+
+
 //check if password match Validations (Password-Validation already here and not in SQL cause the database only gets it hashed [shq])
 if (preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/',$_GET['psw'])) {
     //Prepare Procedure call
@@ -25,23 +53,23 @@ if (preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖ�
     }
     //check if id is negative which means an error is thrown
     if ($id < 0) {
-        $_SESSION['registerError'] = $id;
-        $_SESSION['errGet'] = $_GET;
+        $_SESSION['registerError']['id'] = $id;
+        $_SESSION['registerError']['get'] = $_GET;
         header('Location:index.php');
     }
     //else log in
     else{
         $_SESSION['userID'] = $id;
-        unset($_SESSION['registerError']);
-        unset($_SESSION['loginError']);
-        unset($_SESSION['errGet']);
+        unset($_SESSION['registerError']['id']);
+        unset($_SESSION['loginError']['id']);
+        unset($_SESSION['registerError']['get']);
         header('Location:index.php');
     }
 }
 //if password doesnt match validations
 else{
 //also set error
-$_SESSION['registerError'] = '-10';
-$_SESSION['errGet'] = $_GET;
+$_SESSION['registerError']['id'] = '-10';
+$_SESSION['registerError']['get'] = $_GET;
 header('Location:index.php');
 }

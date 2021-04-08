@@ -20,7 +20,7 @@
 
   <?php
   //implement loginError.php if Procedure calls error (id < 0)
-  if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
+  if (isset($_SESSION['registerError']['id']) || isset($_SESSION['loginError']['id'])){
     require "php/loginError.php";
   }
   if (isset($_SESSION['uploadError'])) {
@@ -36,6 +36,12 @@
         session_destroy();
         header('Location:index.php');
     }
+    if (isset($_GET['quickLog'])) {
+      session_destroy();
+      session_start();
+      $_SESSION['userID'] = '4';
+      header('Location:index.php');
+  }
     if (isset($_GET['head'])) {
       //session_destroy();
       header('Location:index.php');
@@ -98,8 +104,8 @@
         echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
     //var_dump($_SESSION);
-    echo "<br><br>";
-    var_dump($_SESSION['tags']);
+    //echo "<br><br>";
+    //var_dump($_SESSION['tags']);
 
     // Upload Icon für Testzwecke
 ?>
@@ -275,7 +281,7 @@
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="f4pUpload-key"><b>Key</b></label>
           <select name="f4pUpload-key" id="f4pUpload-key">
-            <option value="" disabled>Select a key</option>
+            <option value="0" disabled>Select a key</option>
             <option value="C" selected>C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db">Db Major</option>
@@ -314,11 +320,10 @@
           <label for="f4pUpload-tags"><b>Tags (5)</b></label>
           <input type="text" id="f4pUpload-tags" name="f4pUpload-tags" onkeypress="return noenter();" maxlength="30">
           <div id="output">Tags: </div>
-          <!-- <textarea  rows="4" cols="50" oninput="countWord();" onkeyup="makeHashtag();" name="f4pUpload-tags" value=""></textarea> -->
           <div id="countTags">Characters left: 30</div>
           <!-- FreeForProfit - File Upload -->
           <label for="f4pUpload-file"><b>File</b></label>
-          <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+          <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
           <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onkeypress="return noenter();" required/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
@@ -456,6 +461,9 @@
   </form>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
       <input type="submit" value="Head" name="head">
+  </form>
+  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
+      <input type="submit" value="quickLog" name="quickLog">
   </form>
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-container">
       <input type="submit" value="withoutValidations" name="withoutValidations">

@@ -39,11 +39,11 @@
             $id = $row['id'];
         }
         if ($id < 0) {
-            $_SESSION['registerError'] = $id;
+            $_SESSION['registerError']['id'] = $id;
             header('Location:main.php');
         }else{
             $_SESSION['userID'] = $id;
-            unset($_SESSION['registerError']);
+            unset($_SESSION['registerError']['id']);
             header('Location:main.php');
         }
     }

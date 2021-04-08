@@ -20,7 +20,7 @@
 
   <?php
   //implement loginError.php if Procedure calls error (id < 0)
-  if (isset($_SESSION['registerError']) || isset($_SESSION['loginError'])){
+  if (isset($_SESSION['registerError']['id']) || isset($_SESSION['loginError']['id'])){
     require "../php/loginError.php";
   }
   if (isset($_SESSION['uploadError'])) {
@@ -163,7 +163,7 @@
             <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat">
             <!-- TOS agreement -->
             <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
-            <input type="checkbox" name="tos" id="register-tos"></input>
+            <input type="checkbox" name="tos" id="register-tos" value="tos"></input>
 
             <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
             <button type="submit" class="newAccountButton" id="registerButton" name="registerSubmit" value="Register">Sign Up</button>
@@ -328,7 +328,7 @@
           <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file"/>
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish"class="continue" id="f4pUpload-submit">Finish</button>
+          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" class="continue" id="f4pUpload-submit">Finish</button>
           <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
@@ -361,13 +361,14 @@
           <input type="radio" id="taggedUpload-type-snippet" name="taggedUpload-type" value="snippet">
           <!-- Tagged Upload - BPM -->
           <label for="taggedUpload-bpm"><b>BPM</b></label>
-          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" value="123">
+          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm">
           <!-- Tagged Upload - Key -->
           <label for="taggedUpload-key"><b>Key</b></label>
           <select name="taggedUpload-key" id="taggedUpload-key">
+            <option value="0" disabled selected>Select a key</option>
             <option value="C">C Major</option>
             <option value="Cm">C minor</option>
-            <option value="Db" selected>Db Major</option>
+            <option value="Db">Db Major</option>
             <option value="C#m">C# minor</option>
             <option value="D">D Major</option>
             <option value="Dm">D minor</option>
@@ -457,7 +458,13 @@
       echo "<br><hr>";
       echo "<br>";
       # code...
-    } ?>
+    }
+    if (isset($_SESSION['registerError']['id'])) {
+      var_dump($_SESSION['registerError']['id']);
+      var_dump($_SESSION['registerError']['get']);
+    }
+    echo "<br><hr><br>";
+    var_dump($_SESSION); ?>
 
 
   <!-- !SECTION

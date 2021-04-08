@@ -5,8 +5,8 @@ $stmntGetSongs->execute();
 echo "<script>
         function togglePlayPause(id){
             eval('playBtn'+id).classList.toggle(\"hidden\");
-            eval('pauseBtn'+id).classList.toggle(\"hidden\");
-                //window['pauseBtn'+id].classList.toggle(\"hidden\");
+            eval('pauseBtn'+id).classList.toggle(\"hidden\"); 
+                //window['pauseBtn'+id].classList.toggle(\"hidden\"); 
             //console.log('eeeee');
         }
 
@@ -92,7 +92,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         pauseBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){pause({$row['pk_files_id']});});
         pauseBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){togglePlayPause({$row['pk_files_id']});});
 
-        infoBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){openInfo({$row['pk_files_id']};)};
+        infoBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){openInfo({$row['pk_files_id']});});
 
         player{$row['pk_files_id']}.ontimeupdate = function(){
             progress{$row['pk_files_id']}.value = player{$row['pk_files_id']}.currentTime / player{$row['pk_files_id']}.duration;

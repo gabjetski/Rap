@@ -8,6 +8,7 @@
         for(let k in val) {
             document.getElementById(k).value = val[k];
         }
+        
     }
 </script>
 <?php 
@@ -32,20 +33,20 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
     switch ($_SESSION['uploadError']['id']) {
         case '-1':  // -1 -> BPM is out of range or not valid
             //$posErrWarning = 'register-psw'; -------------------------------mark field(s) which are written here red -> idk if its possible
-            $errMsg = 'Please enter valid BPM';
+            $errMsg = 'Please enter valid BPM!';
             //FIXME write what range of bpm is valid
             break;
         case '-2':  // -2 -> title non valid
-            $errMsg = 'Please enter a valid title';
+            $errMsg = 'Please enter a valid title!';
             break;
         case '-3':  // -3 -> description non valid
-            $errMsg = 'Please enter a valid description';
+            $errMsg = 'Please enter a valid description!';
             break;
         case '-4':  // -4 -> filename non valid
-            $errMsg = 'Please enter a valid filename';
+            $errMsg = 'Please enter a valid filename!';
             break;
         case '-5':  // -5 -> error with uploadtype
-            $errMsg = 'Please select if your Upload is a Beat or a Sample';
+            $errMsg = 'Please select if your Upload is a Beat or a Sample!';
             break;
         case '-6':  // -6 -> error with monettype
             $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us.<br> #1006';
@@ -58,15 +59,16 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
             break;
         case '-11':  // -11 -> file is no mp3
             $errMsg = 'Please select a mp3 file!';
-            //var_dump($_FILES['f4pUpload-file']['size']);
             break;
         case '-12':  // -12 -> file to big
             $errMsg = 'We are sorry, your file must not be above 100MB!';
             break;
         case '-13':  // -13 -> bpm not set
-            $errMsg = 'Please enter the bpm of the track!';
+            $errMsg = 'Please enter the bpm of your track!';
             break;
-    
+        case '-13':  // -13 -> bpm not set
+            $errMsg = 'Please enter the title of your track!';
+            break;
         default:
             //$posErrWarning = '';
             $errMsg = '';
@@ -96,79 +98,67 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
 <?php
 //-------select which error if login --------------------------------
 } elseif ($_SESSION['uploadError']['type'] == 'tagged'){
-    //echo $_SESSION['registerError'];
-    switch ($_SESSION['registerError']) {
+    if (isset($_SESSION['uploadError']['post']['taggedUpload-type'])) {
+        $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
+    }else{
+        $type = '';
+    }
+
+    if (!isset($_SESSION['uploadError']['post']['taggedUpload-key'])) {
+        $_SESSION['uploadError']['post']['taggedUpload-key'] = 0;
+        
+    }
+
+    $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
+    $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
+                    'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
+                    'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
+                    'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-desc']];
+    switch ($_SESSION['uploadError']['id']) {
         case '-1':  // -1 -> BPM is out of range or not valid
             //$posErrWarning = 'register-psw'; -------------------------------mark field(s) which are written here red -> idk if its possible
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
-            $errMsg = 'Please enter valid BPM';
+            $errMsg = 'Please enter valid BPM!';
             //FIXME write what range of bpm is valid
             break;
         case '-2':  // -2 -> title non valid
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
-            $errMsg = 'Please enter a valid title';
+            $errMsg = 'Please enter a valid title!';
             break;
         case '-3':  // -3 -> description non valid
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
-            $errMsg = 'Please enter a valid description';
+            $errMsg = 'Please enter a valid description!';
             break;
         case '-4':  // -4 -> filename non valid
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
-            $errMsg = 'Please enter a valid filename';
+            $errMsg = 'Please enter a valid filename!';
             break;
         case '-5':  // -5 -> error with uploadtype
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
-            $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us.<br> #1005';
+            $errMsg = 'Please select if your Upload is a Beat or a Sample!';
             break;
         case '-6':  // -6 -> error with monettype
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
             $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us.<br> #1006';
             break;
         case '-7':  // -7 -> error with key
-            $type = $_SESSION['uploadError']['post']['taggedUpload-type'];
-            $tags = $_SESSION['uploadError']['post']['taggedUpload-tags'];
-            $errValues = [  'taggedUpload-bpm' => $_SESSION['uploadError']['post']['taggedUpload-bpm'],
-                            'taggedUpload-key' => $_SESSION['uploadError']['post']['taggedUpload-key'],
-                            'taggedUpload-title' => $_SESSION['uploadError']['post']['taggedUpload-title'],
-                            'taggedUpload-notes' => $_SESSION['uploadError']['post']['taggedUpload-notes']];
             $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us. <br> #1007';
             break;
-    
+        case '-10':  // -10 -> file is empty
+            $errMsg = 'Please select a file!';
+            break;
+        case '-11':  // -11 -> file is no mp3
+            $errMsg = 'Please select a mp3 file!';
+            break;
+        case '-12':  // -12 -> file to big
+            $errMsg = 'We are sorry, your file must not be above 100MB!';
+            break;
+        case '-13':  // -13 -> bpm not set
+            $errMsg = 'Please enter the bpm of your track!';
+            break;
+        case '-13':  // -13 -> bpm not set
+            $errMsg = 'Please enter the title of your track!';
+            break;
         default:
             //$posErrWarning = '';
             $errMsg = '';
             break;
     }
+    
 ?>
 <script type="text/javascript">
     //function triggered onload

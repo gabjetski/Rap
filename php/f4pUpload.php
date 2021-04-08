@@ -1,62 +1,44 @@
 <?php
 
 unset($_SESSION['uploadError']);
+unset($_SESSION['uploadSuccess']);
 
 //check if file was already uploaded with same information --> prevents from uploading twice throu page refresh 
 
 if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
 }else{
-  //store information to compare at next upload
-  $_SESSION['uploadCheck'] = $_POST; 
   //replace specialchars in title for filename
   $title_replaced = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $_POST['f4pUpload-title']);
   //htmlspecialchar Get Array to store it safely
   array_walk_recursive($_POST, "filter");
 
   if($_FILES['f4pUpload-file']['size'] == 0){
-    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
     $_SESSION['uploadError']['id'] = -10;
-    $_SESSION['uploadError']['type'] = 'f4p';
-    $_SESSION['uploadError']['post'] = $_POST;
-    $_SESSION['uploadError']['files'] = $_FILES;
-    header('Location:index.php');
-  }else
+  }
 
 
   //check if uploaded file is an MP3 File
   // FIXME Error handling
-  if (strtolower(pathinfo($_FILES['f4pUpload-file']['name'],PATHINFO_EXTENSION)) != 'mp3') {
-    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+  elseif (strtolower(pathinfo($_FILES['f4pUpload-file']['name'],PATHINFO_EXTENSION)) != 'mp3') {
     $_SESSION['uploadError']['id'] = -11;
-    $_SESSION['uploadError']['type'] = 'f4p';
-    $_SESSION['uploadError']['post'] = $_POST;
-    $_SESSION['uploadError']['files'] = $_FILES;
-    header('Location:index.php');
       //echo "File must be a mp3 file";
       //check if uploaded file is to large
       // FIXME Error handling
-  }else if ($_FILES["f4pUpload-file"]["size"] > 104857600) {
-    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+  }elseif ($_FILES["f4pUpload-file"]["size"] > 104857600) {
     $_SESSION['uploadError']['id'] = -12;
-    $_SESSION['uploadError']['type'] = 'f4p';
-    $_SESSION['uploadError']['post'] = $_POST;
-    $_SESSION['uploadError']['files'] = $_FILES;
-    header('Location:index.php');
       //echo "Sorry, your file is too large.";
-  }else if ($_POST['f4pUpload-bpm'] == '') {
-    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+  }elseif ($_POST['f4pUpload-bpm'] == '') {
     $_SESSION['uploadError']['id'] = -13;
-    $_SESSION['uploadError']['type'] = 'f4p';
-    $_SESSION['uploadError']['post'] = $_POST;
-    $_SESSION['uploadError']['files'] = $_FILES;
-    header('Location:index.php');
-    # code...
+  }elseif ($_POST['f4pUpload-title'] == '') {
+    $_SESSION['uploadError']['id'] = -14;
   }
 
 
     // FIXME Check for length
   else{
 
+    //store information to compare at next upload
+    $_SESSION['uploadCheck'] = $_POST; 
     //split tags
     $tagsSplitted = explode(" ", $_POST['f4pUpload-tags']);
     $_SESSION['tags'] = $tagsSplitted;
@@ -98,26 +80,27 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     if (move_uploaded_file($_FILES["f4pUpload-file"]["tmp_name"], $target_file)) {
       // if sucessful, store information in session and reload
       $_SESSION['uploadSuccess'] = basename( $_FILES["f4pUpload-file"]["name"]);
-      unset($_SESSION['uploadError']);
-      header('Location:index.php');    
     } else {
       // if not store error and information in session and reload
-      $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
       $_SESSION['uploadError']['id'] = $id;
-      $_SESSION['uploadError']['type'] = 'f4p';
-      $_SESSION['uploadError']['post'] = $_POST;
-      header('Location:index.php');
     }
   }
   else{
     // if other error store in session and reload
-    $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
     $_SESSION['uploadError']['id'] = $id;
-    $_SESSION['uploadError']['type'] = 'f4p';
-    $_SESSION['uploadError']['post'] = $_POST;
-    header('Location:index.php');
   }
   //echo "<br><br>";
   //var_dump($id);
   }
+}
+
+if (isset($_SESSION['uploadSuccess'])) {
+  unset($_SESSION['uploadError']);
+  header('Location:index.php');    
+}else{
+  $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
+  $_SESSION['uploadError']['type'] = 'f4p';
+  $_SESSION['uploadError']['post'] = $_POST;
+  $_SESSION['uploadError']['files'] = $_FILES;
+  header('Location:index.php');
 }
