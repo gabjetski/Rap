@@ -1,14 +1,17 @@
 <!-- only implemented if Login/Register throws error -->
 <script type="text/javascript">
     //-------function for displaying errors --------------------------------
-    function errorFun(form ,val, msg, typ, tags){
+    function errorFun(form ,val, msg, typ, tags, monet){
         let oldCode = document.getElementById(form).outerHTML;
         let newCode = '<p class="error">'+msg+'</p>'+oldCode;
         document.getElementById(form).outerHTML = newCode;
         for(let k in val) {
             document.getElementById(k).value = val[k];
         }
-        
+        const type = document.getElementById(eval("'"+monet+'Upload-type-'+typ+"'"));
+        if (type != null) {
+            type.checked = true;
+        }
     }
 </script>
 <?php 
@@ -34,7 +37,6 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         case '-1':  // -1 -> BPM is out of range or not valid
             //$posErrWarning = 'register-psw'; -------------------------------mark field(s) which are written here red -> idk if its possible
             $errMsg = 'Please enter valid BPM!';
-            //FIXME write what range of bpm is valid
             break;
         case '-2':  // -2 -> title non valid
             $errMsg = 'Please enter a valid title!';
@@ -87,7 +89,7 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
             ?>
 
         //call error function
-        errorFun('f4pUpload-submit', <?php echo 'values, "'.$errMsg.'", "'.$type.'", "'.$tags.'"';?>);
+        errorFun('f4pUpload-submit', <?php echo 'values, "'.$errMsg.'", "'.$type.'", "'.$tags.'"';?>, 'f4p');
         //errorFun('loginButton', <?php // echo 'values, "'.$errMsg.'", "'.$posErrWarning.'"';?>); --- only if fields are highlighted 
         
         //show login-popup
@@ -118,7 +120,6 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         case '-1':  // -1 -> BPM is out of range or not valid
             //$posErrWarning = 'register-psw'; -------------------------------mark field(s) which are written here red -> idk if its possible
             $errMsg = 'Please enter valid BPM!';
-            //FIXME write what range of bpm is valid
             break;
         case '-2':  // -2 -> title non valid
             $errMsg = 'Please enter a valid title!';

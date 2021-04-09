@@ -42,7 +42,6 @@ CREATE OR REPLACE TABLE Files(
     pk_files_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
     Title VARCHAR(60) NOT NULL, 
     Path VARCHAR(100) NOT NULL, 
-    Length TIME NOT NULL, 
     Tag1 VARCHAR(30),
     Tag2 VARCHAR(30),
     Tag3 VARCHAR(30),
@@ -170,11 +169,11 @@ INSERT INTO `uploadtype` (`pk_upload_type_id`, `Name`)
 INSERT INTO `monetizing` (`pk_monet_id`, `Name`) 
     VALUES (NULL, 'Free for Profit'), 
             (NULL, 'Tagged');
-INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
-    VALUES (1, 'Test', '1#Test.mp3', '00:04:20', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
-            (2, 'Â²Â³$$&amp;%Â§@â‚¬', '2#.mp3', '00:04:20', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
-            (3, 'Testt5itelderlangeistsehrlange,sehr,sehr,lange', '3#Testt5itel.mp3', '00:04:20', '', NULL, NULL, NULL, NULL, '', 3, 123, 14, 1, 1),
-            (4, 'R u dumb, stupid or dumb huh', '4#R u dumb, .mp3', '00:04:20', 'R u dumb, stupid or dumb huh ', ' R u ', NULL, NULL, NULL, 'R u dumb, stupid or dumb huh', 3, 123, 1, 1, 1);
+INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
+    VALUES (1, 'Test', '1#Test.mp3','', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
+            (2, 'Â²Â³$$&amp;%Â§@â‚¬', '2#.mp3', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
+            (3, 'Testt5itelderlangeistsehrlange,sehr,sehr,lange', '3#Testt5itel.mp3', '', NULL, NULL, NULL, NULL, '', 3, 123, 14, 1, 1),
+            (4, 'R u dumb, stupid or dumb huh', '4#R u dumb, .mp3', 'R u dumb, stupid or dumb huh ', ' R u ', NULL, NULL, NULL, 'R u dumb, stupid or dumb huh', 3, 123, 1, 1, 1);
 
 INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`) 
     VALUES (NULL, '1', '1'), 
@@ -312,7 +311,6 @@ END;
  CREATE OR REPLACE PROCEDURE addTrack(
     IN `p_title` VARCHAR(60),
     IN `p_title_replaced` VARCHAR(30),
-    IN `p_length` TIME,
     IN `p_tag1` VARCHAR(30),
     IN `p_tag2` VARCHAR(30),
     IN `p_tag3` VARCHAR(30),
@@ -341,8 +339,7 @@ END;
     SELECT p_description REGEXP "^.{0,120}$" INTO v_description_pattern;
     #-- FIXME filename-pattern: SELECT p_path REGEXP "^[[:word:]\-. ]+\.(mp3)$" INTO v_file_name_pattern;
 
-    #-- FIXME Talk about BPM Range
-    IF (p_bpm >= 30 AND p_bpm <= 240) THEN
+    IF (p_bpm >= 0 AND p_bpm <= 1000) THEN
         SET v_bpm_if = 0;
     ELSE 
         SET v_bpm_if = 1;
@@ -388,8 +385,8 @@ END;
 
         SET v_path_name = CONCAT(p_id, '#', LEFT(p_title_replaced , 10), '.mp3'); 
 
-        INSERT INTO `files` (`Title`, `Path`, `Length`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
-            VALUES (p_title, v_path_name, p_length, p_tag1, p_tag2, p_tag3, p_tag4, p_tag5, p_description, p_user_id, p_bpm, v_key_id, v_upload_type, v_monet);
+        INSERT INTO `files` (`Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
+            VALUES (p_title, v_path_name, p_tag1, p_tag2, p_tag3, p_tag4, p_tag5, p_description, p_user_id, p_bpm, v_key_id, v_upload_type, v_monet);
     END IF;
 END;
 

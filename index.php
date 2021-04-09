@@ -70,6 +70,7 @@
       require "php/download.php";
     }
     var_dump($_SESSION);
+    require "php/blacklist.php";
     if(isset($_SESSION['downloadSuccess'])){
       // require "php/downloadSuccess.php";
     }elseif(isset($_SESSION['downloadError'])){
@@ -180,7 +181,7 @@
   <!-- Hinweis das man sich anmelden muss 
   FIXME von uploadLogin wenn man angemeldet ist wieder zurück zu upload form... vllt eintrag in session speichern den ich abfrage-->
   <div id="uploadLoginForm">
-      <div class="blocker1" onclick="closeUploadLogin();"></div>
+      <div class="blocker" onclick="closeUploadLogin();"></div>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">
           <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
           <h1>Upload</h1>
@@ -198,7 +199,7 @@
     </div>
     <!-- Entscheidung zwischen Free4Profit und Tagged Upload -->
   <div id="uploadForm">
-    <div class="blocker1" onclick="closeUpload();"></div>
+    <div class="blocker" onclick="closeUpload();"></div>
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get" class="form-popup">
         <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
         <h1>Upload</h1>
@@ -215,64 +216,18 @@
       </form>
     </div>
   </div>
-
-  <?php
-    $fp = @fopen('blacklist.txt', 'r');
-    if ($fp) {
-      $blacklist = explode("\n", fread($fp, filesize('blacklist.txt')));
-    }
-
-    //print_r($blacklist);
-
-  ?>
-
-  <script type="text/javascript">
-    
-    // Funktion, um DAWEIL NUR BEIM TITLE Wörter aus der Blacklist zu "blockieren"
-    // TODO bei allen anderen (Notes, Tags) die Blacklist auch miteinbeziehen
-    function checkBanWords() {
-        // Alle Wörter in Lowercase, damit wir nicht auf Case aufpassen müssen
-        // TODO Blacklist erweitern
-        let bannedWords = [
-        <?php
-        foreach ($blacklist as $key=>$value) {
-          
-          echo "'".preg_replace( "/\r|\n/", "", $value )."'";
-          if ($key != sizeOf($blacklist)-1) {
-            echo ", ";
-          }
-        }
-         ?>];
-        //let bannedWords = <?php //echo json_encode($blacklist); ?>;
-        let title = document.getElementById('f4pUpload-title');
-  
-        
-        // Input vom Title wird in Lowercase umgewandelt, um alle Cases zu überprüfen, Spaces werden
-        let titleValue = document.getElementById('f4pUpload-title').value.replace(/\s+/g, '').toLowerCase();
-        for(let i=0; i<bannedWords.length; i++) {
-        // ~ ist eine Local Negation, so wird nur das Wort angezeigt was wirklich falsch ist
-        // bei faggot würden dann alle anderen Wörter auch in der Console auftauchen, ~ verhindert es
-          if (~titleValue.indexOf(bannedWords[i])){
-            // Validation für den Titel 
-            title.setCustomValidity('Please us an appropriate title');
-          }
-        }
-    }
-  </script>
-
-
    <!-- PopUp-Formulare für das Uploaden -->
    <!-- ANCHOR FreeForProfit Upload Formular-->
     <!-- FreeForProfit - Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
   <div id="freeForProfitForm">
-    <div class="blocker1" onclick="closeF4P();"></div>
+    <div class="blocker" onclick="closeF4P();"></div>
       <form id="f4pForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
         <h1>F4P Upload</h1>
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
           <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" onkeypress="return noenter();" required checked>
-          <!-- FreeForProfit Upload - Auswahl Beat -->
+          <!-- FreeForProfit Upload - Auswahl Sample -->
           <label for="f4pUpload-type-sample"><b>Sample</b></label>
           <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" onkeypress="return noenter();" required>
           <!-- FreeForProfit  Upload - BPM -->
@@ -310,21 +265,26 @@
           <!-- FreeForProfit - Title des Uploads -->
           <label for="f4pUpload-title"><b>Title*</b></label>
           <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" onkeypress="return noenter();" value="Hallo">
-          <button type="button" onclick="checkBanWords();"> Blacklist Check </button>
+          <!-- Blacklist, checked Banned Words-->
+          <!-- <button type="button" onclick="checkBanWords();"> Blacklist Check </button> -->
           <p>Maximum 200 Characters allowed</p>
           <!-- FreeForProfit - Notizen -->
           <label for="f4pUpload-notes"><b>Notes</b></label>
           <textarea id="f4pUpload-notes" rows="4" cols="50" maxlength="200" name="f4pUpload-desc"></textarea>
-          <div id="countNotes">Characters left: 200</div>
+          <div id="f4pCountNotes">Characters left: 200</div>
           <!-- FreeForProfit - Tags -->
           <label for="f4pUpload-tags"><b>Tags (5)</b></label>
-          <input type="text" id="f4pUpload-tags" name="f4pUpload-tags" onkeypress="return noenter();" maxlength="30">
-          <div id="output">Tags: </div>
-          <div id="countTags">Characters left: 30</div>
+          <input type="text" id="f4pUpload-tags" onkeypress="return noenter();" maxlength="30">
+          <!-- Hidden Input, der die Values vom F4P Tags Array nimmt -->
+          <input type="hidden" id="f4pUpload-tags-hidden" name="f4pUpload-tags" value='' />
+          <!-- Tags Output -->
+          <div id="f4pOutput"></div>
+          <div id="f4pCountTags">Characters left: 30</div>
           <!-- FreeForProfit - File Upload -->
           <label for="f4pUpload-file"><b>File</b></label>
           <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
           <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onkeypress="return noenter();" required/>
+          <!-- Alle Einträge vom Forms Löschen -->
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords(); radioButtonsF4P();  bpmF4P(); titleF4P(); fileF4P();" class="continue" id="f4pUpload-submit">Finish</button>
@@ -340,12 +300,11 @@
    <!-- ANCHOR Tagged Upload Formular-->
     <!-- Informationen über den Beat, wie z.B. BPM, Titel und weitere -->
   <div id="taggedForm">
-    <div class="blocker1" onclick="closeTagged();"></div>
+    <div class="blocker" onclick="closeTagged();"></div>
       <form id="tForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-popup" enctype="multipart/form-data">
         <!-- <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get"> -->
         <h1>Tagged Upload</h1>
         <div>
-
           <!-- Free Tag zum Downloaden, falls eigenes Tag vorhanden ist -->
           <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b><i class="fa fa-download"> Download A Free Tag</i></label></a>
           <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
@@ -364,6 +323,7 @@
           <!-- Tagged Upload - Key -->
           <label for="taggedUpload-key"><b>Key</b></label>
           <select name="taggedUpload-key" id="taggedUpload-key">
+            <option value="0" disabled>Select a key</option>
             <option value="C">C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db" selected>Db Major</option>
@@ -389,22 +349,29 @@
             <option value="B">B Major</option>
             <option value="Bm">B minor</option>
           </select>
-          <!-- Title des Uploads -->
+          <!-- Tagged - Title des Uploads -->
           <label for="taggedUpload-title"><b>Title*</b></label>
           <input type="text" id="taggedUpload-title" name="taggedUpload-title" required maxlength="60" value="Hallo">
-          <p>Maximum 60 Characters allowed</p>
-          <!-- Notizen -->
+          <!-- Blacklist, checked Banned Words-->
+          <!-- <button type="button" onclick="checkBanWords();"> Blacklist Check </button> -->
+          <p>Maximum 200 Characters allowed</p>
+          <!-- Tagged - Notizen -->
           <label for="taggedUpload-notes"><b>Notes</b></label>
-          <textarea id="taggedUpload-notes" rows="4" cols="50" name="taggedUpload-desc"></textarea>
-          <!-- FIXME Hashtag Funktion -->
-          <p>Maximum 120 Characters allowed</p>
-          <!-- Tags -->
+          <textarea id="taggedUpload-notes" rows="4" cols="50" maxlength="200" name="taggedUpload-desc"></textarea>
+          <div id="taggedCountNotes">Characters left: 200</div>
+          <!-- Tagged - Tags -->
           <label for="taggedUpload-tags"><b>Tags (5)</b></label>
-          <textarea id="taggedUpload-tags" rows="4" cols="50" name="taggedUpload-tags"></textarea>
-          <!-- File Upload -->
+          <input type="text" id="taggedUpload-tags" onkeypress="return noenter();" maxlength="30">
+          <!-- Hidden Input, der die Values vom F4P Tags Array nimmt -->
+          <input type="hidden" id="taggedUpload-tags-hidden" name="taggedUpload-tags" value='' />
+          <!-- Tags Output -->
+          <div id="taggedOutput"></div>
+          <div id="taggedCountTags">Characters left: 30</div>
+          <!-- Tagged - File Upload -->
           <label for="taggedUpload-file"><b> File</b></label>
-          <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>
+          <!--<input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
           <input type="file" accept=".mp3" id="taggedUpload-file" name="taggedUpload-file" required />
+          <!-- Alle Einträge vom Forms Löschen -->
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" id="taggedUpload-submit">Finish</button>
@@ -417,9 +384,10 @@
   </div>
 
   <div id="tagInfo">
-    <div class="blocker1" onclick="closeTagInfo();"></div>
+    <div class="blocker" onclick="closeTagInfo();"></div>
     <div class="form-popup">
       <div>
+        <img src="images/tag_screenshot.png">
         <h1>Why should I use tags?</h1>
         <ul>
           <li>Tags help ensure your work doesn't get stolen</li>
@@ -432,7 +400,7 @@
   </div>
 
   <div id="uploadSuccess">
-    <div class="blocker1" onclick="closeUploadSuccess();"></div>
+    <div class="blocker" onclick="closeUploadSuccess();"></div>
     <div class="form-popup">
       <div>
         <h1>Congratulation!</h1>

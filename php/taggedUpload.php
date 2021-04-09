@@ -18,12 +18,10 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
 
 
   //check if uploaded file is an MP3 File
-  // FIXME Error handling
   elseif (strtolower(pathinfo($_FILES['taggedUpload-file']['name'],PATHINFO_EXTENSION)) != 'mp3') {
     $_SESSION['uploadError']['id'] = -11;
       //echo "File must be a mp3 file";
       //check if uploaded file is to large
-      // FIXME Error handling
   }elseif ($_FILES["taggedUpload-file"]["size"] > 104857600) {
     $_SESSION['uploadError']['id'] = -12;
       //echo "Sorry, your file is too large.";
@@ -33,21 +31,17 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     $_SESSION['uploadError']['id'] = -14;
   }
 
-
-    // FIXME Check for length
   else{
-
     //store information to compare at next upload
     $_SESSION['uploadCheck'] = $_POST; 
     //split tags
-    $tagsSplitted = explode(" ", $_POST['taggedUpload-tags']);
+    $tagsSplitted = explode(",", $_POST['taggedUpload-tags']);
     $_SESSION['tags'] = $tagsSplitted;
     //Prepare Procedure call
-    $stmntUploadtagged = $pdo->prepare("CALL addTrack(?, ?, '00:04:20', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'tagged', @id);");
+    $stmntUploadtagged = $pdo->prepare("CALL addTrack(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'tagged', @id);");
     //define the in-parameters
     $stmntUploadtagged->bindParam(1, $_POST['taggedUpload-title'], PDO::PARAM_STR, 4000);
     $stmntUploadtagged->bindParam(2, $title_replaced, PDO::PARAM_STR, 4000);
-    // NOTE do we really need length?
     $stmntUploadtagged->bindParam(3, $tagsSplitted[0], PDO::PARAM_STR, 4000);
     $stmntUploadtagged->bindParam(4, $tagsSplitted[1], PDO::PARAM_STR, 4000);
     $stmntUploadtagged->bindParam(5, $tagsSplitted[2], PDO::PARAM_STR, 4000);

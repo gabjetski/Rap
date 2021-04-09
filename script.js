@@ -248,75 +248,151 @@ setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
 
 
 // ANCHOR Grundlegende Funktionen die richtige Ausgabe der Tags bzw. der selbstdefinierten "Kategorien";
-let tags = [];
-let words = document.getElementById("f4pUpload-tags").value;
-let i = 0;
-let text = "";
-let splitText = [];
-let textReplaced;
+// F4P Tags
+let f4pTags = [];
+let iF4P = 0;
+let f4pText = "";
+let f4pSplitText = [];
+let f4pTextReplaced;
 
 
 // F4P-Event Listener für das Hinzufügen von Tags
 document.addEventListener('keyup', function(e){
-    if (e.code === 'Enter' && tags.length < 5) {
-        let str = document.getElementById("f4pUpload-tags").value;
-        let wordArray = str.split(' ').filter(char => char !== "");
-        let result = "#";
-        splitText = [];
+    if (e.code === 'Enter' && f4pTags.length < 5) {
+        let f4pStr = document.getElementById("f4pUpload-tags").value;
+        let f4pWordArray = f4pStr.split(' ').filter(char => char !== "");
+        let f4pResult = "#";
+        f4pSplitText = [];
 
-        if(wordArray.length === 0){
+        if(f4pWordArray.length === 0){
             return false;
         }
-            result = result + wordArray.map(word => {
-            let capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-            return capitalizedWord;
+            f4pResult = f4pResult + f4pWordArray.map(word => {
+            let f4pCapitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+            return f4pCapitalizedWord;
         }).join('');
 
-
-        tags.push(result);
-        text += "<h1 class='tagsListing' id='tag" + i + "'>" + tags[i] + "<button id='btn" + i + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
-        textReplaced = text.replace(/<h1/g, ",<h1");
-        splitText = textReplaced.split(",");
-        splitText.splice(0, 1);
+        f4pTags.push(f4pResult);
+        document.getElementById('f4pUpload-tags-hidden').value = f4pTags;
+        f4pText += "<h1 class='tagsListing' id='f4pTag" + iF4P + "'>" + f4pTags[iF4P] + "<button id='f4pBtn" + iF4P + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+        f4pTextReplaced = f4pText.replace(/<h1/g, ",<h1");
+        f4pSplitText = f4pTextReplaced.split(",");
+        f4pSplitText.splice(0, 1);
         document.getElementById("f4pUpload-tags").value = '';
-        let div = document.getElementById('output').innerHTML = text;
-        i++;
-        if (tags.length >= 5){
+        let f4pDiv = document.getElementById('f4pOutput').innerHTML = f4pText;
+        iF4P++;
+        if (f4pTags.length >= 5){
                 document.getElementById("f4pUpload-tags").disabled = true;
                 document.getElementById('f4pUpload-tags').onkeyup = function () {
-                document.getElementById('countTags').innerHTML = "Characters left: " + 30;
+                document.getElementById('f4pCountTags').innerHTML = "Characters left: " + 30;
                   };
             }
     }
   });
 
 // F4P-Funktion für das Löschen von Tags
-function deleteF4PTags(btnId){
-    btn = document.getElementById(btnId);
-    btnNum = parseInt(btnId.substring(3), 10);
-    tags.splice(btnNum, 1);
-    splitText[btnNum] = "";
-    i = tags.length;
+function deleteF4PTags(f4pBtnId){
+    f4pBtn = document.getElementById(f4pBtnId);
+    f4pBtnNum = parseInt(f4pBtnId.substring(6), 10);
+    f4pTags.splice(f4pBtnNum, 1);
+    f4pSplitText[f4pBtnNum] = "";
+    iF4P = f4pTags.length;
 
-    for(let k = btnNum; k < tags.length; k++){
-            document.getElementById("tag" + (k+1)).id = "tag" + k;
-            document.getElementById("btn" + (k+1)).id = "btn" + k;
-            splitText[k+1] = "<h1 class='tagsListing' id='tag" + (k) + "'>" + tags[k] + "<button id='btn" + (k) + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+    for(let k = f4pBtnNum; k < f4pTags.length; k++){
+            document.getElementById("f4pTag" + (k+1)).id = "f4pTag" + k;
+            document.getElementById("f4pBtn" + (k+1)).id = "f4pBtn" + k;
+            f4pSplitText[k+1] = "<h1 class='tagsListing' id='f4pTag" + (k) + "'>" + f4pTags[k] + "<button id='f4pBtn" + (k) + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
     }
 
-    if(tags.length < 5){
+    if(f4pTags.length < 5){
         document.getElementById("f4pUpload-tags").disabled = false;
     }
 
-    for (let j = 0; j < splitText.length; j++){
-        if (splitText[j] == '') {
-            splitText.splice(j, 1);
+    for (let j = 0; j < f4pSplitText.length; j++){
+        if (f4pSplitText[j] == '') {
+            f4pSplitText.splice(j, 1);
         }
     }
-    btn.parentNode.parentNode.removeChild(btn.parentNode);
-    text = splitText.toString();
-    text = text.replace(/,/g, '');
-    return noenter();
+
+    f4pBtn.parentNode.parentNode.removeChild(f4pBtn.parentNode);
+    f4pText = f4pSplitText.toString();
+    f4pText = f4pText.replace(/,/g, '');
+    document.getElementById('f4pUpload-tags-hidden').value = f4pTags;
+    getF4PFocus();
+}
+
+
+// ANCHOR Tagged Upload Funktionen 
+let taggedTags = [];
+let iTagged = 0;
+let taggedText = "";
+let taggedSplitText = [];
+let taggedTextReplaced;
+
+
+// Tagged-Event Listener für das Hinzufügen von Tags
+document.addEventListener('keyup', function(e){
+    if (e.code === 'Enter' && taggedTags.length < 5) {
+        let taggedStr = document.getElementById("taggedUpload-tags").value;
+        let taggedWordArray = taggedStr.split(' ').filter(char => char !== "");
+        let taggedResult = "#";
+        taggedSplitText = [];
+
+        if(taggedWordArray.length === 0){
+            return false;
+        }
+            taggedResult = taggedResult + taggedWordArray.map(word => {
+            let taggedCapitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+            return taggedCapitalizedWord;
+        }).join('');
+
+        taggedTags.push(taggedResult);
+        document.getElementById('taggedUpload-tags-hidden').value = taggedTags;
+        taggedText += "<h1 class='tagsListing' id='taggedTag" + iTagged + "'>" + taggedTags[iTagged] + "<button id='taggedBtn" + iTagged + "' class='btn deleteTags' onclick='deletetaggedTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+        taggedTextReplaced = taggedText.replace(/<h1/g, ",<h1");
+        taggedSplitText = taggedTextReplaced.split(",");
+        taggedSplitText.splice(0, 1);
+        document.getElementById("taggedUpload-tags").value = '';
+        let taggedDiv = document.getElementById('taggedOutput').innerHTML = taggedText;
+        iTagged++;
+        if (taggedTags.length >= 5){
+                document.getElementById("taggedUpload-tags").disabled = true;
+                document.getElementById('taggedUpload-tags').onkeyup = function () {
+                document.getElementById('taggedCountTags').innerHTML = "Characters left: " + 30;
+                  };
+            }
+    }
+  });
+
+// Tagged-Funktion für das Löschen von Tags
+function deletetaggedTags(taggedBtnId){
+    taggedBtn = document.getElementById(taggedBtnId);
+    taggedBtnNum = parseInt(taggedBtnId.substring(9), 10);
+    taggedTags.splice(taggedBtnNum, 1);
+    taggedSplitText[taggedBtnNum] = "";
+    iTagged = taggedTags.length;
+
+    for(let k = taggedBtnNum; k < taggedTags.length; k++){
+            document.getElementById("taggedTag" + (k+1)).id = "taggedTag" + k;
+            document.getElementById("taggedBtn" + (k+1)).id = "taggedBtn" + k;
+            taggedSplitText[k+1] = "<h1 class='tagsListing' id='taggedTag" + (k) + "'>" + taggedTags[k] + "<button id='taggedBtn" + (k) + "' class='btn deleteTags' onclick='deletetaggedTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+    }
+
+    if(taggedTags.length < 5){
+        document.getElementById("taggedUpload-tags").disabled = false;
+    }
+
+    for (let j = 0; j < taggedSplitText.length; j++){
+        if (taggedSplitText[j] == '') {
+            taggedSplitText.splice(j, 1);
+        }
+    }
+
+    taggedBtn.parentNode.parentNode.removeChild(taggedBtn.parentNode);
+    taggedText = taggedSplitText.toString();
+    taggedText = taggedText.replace(/,/g, '');
+    document.getElementById('taggedUpload-tags-hidden').value = taggedTags;
+    getTaggedFocus();
 }
 
 // Enter Funktion - Bei Drücken der Enter Taste wird das Formular nicht submittet, sondern wieder ins Input Field gefocussed
@@ -324,22 +400,39 @@ function noenter() {
     return !(window.event && window.event.keyCode == 13); 
 }
 
+// F4P - Input Focus
+function getF4PFocus() {
+    document.getElementById("f4pUpload-tags").focus();
+}
+
+function getTaggedFocus() {
+    document.getElementById("taggedUpload-tags").focus();
+}
+
 // ANCHOR Funktion, um Max Länge von diversen Dingen nicht zu überschreiten
+    // F4P  
     // TODO nicht mit 200 sondern Variable vielleicht möglich?
 // F4P - Überschreitung der Notes
 document.getElementById('f4pUpload-notes').onkeyup = function () {
-    document.getElementById('countNotes').innerHTML = "Characters left: " + (200 - this.value.length);
+    document.getElementById('f4pCountNotes').innerHTML = "Characters left: " + (200 - this.value.length);
 };
 
 // Tagged - Überschreitung der Notes
-document.getElementById('f4pUpload-tags').onkeyup = function () {
-    document.getElementById('countTags').innerHTML = "Characters left: " + (30 - this.value.length);
+document.getElementById('taggedUpload-notes').onkeyup = function () {
+    document.getElementById('taggedCountNotes').innerHTML = "Characters left: " + (200 - this.value.length);
 };
 
-// Nachdem Enter gedrückt wurde und das Tag hinzugefügt wurde, wieder den Zähler der Character auf 30 setzen
+// F4P - Nachdem Enter gedrückt wurde und das Tag hinzugefügt wurde, wieder den Zähler der Character auf 30 setzen
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter') {
-        document.getElementById('countTags').innerHTML = "Characters left: " + (30);
+        document.getElementById('f4pCountTags').innerHTML = "Characters left: " + (30);
+    }
+});
+
+// Tagged - Nachdem Enter gedrückt wurde und das Tag hinzugefügt wurde, wieder den Zähler der Character auf 30 setzen
+document.addEventListener('keyup', function(e){
+    if (e.code === 'Enter') {
+        document.getElementById('taggedCountTags').innerHTML = "Characters left: " + (30);
     }
 });
 
@@ -353,16 +446,16 @@ function clearF4PForm(){
     document.getElementById("f4pUpload-bpm").value = '';
     document.getElementById("f4pUpload-notes").value = '';
     document.getElementById("f4pUpload-tags").value = '';
-    document.getElementById('countNotes').innerHTML = "Characters left: " + 200;
-    document.getElementById('countTags').innerHTML = "Characters left: " + 30;
+    document.getElementById('f4pCountNotes').innerHTML = "Characters left: " + 200;
+    document.getElementById('f4pCountTags').innerHTML = "Characters left: " + 30;
     document.getElementById("f4pUpload-tags").disabled= false;
     document.getElementById("f4pUpload-file").value = '';
     document.getElementById("f4pUpload-key").value='';
-    tags = [];
-    text = "";
-    i = 0;
-    document.getElementById('output').innerHTML = 'Tags: ';
-    let tagsListing = document.getElementsByClassName('tagsListing');
+    f4pTags = [];
+    f4pText = "";
+    iF4P = 0;
+    document.getElementById('f4pOutput').innerHTML = '';
+    //let tagsListing = document.getElementsByClassName('tagsListing');
     //tagsListing.parentNode.removeChild(tagsListing);
 }
 
@@ -379,7 +472,11 @@ function clearTaggedForm(){
     document.getElementById("taggedUpload-tags").disable= false;
     document.getElementById("taggedUpload-file").value = '';
     document.getElementById("taggedUpload-key").value='';
-
+    taggedTags = [];
+    taggedText = "";
+    iTagged = 0;
+    document.getElementById('taggedOutput').innerHTML = '';
+    //let tagsListing = document.getElementsByClassName('tagsListing');
 }
 
 
