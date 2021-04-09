@@ -11,9 +11,19 @@ echo "<script>
         }
 
         function playTrack(id){
-            eval('player'+id).play();
                 //window['player'+id].play();
-                
+            const allPlayer = document.getElementsByClassName('audioPlayer')
+            console.log(allPlayer);
+            for(let i = 0; i<allPlayer.length; i++){
+                if(allPlayer[i].paused == false){
+                    console.log('false: '+i)
+                    togglePlayPause(allPlayer.length-i);
+                }
+                console.log(allPlayer[i].paused);
+                allPlayer[i].pause();
+            }
+            //allPlayer.foreach(element => element.pause());        
+            eval('player'+id).play();  
         }
 
         function pause(id){
@@ -45,10 +55,10 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
     <div class=\"songPlayer\">
     <div class=\"songTitle\"> {$row['Title']} - by {$row['Username']} </div>
         <div class=\"songControls\">
-            <audio id=\"player{$row['pk_files_id']}\" src=\"./uploads/{$path}\"></audio>
+            <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"./uploads/{$path}\"></audio>
             <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
             <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
-            <input type=\"range\" min=\"0\" max=\"100\" value=\"50\" id=\"volume{$row['pk_files_id']}\">
+            <input type=\"range\" min=\"0\" max=\"20\" value=\"10\" id=\"volume{$row['pk_files_id']}\">
             <progress id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"1\" style=\"width:400px;\"></progress>
         </div>
         
@@ -94,6 +104,17 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
 
         infoBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){openInfo({$row['pk_files_id']});});
 
+
+        
+        let testPlayer{$row['pk_files_id']} = document.getElementById('player4');
+        let testProgessBar{$row['pk_files_id']} = document.getElementById('progess4');
+
+        player{$row['pk_files_id']}.ontimeupdate = function(){
+            console.log('Hallo');
+            //console.log(testPlayer{$row['pk_files_id']}.value);
+        }
+
+
         player{$row['pk_files_id']}.ontimeupdate = function(){
             progress{$row['pk_files_id']}.value = player{$row['pk_files_id']}.currentTime / player{$row['pk_files_id']}.duration;
             if(player{$row['pk_files_id']}.currentTime == player{$row['pk_files_id']}.duration){
@@ -104,6 +125,10 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
             }
             //console.log(player{$row['pk_files_id']}.currentTime);
         };
+
+
+        let vid{$row['pk_files_id']} = document.getElementById('volume4');
+        vid{$row['pk_files_id']}.volume = 0.2;
 
     </script>";
     echo "<br>";
