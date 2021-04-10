@@ -387,7 +387,7 @@
     <div class="blocker" onclick="closeTagInfo();"></div>
     <div class="form-popup">
       <div>
-        <img src="\rap\rap\images\tag_screenshot.jpg" width="500px">
+        <img src="\images\tag_screenshot.jpg" width="500px">
         <h1>Why should I use tags?</h1>
         <ul>
           <li>Tags help ensure your work doesn't get stolen</li>

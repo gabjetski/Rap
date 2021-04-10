@@ -422,6 +422,16 @@ document.getElementById('taggedUpload-notes').onkeyup = function () {
     document.getElementById('taggedCountNotes').innerHTML = "Characters left: " + (200 - this.value.length);
 };
 
+// F4P - Überschreitung der Tags
+document.getElementById('f4pUpload-tags').onkeyup = function () {
+    document.getElementById('f4pCountTags').innerHTML = "Characters left: " + (30 - this.value.length);
+};
+
+// Tagged - Überschreitung der Tags
+document.getElementById('taggedUpload-tags').onkeyup = function () {
+    document.getElementById('taggedCountTags').innerHTML = "Characters left: " + (30 - this.value.length);
+};
+
 // F4P - Nachdem Enter gedrückt wurde und das Tag hinzugefügt wurde, wieder den Zähler der Character auf 30 setzen
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter') {
@@ -435,7 +445,6 @@ document.addEventListener('keyup', function(e){
         document.getElementById('taggedCountTags').innerHTML = "Characters left: " + (30);
     }
 });
-
 
 // ANCHOR Funktionen für das Löschen von Input
 // F4P - alle Einträge im Form löschen 
