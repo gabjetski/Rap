@@ -1,4 +1,5 @@
 #----------------------DATABASE------------------------
+#-- TODO add date when creating entry (f egs. create user, upload file,...)
 
 DROP DATABASE IF EXISTS rap;
 CREATE DATABASE rap;
@@ -14,7 +15,8 @@ CREATE OR REPLACE TABLE User(
     Bio VARCHAR(100), 
     Insta VARCHAR(40), 
     Twitter VARCHAR(40), 
-    Soundcloud VARCHAR(40)
+    Soundcloud VARCHAR(40),
+    user_added DATETIME
 );
 
 CREATE OR REPLACE TABLE BPM(
@@ -53,6 +55,7 @@ CREATE OR REPLACE TABLE Files(
     fk_key_signature_id INTEGER, 
     fk_upload_type_id INTEGER NOT NULL, 
     fk_monet_id INTEGER NOT NULL, 
+    file_added DATETIME,
     CONSTRAINT files_user_id FOREIGN KEY (fk_user_id)
         REFERENCES User(pk_user_id) ON DELETE CASCADE,
     CONSTRAINT files_bpm_id FOREIGN KEY (fk_bpm_id)
@@ -69,6 +72,7 @@ CREATE OR REPLACE TABLE user_liked_file(
     pk_ulf_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
     fk_user_id INTEGER, 
     fk_files_id INTEGER,
+    like_added DATETIME,
     CONSTRAINT ulf_user_id FOREIGN KEY (fk_user_id)
         REFERENCES User(pk_user_id) ON DELETE CASCADE,
     CONSTRAINT ulf_files_id FOREIGN KEY (fk_files_id)
@@ -79,6 +83,7 @@ CREATE OR REPLACE TABLE user_downloaded_file(
     pk_udf_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     fk_user_id INTEGER,
     fk_files_id INTEGER,
+    download_added DATETIME,
     CONSTRAINT udf_user_id FOREIGN KEY (fk_user_id)
         REFERENCES User(pk_user_id) ON DELETE SET NULL,
     CONSTRAINT udf_files_id FOREIGN KEY (fk_files_id)
@@ -91,6 +96,7 @@ CREATE OR REPLACE TABLE user_saved_file(
     track_title VARCHAR(50),
     fk_user_id INTEGER,
     fk_files_id INTEGER,
+    save_added DATETIME,
      CONSTRAINT usf_user_id FOREIGN KEY (fk_user_id)
         REFERENCES User(pk_user_id) ON DELETE CASCADE,
     CONSTRAINT usf_saved_id FOREIGN KEY (fk_files_id)
@@ -239,8 +245,8 @@ CREATE OR REPLACE PROCEDURE createUser(
         SET p_id = -7;
     ELSE
         IF (p_passwort = p_passwort_sec) THEN
-            INSERT INTO USER (FirstName, LastName, Username, Email, Passwort)
-            VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort);
+            INSERT INTO USER (FirstName, LastName, Username, Email, Passwort, user_added)
+            VALUES (p_first_name, p_last_name, p_username, p_email, p_passwort,NOW());
             SELECT pk_user_id INTO p_id FROM user
             WHERE Username = p_username;
         ELSE
@@ -385,8 +391,8 @@ END;
 
         SET v_path_name = CONCAT(p_id, '#', LEFT(p_title_replaced , 10), '.mp3'); 
 
-        INSERT INTO `files` (`Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
-            VALUES (p_title, v_path_name, p_tag1, p_tag2, p_tag3, p_tag4, p_tag5, p_description, p_user_id, p_bpm, v_key_id, v_upload_type, v_monet);
+        INSERT INTO `files` (`Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`, file_added) 
+            VALUES (p_title, v_path_name, p_tag1, p_tag2, p_tag3, p_tag4, p_tag5, p_description, p_user_id, p_bpm, v_key_id, v_upload_type, v_monet, NOW());
     END IF;
 END;
 
@@ -416,10 +422,10 @@ END;
         SET p_id = -1;
     ELSEIF (v_count_user != 1) THEN
         SET p_id = -2;
-    ELSEIF (v_count_same > 0) THEN
+    ELSEIF (v_count_same > 0 AND p_user_id != 1) THEN
         SET p_id = -3;
     ELSE
-        INSERT INTO user_downloaded_file (fk_user_id, fk_files_id, time)
+        INSERT INTO user_downloaded_file (fk_user_id, fk_files_id, download_added)
             VALUES (p_user_id, p_track_id, SYSDATE());
         SELECT pk_udf_id INTO p_id FROM user_downloaded_file 
         WHERE fk_user_id = p_user_id AND fk_files_id = p_track_id

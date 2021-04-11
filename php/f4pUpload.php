@@ -68,7 +68,7 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
       $target_file = substr($title_replaced, 0, 10);
       $target_file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $target_file);
       //Filename is <Trackid>#<First 10 Chars of Trackname>
-      $target_file = '../uploads/'.$id.'#'.$target_file.'.mp3';
+      $target_file = 'uploads/'.$id.'#'.$target_file.'.mp3';
       
     //move file to destination
     if (move_uploaded_file($_FILES["f4pUpload-file"]["tmp_name"], $target_file)) {
@@ -76,11 +76,17 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
       $_SESSION['uploadSuccess'] = basename( $_FILES["f4pUpload-file"]["name"]);
     } else {
       // if not store error and information in session and reload
-      $_SESSION['uploadError']['id'] = $id;
+      $_SESSION['uploadError']['id'] = '-99';
       //delete db row
-      $stmntDeleteTrackRow = $pdo->prepare("DELETE FROM `files` WHERE `files`.`pk_files_id` = ?");
+      $stmntDeleteTrackRow = $pdo->prepare("DELETE FROM `files` WHERE `files`.`pk_files_id` = ?;");
       $stmntDeleteTrackRow->bindParam(1, $id, PDO::PARAM_STR, 4000);
       $stmntDeleteTrackRow->execute();
+
+      $stmntResetAutoIncrement = $pdo->prepare("SET @max_id = (SELECT MAX(pk_files_id) FROM `files` );
+      SET @sql = CONCAT('ALTER TABLE `files` AUTO_INCREMENT = ', @max_id);
+      PREPARE st FROM @sql;
+      EXECUTE st;");
+      $stmntResetAutoIncrement->execute();
     }
   }
   else{
@@ -95,7 +101,7 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
 if (isset($_SESSION['uploadSuccess'])) {
   unset($_SESSION['uploadError']);
   header('Location:index.php');    
-}else{
+}elseif(isset($_SESSION['uploadError'])){
   $_SESSION['uploadError']['name'] = basename( $_FILES["f4pUpload-file"]["name"]);
   $_SESSION['uploadError']['type'] = 'f4p';
   $_SESSION['uploadError']['post'] = $_POST;

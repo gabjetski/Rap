@@ -1,7 +1,5 @@
 <?php
-// select all songs which schould be displayed
-$stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
-$stmntGetSongs->execute();
+//TODO Comment Code
 echo "<script>
         function togglePlayPause(id){
             eval('playBtn'+id).classList.toggle(\"hidden\");
@@ -45,8 +43,13 @@ echo "<script>
             eval('songInfo'+id).display = block;
         }
     </script>";
-// TODO onplay stopp other sounds
+// select all songs which schould be displayed
+$stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
+$stmntGetSongs->execute();
 //fetch the results
+if ($stmntGetSongs->rowCount() == 0) {
+    echo "Looks like you are the first person here. Feel free to upload and present your work to the world :)";
+}
 foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
     //set the path of the file
     $path = str_replace('#','%23',$row['Path']);
@@ -77,7 +80,24 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         ";
 
         if($row['fk_monet_id'] == 1){
-            echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" onclick=\"addDownloadCount({$row['pk_files_id']})\"><i class=\"fa fa-download fa-2x\"></i></a>
+            $showDownload = true;
+            if (isset($_SESSION['userID'])) {
+                $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
+                $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
+                $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
+                $stmntLookForSimularDownload->execute();
+                
+                $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
+            }
+            if(isset($_SESSION['download'][$row['pk_files_id']])){
+                $showDownload = false;
+            }
+
+            echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" ";
+            if ($showDownload) {
+                echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
+            }
+            echo"><i class=\"fa fa-download fa-2x\"></i></a>
                 <br>
                 <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads"; 
         }
@@ -85,6 +105,8 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
             echo "<span>Contact the Artist for access to this File!</span>"; 
         }
          
+        //FIXME volume bar changes for all
+        //TODO general soundbar on bottom
     echo 
     "</div>
     <script>
@@ -140,9 +162,18 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         };
 
 
-        let vid{$row['pk_files_id']} = document.getElementById('volume4');
-        vid{$row['pk_files_id']}.volume = 0.2;
+        //let vid{$row['pk_files_id']} = document.getElementById('volume4');
+        //vid{$row['pk_files_id']}.volume = 0.2;
 
     </script>";
     echo "<br>";
 }
+
+?>
+<div class="mainPlayer">
+    <button class="songPlayPause" id="playBtnM"> Play </button>
+    <button class="songPlayPause hidden" id="pauseBtnM"> Pause </button>
+    <input type="range" min="0" max="20" value="10" id="volumeM">
+    <input type="range" id="progressM" value="0" max="100" style="width:400px;"></input>
+        
+</div>

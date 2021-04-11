@@ -1,3 +1,4 @@
+/* TODO use multiple css files for better overwiev */
 * {
   box-sizing: border-box;
 }
@@ -241,4 +242,13 @@ a {
 /* info popup for tracks*/
 .songInfo {
   display: none;
+}
+
+.mainPlayer {
+  background-color: #f5edd1;
+  padding: 20px;
+  border: solid 2px black;
+  border-radius: 10px;
+  position:fixed;
+  bottom:50px;
 }

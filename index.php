@@ -306,7 +306,7 @@
         <h1>Tagged Upload</h1>
         <div>
           <!-- Free Tag zum Downloaden, falls eigenes Tag vorhanden ist -->
-          <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b><i class="fa fa-download"> Download A Free Tag</i></label></a>
+          <a id="tagDownload" href="FreeTag/FreeTag.mp3" download><label for="download"><b><i class="fa fa-download"> Download A Free Tag</i></b></label></a>
           <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
           <!-- Tagged Upload - Auswahl Beat -->
           <label for="taggedUpload-type-beat"><b>Beat</b></label>
@@ -410,6 +410,30 @@
     </div>
   </div>
 
+
+  <?php
+  //var_dump($_SESSION);
+    if (isset($_SESSION['uploadError'])) {
+      echo "Name: ";
+      var_dump($_SESSION['uploadError']['name']);
+      echo "<br><hr>ID: ";
+      var_dump($_SESSION['uploadError']['id']);
+      echo "<br><hr>Type: ";
+      var_dump($_SESSION['uploadError']['type']);
+      echo "<br><hr>Post: ";
+      var_dump($_SESSION['uploadError']['post']);
+      echo "<br><hr>Files: ";
+      var_dump($_SESSION['uploadError']['files']);
+      echo "<br><hr>";
+      echo "<br>";
+      # code...
+    }
+    if (isset($_SESSION['registerError']['id'])) {
+      var_dump($_SESSION['registerError']['id']);
+      var_dump($_SESSION['registerError']['get']);
+    }
+    echo "<br><hr><br>";
+    var_dump($_SESSION); ?>
 
   <!-- !SECTION
   SECTION Body

@@ -71,6 +71,9 @@ if ($_SESSION['uploadError']['type'] == 'f4p') {
         case '-13':  // -13 -> bpm not set
             $errMsg = 'Please enter the title of your track!';
             break;
+        case '-99':  // -13 -> bpm not set
+            $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us. <br> #1099';
+            break;
         default:
             //$posErrWarning = '';
             $errMsg = '';
