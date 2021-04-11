@@ -1,6 +1,8 @@
 <?php
 //TODO Comment Code
 echo "<script>
+        let currPlayingID;
+
         function togglePlayPause(id){
             eval('playBtn'+id).classList.toggle(\"hidden\");
             eval('pauseBtn'+id).classList.toggle(\"hidden\"); 
@@ -8,25 +10,36 @@ echo "<script>
             //console.log('eeeee');
         }
 
+        function togglePlayPauseMain(){
+            if(currPlayingID != 0){
+                //togglePlayPause('M');
+            }
+        }
+
         function playTrack(id){
-                //window['player'+id].play();
-            const allPlayer = document.getElementsByClassName('audioPlayer')
-            console.log(allPlayer);
+            const allPlayer = document.getElementsByClassName('audioPlayer');
             for(let i = 0; i<allPlayer.length; i++){
                 if(allPlayer[i].paused == false){
-                    console.log('false: '+i)
+                    console.log('false: '+i);
                     togglePlayPause(allPlayer.length-i);
+                    togglePlayPause('M');
                 }
-                console.log(allPlayer[i].paused);
                 allPlayer[i].pause();
-            }
-            //allPlayer.foreach(element => element.pause());        
-            eval('player'+id).play();  
+            }      
+            eval('player'+id).play(); 
+
+            currPlayingID = id;
+            togglePlayPause('M');
+            togglePlayPauseMain();
+            console.log(id);
         }
 
         function pause(id){
             eval('player'+id).pause();
                 //window['player'+id].pause();
+            currPlayingID = 0;
+            togglePlayPauseMain();
+            togglePlayPause('M');
         }
 
         function newVolume(id){
@@ -155,6 +168,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
             if(player{$row['pk_files_id']}.currentTime == player{$row['pk_files_id']}.duration){
                 if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
                     togglePlayPause({$row['pk_files_id']});
+                    togglePlayPause('M');
                     //console.log('yeet');
                 }
             }
@@ -170,10 +184,15 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
 }
 
 ?>
-<div class="mainPlayer">
+<!--<div class="mainPlayer">
     <button class="songPlayPause" id="playBtnM"> Play </button>
     <button class="songPlayPause hidden" id="pauseBtnM"> Pause </button>
     <input type="range" min="0" max="20" value="10" id="volumeM">
     <input type="range" id="progressM" value="0" max="100" style="width:400px;"></input>
-        
-</div>
+</div>-->
+<script>
+    /*const playBtnM = document.getElementById('playBtnM');
+    const pauseBtnM = document.getElementById('pauseBtnM');
+    const progressM = document.getElementById('progressM');
+    const playerM = document.getElementById('playerM');*/
+</script>
