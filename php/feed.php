@@ -22,14 +22,14 @@ echo "<script>
                 if(allPlayer[i].paused == false){
                     console.log('false: '+i);
                     togglePlayPause(allPlayer.length-i);
-                    togglePlayPause('M');
+                    //togglePlayPause('M');
                 }
                 allPlayer[i].pause();
             }      
             eval('player'+id).play(); 
 
             currPlayingID = id;
-            togglePlayPause('M');
+            //togglePlayPause('M');
             togglePlayPauseMain();
             console.log(id);
         }
@@ -39,7 +39,7 @@ echo "<script>
                 //window['player'+id].pause();
             currPlayingID = 0;
             togglePlayPauseMain();
-            togglePlayPause('M');
+            //togglePlayPause('M');
         }
 
         function newVolume(id){
@@ -168,7 +168,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
             if(player{$row['pk_files_id']}.currentTime == player{$row['pk_files_id']}.duration){
                 if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
                     togglePlayPause({$row['pk_files_id']});
-                    togglePlayPause('M');
+                    //togglePlayPause('M');
                     //console.log('yeet');
                 }
             }
