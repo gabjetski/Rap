@@ -20,7 +20,7 @@ echo "<script>
             const allPlayer = document.getElementsByClassName('audioPlayer');
             for(let i = 0; i<allPlayer.length; i++){
                 if(allPlayer[i].paused == false){
-                    console.log('false: '+i);
+                    //console.log('false: '+i);
                     togglePlayPause(allPlayer.length-i);
                     //togglePlayPause('M');
                 }
@@ -31,7 +31,7 @@ echo "<script>
             currPlayingID = id;
             //togglePlayPause('M');
             togglePlayPauseMain();
-            console.log(id);
+            //console.log(id);
         }
 
         function pause(id){
@@ -43,7 +43,7 @@ echo "<script>
         }
 
         function newVolume(id){
-            eval('player'+id).volume = eval('volume'+id).value/100;;
+            eval('player'+id).volume = eval('volume'+id).value/100;
                 //window['player'+id].volume = window['volume'+id].value/100;
         }
 
@@ -79,7 +79,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
             <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"./uploads/{$path}\"></audio>
             <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
             <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
-            <input type=\"range\" min=\"0\" max=\"20\" value=\"10\" id=\"volume{$row['pk_files_id']}\">
+            <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
             <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
         </div>
         
@@ -130,13 +130,13 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
 
         const infoBtn{$row['pk_files_id']} = document.getElementById(\"openInfo{$row['pk_files_id']}\");
 
-        player{$row['pk_files_id']}.volume = 0.5;
+        player{$row['pk_files_id']}.volume = 0.35;
 
         const volume{$row['pk_files_id']} = document.getElementById(\"volume{$row['pk_files_id']}\");
 
         volume{$row['pk_files_id']}.addEventListener(\"change\", function(){newVolume({$row['pk_files_id']});});
         
-        progress{$row['pk_files_id']}.addEventListener(\"change\", function(){newProgress({$row['pk_files_id']});});
+        progress{$row['pk_files_id']}.addEventListener(\"change\", function(){console.log(progress{$row['pk_files_id']}.value);newProgress({$row['pk_files_id']});});
         progress{$row['pk_files_id']}.addEventListener(\"mousedown\", function(){pause({$row['pk_files_id']});});
         progress{$row['pk_files_id']}.addEventListener(\"mouseup\", function(){
             if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
@@ -158,7 +158,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         let testProgessBar{$row['pk_files_id']} = document.getElementById('progess4');
 
         player{$row['pk_files_id']}.ontimeupdate = function(){
-            console.log('Hallo');
+            //console.log('Hallo');
             //console.log(testPlayer{$row['pk_files_id']}.value);
         }
 
@@ -169,7 +169,6 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
                 if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
                     togglePlayPause({$row['pk_files_id']});
                     //togglePlayPause('M');
-                    //console.log('yeet');
                 }
             }
             //console.log(player{$row['pk_files_id']}.currentTime);

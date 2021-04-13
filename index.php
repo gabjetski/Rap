@@ -33,8 +33,8 @@
   // ANCHOR: PHP Zeugs
   //Reset or reload page
     if (isset($_GET['reset'])) {
-        session_destroy();
-        header('Location:index.php');
+      session_destroy();
+      header('Location:index.php');
     }
     if (isset($_GET['quickLog'])) {
       session_destroy();
@@ -69,21 +69,22 @@
     if (isset($_GET['downloaded_file'])) {
       require "php/download.php";
     }
-    var_dump($_SESSION);
+    //var_dump($_SESSION);
     require "php/blacklist.php";
     if(isset($_SESSION['downloadSuccess'])){
       // require "php/downloadSuccess.php";
     }elseif(isset($_SESSION['downloadError'])){
-      echo "<br>";
+      /*echo "<br>";
       echo "<br>";
       echo $_SESSION['downloadError'];
       echo "<br>";
       var_dump($_SESSION['downloadError_GET']);
       echo "<br>";
-      echo "<br>";
+      echo "<br>";*/
     }
     if (isset($_SESSION['uploadSuccess'])) {
       echo "File - {$_SESSION['uploadSuccess']} was succesfully uploaded";
+      unset($_SESSION['uploadSuccess']);
     }elseif (isset($_SESSION['uploadError'])) {
       echo "There was an Error while uploading the file {$_SESSION['uploadError']['name']}<br>
             Error-id: {$_SESSION['uploadError']['id']}";
@@ -413,7 +414,7 @@
 
   <?php
   //var_dump($_SESSION);
-    if (isset($_SESSION['uploadError'])) {
+    /*if (isset($_SESSION['uploadError'])) {
       echo "Name: ";
       var_dump($_SESSION['uploadError']['name']);
       echo "<br><hr>ID: ";
@@ -432,14 +433,14 @@
       var_dump($_SESSION['registerError']['id']);
       var_dump($_SESSION['registerError']['get']);
     }
-    echo "<br><hr><br>";
-    var_dump($_SESSION); ?>
+    //echo "<br><hr><br>";
+    //var_dump($_SESSION);*/ ?>
 
   <!-- !SECTION
   SECTION Body
   ANCHOR: Feed-->
   <div class="feed">
-  <br><hr><hr>
+  <br><hr>
   <?php
   if (!isset($_GET['page']) || $_GET['page'] == 'home') {
     require 'php/feed.php';
