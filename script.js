@@ -272,15 +272,20 @@ document.addEventListener('keyup', function(e){
             return f4pCapitalizedWord;
         }).join('');
 
-        f4pTags.push(f4pResult);
-        document.getElementById('f4pUpload-tags-hidden').value = f4pTags;
-        f4pText += "<h1 class='tagsListing' id='f4pTag" + iF4P + "'>" + f4pTags[iF4P] + "<button id='f4pBtn" + iF4P + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
-        f4pTextReplaced = f4pText.replace(/<h1/g, ",<h1");
-        f4pSplitText = f4pTextReplaced.split(",");
-        f4pSplitText.splice(0, 1);
-        document.getElementById("f4pUpload-tags").value = '';
-        let f4pDiv = document.getElementById('f4pOutput').innerHTML = f4pText;
-        iF4P++;
+        if(f4pTags.includes(f4pResult) === false){
+            f4pTags.push(f4pResult);
+            document.getElementById('f4pUpload-tags-hidden').value = f4pTags;
+            f4pText += "<h1 class='tagsListing' id='f4pTag" + iF4P + "'>" + f4pTags[iF4P] + "<button id='f4pBtn" + iF4P + "' class='btn deleteTags' onclick='deleteF4PTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+            f4pTextReplaced = f4pText.replace(/<h1/g, ",<h1");
+            f4pSplitText = f4pTextReplaced.split(",");
+            f4pSplitText.splice(0, 1);
+            document.getElementById("f4pUpload-tags").value = '';
+            let f4pDiv = document.getElementById('f4pOutput').innerHTML = f4pText;
+            iF4P++;
+        } else {
+            document.getElementById("f4pUpload-tags").setCustomValidity("u already used this tag");
+            document.getElementById("f4pUpload-tags").reportValidity();
+        }
         if (f4pTags.length >= 5){
                 document.getElementById("f4pUpload-tags").disabled = true;
                 document.getElementById('f4pUpload-tags').onkeyup = function () {
@@ -329,7 +334,7 @@ let taggedText = "";
 let taggedSplitText = [];
 let taggedTextReplaced;
 
-
+// TODO CustomValidity buggt fett rum und wenn man 2 mal das selbe tag eingibt und enter drückt wird characters length trd auf 30 gesetzt
 // Tagged-Event Listener für das Hinzufügen von Tags
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter' && taggedTags.length < 5) {
@@ -341,26 +346,32 @@ document.addEventListener('keyup', function(e){
         if(taggedWordArray.length === 0){
             return false;
         }
-            taggedResult = taggedResult + taggedWordArray.map(word => {
-            let taggedCapitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-            return taggedCapitalizedWord;
+        taggedResult = taggedResult + taggedWordArray.map(word => {
+        let taggedCapitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+        return taggedCapitalizedWord;
         }).join('');
 
-        taggedTags.push(taggedResult);
-        document.getElementById('taggedUpload-tags-hidden').value = taggedTags;
-        taggedText += "<h1 class='tagsListing' id='taggedTag" + iTagged + "'>" + taggedTags[iTagged] + "<button id='taggedBtn" + iTagged + "' class='btn deleteTags' onclick='deletetaggedTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
-        taggedTextReplaced = taggedText.replace(/<h1/g, ",<h1");
-        taggedSplitText = taggedTextReplaced.split(",");
-        taggedSplitText.splice(0, 1);
-        document.getElementById("taggedUpload-tags").value = '';
-        let taggedDiv = document.getElementById('taggedOutput').innerHTML = taggedText;
-        iTagged++;
+        if (taggedTags.includes(taggedResult) === false) {
+            taggedTags.push(taggedResult);
+            document.getElementById('taggedUpload-tags-hidden').value = taggedTags;
+            taggedText += "<h1 class='tagsListing' id='taggedTag" + iTagged + "'>" + taggedTags[iTagged] + "<button id='taggedBtn" + iTagged + "' class='btn deleteTags' onclick='deletetaggedTags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+            let taggedDiv = document.getElementById('taggedOutput').innerHTML = taggedText;
+            taggedTextReplaced = taggedText.replace(/<h1/g, ",<h1");
+            taggedSplitText = taggedTextReplaced.split(",");
+            taggedSplitText.splice(0, 1);
+            document.getElementById("taggedUpload-tags").value = '';
+            iTagged++;
+        } else {
+            document.getElementById("taggedUpload-tags").setCustomValidity("u already used this tag");
+            document.getElementById("taggedUpload-tags").reportValidity();
+        }
+
         if (taggedTags.length >= 5){
                 document.getElementById("taggedUpload-tags").disabled = true;
                 document.getElementById('taggedUpload-tags').onkeyup = function () {
-                document.getElementById('taggedCountTags').innerHTML = "Characters left: " + 30;
-                  };
+                document.getElementById('taggedCountTags').innerHTML = "Characters left: " + (30 - this.value.length);
             }
+        }   
     }
   });
 

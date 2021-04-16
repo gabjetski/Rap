@@ -29,6 +29,7 @@
 ?>
   <body>
   <h2>Rap Plattform</h2>
+
   <?php
   // ANCHOR: PHP Zeugs
   //Reset or reload page
@@ -105,12 +106,20 @@
         echo '<div class="openForm">'.$_SESSION['userID'].' - '.$_SESSION['userUName'].'</div>';
         echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
+
+    // View Profile Button als Test 
+    echo '<h1> <a href="php/profilesite.php"> View Profile </a></h1>';
+
+    // View Profil als Icon
+    echo '<a href="php/profilesite.php"><img src="\images\profil-avatar.png" alt="Funkt nicht"></a>';
+    
     //var_dump($_SESSION);
     //echo "<br><br>";
     //var_dump($_SESSION['tags']);
 
     // Upload Icon für Testzwecke
 ?>
+
   <!-- SECTION PopUps -->
   <!-- Login Form, das Formular zum Anmelden mit Username bzw. E-Mail und dem Passwort (nur für bereits registrierte User) -->
   <!-- ANCHOR: Login Form  -->
