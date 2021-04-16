@@ -56,27 +56,59 @@ echo "<script>
             eval('songInfo'+id).display = block;
         }
     </script>";
-// select all songs which schould be displayed
-$stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
-$stmntGetSongs->execute();
-//fetch the results
-if ($stmntGetSongs->rowCount() == 0) {
-    echo "Looks like you are the first person here. Feel free to upload and present your work to the world :)";
+if (!isset($feedPurp) || $feedPurp == 'main') {
+    // select all songs which schould be displayed
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
+    $stmntGetSongs->execute();
+    $pathAddition = "";
+    //fetch the results
+    if ($stmntGetSongs->rowCount() == 0) {
+        echo "Looks like you are the first person here. Feel free to upload and present your work to the world :)";
+    }
+} elseif ($feedPurp == 'user') {
+    // select all songs which schould be displayed
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files 
+                                    INNER JOIN user ON user.pk_user_id = files.fk_user_id 
+                                    WHERE pk_user_id = ? 
+                                    ORDER BY pk_files_id DESC');
+    $stmntGetSongs->bindParam(1, $_GET['userID'], PDO::PARAM_STR, 5000);
+    $stmntGetSongs->execute();
+    $pathAddition = "../../";
+    //fetch the results
+    if ($stmntGetSongs->rowCount() == 0) {
+        echo "Looks like this user hasn't shared his creativity. Maybe he'll post one day :)";
+    }
+} elseif ($feedPurp == 'profile') {
+    // select all songs which schould be displayed
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files 
+                                    INNER JOIN user ON user.pk_user_id = files.fk_user_id 
+                                    WHERE pk_user_id = ? 
+                                    ORDER BY pk_files_id DESC');
+    $stmntGetSongs->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
+    $stmntGetSongs->execute();
+    $pathAddition = "../../";
+    //fetch the results
+    if ($stmntGetSongs->rowCount() == 0) {
+        echo "Looks like this user hasn't shared his creativity. Maybe he'll post one day :)";
+    }
 }
-foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
-    //set the path of the file
-    $path = str_replace('#','%23',$row['Path']);
-    //select count of downloads for that file
-    $stmntGetDownloads = $pdo->prepare('SELECT * FROM user_downloaded_file WHERE fk_files_id = ?;');
-    $stmntGetDownloads->bindParam(1, $row['pk_files_id'], PDO::PARAM_STR, 5000);
-    $stmntGetDownloads->execute();
-    $downloadsCount = $stmntGetDownloads->rowCount();
 
-    echo "
+if (!isset($feedPurp) || $feedPurp != 'profile') {
+    # code...
+    foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        //set the path of the file
+        $path = $pathAddition . "uploads/" . str_replace('#', '%23', $row['Path']);
+        //select count of downloads for that file
+        $stmntGetDownloads = $pdo->prepare('SELECT * FROM user_downloaded_file WHERE fk_files_id = ?;');
+        $stmntGetDownloads->bindParam(1, $row['pk_files_id'], PDO::PARAM_STR, 5000);
+        $stmntGetDownloads->execute();
+        $downloadsCount = $stmntGetDownloads->rowCount();
+
+        echo "
     <div class=\"songPlayer\">
-    <div class=\"songTitle\"> {$row['Title']} - by {$row['Username']} </div>
+    <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
         <div class=\"songControls\">
-            <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"./uploads/{$path}\"></audio>
+            <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
             <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
             <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
             <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
@@ -92,17 +124,17 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         </div>
         ";
 
-        if($row['fk_monet_id'] == 1){
+        if ($row['fk_monet_id'] == 1) {
             $showDownload = true;
             if (isset($_SESSION['userID'])) {
                 $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
                 $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
                 $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
                 $stmntLookForSimularDownload->execute();
-                
+
                 $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
             }
-            if(isset($_SESSION['download'][$row['pk_files_id']])){
+            if (isset($_SESSION['download'][$row['pk_files_id']])) {
                 $showDownload = false;
             }
 
@@ -110,18 +142,17 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
             if ($showDownload) {
                 echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
             }
-            echo"><i class=\"fa fa-download fa-2x\"></i></a>
+            echo "><i class=\"fa fa-download fa-2x\"></i></a>
                 <br>
-                <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads"; 
+                <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads";
+        } else {
+            echo "<span>Contact the Artist for access to this File!</span>";
         }
-        else {
-            echo "<span>Contact the Artist for access to this File!</span>"; 
-        }
-         
+
         //FIXME volume bar changes for all
         //TODO general soundbar on bottom
-    echo 
-    "</div>
+        echo
+        "</div>
     <script>
         const playBtn{$row['pk_files_id']} = document.getElementById(\"playBtn{$row['pk_files_id']}\");
         const pauseBtn{$row['pk_files_id']} = document.getElementById(\"pauseBtn{$row['pk_files_id']}\");
@@ -179,7 +210,8 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row){
         //vid{$row['pk_files_id']}.volume = 0.2;
 
     </script>";
-    echo "<br>";
+        echo "<br>";
+    }
 }
 
 ?>

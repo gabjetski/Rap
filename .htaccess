@@ -1,4 +1,6 @@
 RewriteEngine on 
 RewriteRule ^feed$ index.php?page=home [NC]
 RewriteRule ^home$ index.php?page=home [NC]
+RewriteRule ^user/([0-9]+)$ /php/userpage.php?userID=$1 [NC]
+RewriteRule ^user/my$ /php/profilesite.php [NC]
 RewriteRule ^all index.php [NC]
