@@ -1,61 +1,70 @@
-<?php
-//TODO Comment Code
-echo "<script>
-        let currPlayingID;
+<!--//TODO Comment Code-->
+<script>
+    let currPlayingID;
 
-        function togglePlayPause(id){
-            eval('playBtn'+id).classList.toggle(\"hidden\");
-            eval('pauseBtn'+id).classList.toggle(\"hidden\"); 
-                //window['pauseBtn'+id].classList.toggle(\"hidden\"); 
-            //console.log('eeeee');
+    function togglePlayPause(id) {
+        eval('playBtn' + id).classList.toggle("hidden");
+        eval('pauseBtn' + id).classList.toggle("hidden");
+        //window['pauseBtn'+id].classList.toggle("hidden"); 
+        //console.log('eeeee');
+    }
+
+    function togglePlayPauseMain() {
+        if (currPlayingID != 0) {
+            //togglePlayPause('M');
         }
+    }
 
-        function togglePlayPauseMain(){
-            if(currPlayingID != 0){
+    function playTrack(id) {
+        const allPlayer = document.getElementsByClassName('audioPlayer');
+        for (let i = 0; i < allPlayer.length; i++) {
+            if (allPlayer[i].paused == false) {
+                //console.log('false: '+i);
+                togglePlayPause(allPlayer.length - i);
                 //togglePlayPause('M');
             }
+            allPlayer[i].pause();
         }
+        eval('player' + id).play();
 
-        function playTrack(id){
-            const allPlayer = document.getElementsByClassName('audioPlayer');
-            for(let i = 0; i<allPlayer.length; i++){
-                if(allPlayer[i].paused == false){
-                    //console.log('false: '+i);
-                    togglePlayPause(allPlayer.length-i);
-                    //togglePlayPause('M');
-                }
-                allPlayer[i].pause();
-            }      
-            eval('player'+id).play(); 
+        currPlayingID = id;
+        //togglePlayPause('M');
+        togglePlayPauseMain();
+        //console.log(id);
+    }
 
-            currPlayingID = id;
-            //togglePlayPause('M');
-            togglePlayPauseMain();
-            //console.log(id);
-        }
+    function pause(id) {
+        eval('player' + id).pause();
+        //window['player'+id].pause();
+        currPlayingID = 0;
+        togglePlayPauseMain();
+        //togglePlayPause('M');
+    }
 
-        function pause(id){
-            eval('player'+id).pause();
-                //window['player'+id].pause();
-            currPlayingID = 0;
-            togglePlayPauseMain();
-            //togglePlayPause('M');
-        }
+    function newVolume(id) {
+        eval('player' + id).volume = eval('volume' + id).value / 100;
+        //window['player'+id].volume = window['volume'+id].value/100;
+    }
 
-        function newVolume(id){
-            eval('player'+id).volume = eval('volume'+id).value/100;
-                //window['player'+id].volume = window['volume'+id].value/100;
-        }
+    function newProgress(id) {
+        eval('player' + id).currentTime = eval('progress' + id).value * eval('player' + id).duration / 100;
+        //window['player'+id].volume = window['volume'+id].value/100;
+    }
 
-        function newProgress(id){
-            eval('player'+id).currentTime = eval('progress'+id).value * eval('player'+id).duration/100;
-                //window['player'+id].volume = window['volume'+id].value/100;
-        }
+    function openInfo(id) {
+        eval('songInfo' + id).style.display = 'block';
+    }
 
-        function openInfo(id){
-            eval('songInfo'+id).display = block;
-        }
-    </script>";
+    function openSettings(id) {
+        eval('settings' + id).style.display = 'block';
+    }
+
+    function closeSettings(id) {
+        eval('settings' + id).style.display = 'none';
+    }
+</script>
+
+<?php
 if (!isset($feedPurp) || $feedPurp == 'main') {
     // select all songs which schould be displayed
     $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
@@ -93,17 +102,17 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     }
 }
 
-if (!isset($feedPurp) || $feedPurp != 'profile') {
-    # code...
-    foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        //set the path of the file
-        $path = $pathAddition . "uploads/" . str_replace('#', '%23', $row['Path']);
-        //select count of downloads for that file
-        $stmntGetDownloads = $pdo->prepare('SELECT * FROM user_downloaded_file WHERE fk_files_id = ?;');
-        $stmntGetDownloads->bindParam(1, $row['pk_files_id'], PDO::PARAM_STR, 5000);
-        $stmntGetDownloads->execute();
-        $downloadsCount = $stmntGetDownloads->rowCount();
 
+# code...
+foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
+    //set the path of the file
+    $path = $pathAddition . "uploads/" . str_replace('#', '%23', $row['Path']);
+    //select count of downloads for that file
+    $stmntGetDownloads = $pdo->prepare('SELECT * FROM user_downloaded_file WHERE fk_files_id = ?;');
+    $stmntGetDownloads->bindParam(1, $row['pk_files_id'], PDO::PARAM_STR, 5000);
+    $stmntGetDownloads->execute();
+    $downloadsCount = $stmntGetDownloads->rowCount();
+    if (!isset($feedPurp) || $feedPurp != 'profile') {
         echo "
     <div class=\"songPlayer\">
     <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
@@ -148,11 +157,80 @@ if (!isset($feedPurp) || $feedPurp != 'profile') {
         } else {
             echo "<span>Contact the Artist for access to this File!</span>";
         }
+    } elseif ($feedPurp == 'profile') {
+        echo "
+    <div class=\"songPlayer\">
+    <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
+        <div class=\"songControls\">
+            <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
+            <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
+            <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
+            <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
+            <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
+        </div>
+        
+        <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
+        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
+            <div id=\"blocker{$row['pk_files_id']}\" class=\"blocker\"></div>
+            <div class=\"form-popup\">
+                <div>HALLOO</div>
+            </div>
+        </div>
+        <button id=\"openSettings{$row['pk_files_id']}\">Edit</button>
+        ";
+?>
+        <div id="settings<?php echo $row['pk_files_id'] ?>" class="trackSettings">
+            <div id="blocker<?php echo $row['pk_files_id'] ?>" onclick="closeSettings(<?php echo $row['pk_files_id'] ?>)" class="blocker"></div>
+            <div class="form-popup">
+                <div>HALLOO</div>
+            </div>
+        </div>
 
-        //FIXME volume bar changes for all
-        //TODO general soundbar on bottom
-        echo
-        "</div>
+        <script>
+            const numb = <?php echo $row['pk_files_id']; ?>;
+            const openSetting<?php echo $row['pk_files_id']; ?> = document.getElementById('openSettings' + numb);
+            const blocker<?php echo $row['pk_files_id']; ?> = document.getElementById('blocker' + numb);
+            const settings<?php echo $row['pk_files_id']; ?> = document.getElementById('settings' + numb);
+
+            eval('openSettings' + numb).addEventListener("click", function() {
+                openSettings(numb);
+            });
+            eval('blocker' + numb).addEventListener("click", function() {
+                closeSettings(numb);
+            });
+        </script>
+
+<?php
+
+        if ($row['fk_monet_id'] == 1) {
+            $showDownload = true;
+            if (isset($_SESSION['userID'])) {
+                $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
+                $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
+                $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
+                $stmntLookForSimularDownload->execute();
+
+                $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
+            }
+            if (isset($_SESSION['download'][$row['pk_files_id']])) {
+                $showDownload = false;
+            }
+
+            echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" ";
+            if ($showDownload) {
+                echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
+            }
+            echo "><i class=\"fa fa-download fa-2x\"></i></a>
+                <br>
+                <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads";
+        } else {
+            echo "<span>Contact the Artist for access to this File!</span>";
+        }
+    }
+    //FIXME volume bar changes for all
+    //TODO general soundbar on bottom
+    echo
+    "</div>
     <script>
         const playBtn{$row['pk_files_id']} = document.getElementById(\"playBtn{$row['pk_files_id']}\");
         const pauseBtn{$row['pk_files_id']} = document.getElementById(\"pauseBtn{$row['pk_files_id']}\");
@@ -210,10 +288,8 @@ if (!isset($feedPurp) || $feedPurp != 'profile') {
         //vid{$row['pk_files_id']}.volume = 0.2;
 
     </script>";
-        echo "<br>";
-    }
+    echo "<br>";
 }
-
 ?>
 <!--<div class="mainPlayer">
     <button class="songPlayPause" id="playBtnM"> Play </button>
