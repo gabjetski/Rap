@@ -113,6 +113,7 @@ try {
     // View Profile Button als Test 
     echo '<h1> <a href="user/my"> View Profile </a></h1>';
 
+
     // View Profil als Icon
     echo '<a href="user/my"><img src="\images\profil-avatar.png" alt="Funkt nicht"></a>';
 

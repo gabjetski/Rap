@@ -37,7 +37,6 @@ try {
     echo '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Insta'] . '" target="_blank"><i class="fa fa-instagram">' . $row['Insta'] . '</i></a></div>';
     echo '<div class="profileForm"><a href="https://twitter.com/' . $row['Twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $row['Twitter'] . '</i></a></div>';
     ?>
-
     <br>
     <hr>
     <br>

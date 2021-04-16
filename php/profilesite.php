@@ -8,6 +8,50 @@ try {
   {
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
   }
+  
+
+
+
+  
+  if(isset($_GET['changeUsername'])){
+    $stmntGetUsernames = $pdo->prepare("SELECT Username FROM user");
+    $stmntGetUsernames->execute();
+    
+    foreach ($stmntGetUsernames->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        if($_GET['newUsername'] == $row['Username']){
+          $_SESSION['usernameChange-Error']['value'] = $_GET['newUsername'];
+          $_SESSION['usernameChange-Error']['id'] = -1;
+          header('Location:/user/my');
+        }
+      }
+
+    if(!preg_match("/^[a-zA-Z0-9ÄÜÖäüö_.\-]{3,20}$/u", $_GET['newUsername'])){
+      $_SESSION['usernameChange-Error']['value'] = $_GET['newUsername'];
+      $_SESSION['usernameChange-Error']['id'] = -2;
+      header('Location:/user/my');
+    } else {
+    unset($_SESSION['usernameChange-Error']);
+    $updateUsername = $pdo->prepare('UPDATE user set Username="'.$_GET['newUsername'].'" where pk_user_id = '.$_SESSION['userID']);
+    $updateUsername->execute();
+    header('Location:/user/my');
+    }
+  }
+
+  if(isset($_SESSION['usernameChange-Error'])){
+    require "profilesiteError.php";
+  }
+
+  
+  if (isset($_GET['quickLog'])) {
+    session_destroy();
+    session_start();
+    $_SESSION['userID'] = '4';
+    header('Location:/user/my');
+  }
+
+  
+
+  
 ?>
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
@@ -23,6 +67,7 @@ try {
   <body>
     <h2><a href="/home"> Rap Plattform</a></h2>
     <?php
+    var_dump($_SESSION);
     // ANCHOR: PHP Zeugs
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
@@ -45,6 +90,18 @@ try {
     }
     ?>
 
+    <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>
+    <input type="button" class="changeUsername" onclick="changeUsername();" value="Change" />
+
+      
+        $updateUsername = $pdo->prepare('UPDATE user set Username="newUsername" where pk_user_id = '<?php //echo $_SESSION['userID']; ?>');
+          $updateUsername->execute();-->
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>
+      <input type="submit" name="changeUsername" class="changeUsername" id="changeUsername" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
+    </form>
+
     <br>
     <hr>
     <br>
@@ -53,6 +110,9 @@ try {
     $feedPurp = 'profile';
     require "./feed.php";
     ?>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="submit" value="quickLog" name="quickLog">
+    </form>
 
 
   <?php

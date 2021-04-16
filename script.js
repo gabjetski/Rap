@@ -286,11 +286,12 @@ document.addEventListener('keyup', function(e){
             document.getElementById("f4pUpload-tags").setCustomValidity("u already used this tag");
             document.getElementById("f4pUpload-tags").reportValidity();
         }
+
         if (f4pTags.length >= 5){
                 document.getElementById("f4pUpload-tags").disabled = true;
                 document.getElementById('f4pUpload-tags').onkeyup = function () {
-                document.getElementById('f4pCountTags').innerHTML = "Characters left: " + 30;
-                  };
+                    document.getElementById('f4pCountTags').innerHTML = "Characters left: " + (30 - this.value.length);
+                };
             }
     }
   });
