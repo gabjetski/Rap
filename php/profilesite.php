@@ -8,8 +8,8 @@ try {
   {
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
   }
-  
-  
+
+
 ?>
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
@@ -19,7 +19,6 @@ try {
     <title>Rap</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <script src="../script.js" defer></script>
   </head>
 
   <body>
@@ -53,7 +52,8 @@ try {
     <input type="button" class="changeUsername" onclick="changeUsername();" value="Change" />
 
       
-        $updateUsername = $pdo->prepare('UPDATE user set Username="newUsername" where pk_user_id = '<?php //echo $_SESSION['userID']; ?>');
+        $updateUsername = $pdo->prepare('UPDATE user set Username="newUsername" where pk_user_id = '<?php //echo $_SESSION['userID']; 
+                                                                                                    ?>');
           $updateUsername->execute();-->
     <br>
     <hr>

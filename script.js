@@ -255,7 +255,7 @@ let f4pText = "";
 let f4pSplitText = [];
 let f4pTextReplaced;
 
-
+//TODO: evtl checken ob tag field gefocussed is (anm. Gerhart)
 // F4P-Event Listener für das Hinzufügen von Tags
 document.addEventListener('keyup', function(e){
     if (e.code === 'Enter' && f4pTags.length < 5) {
