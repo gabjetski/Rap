@@ -182,7 +182,82 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         <div id="settings<?php echo $row['pk_files_id'] ?>" class="trackSettings">
             <div id="blocker<?php echo $row['pk_files_id'] ?>" onclick="closeSettings(<?php echo $row['pk_files_id'] ?>)" class="blocker"></div>
             <div class="form-popup">
-                <div>HALLOO</div>
+                <form id="f4pForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="form-popup" enctype="multipart/form-data">
+                    <h1>F4P Upload</h1>
+                    <div>
+                    <!-- FreeForProfit Upload - Auswahl Beat -->
+                    <label for="f4pUpload-type-beat"><b>Beat</b></label>
+                    <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" onkeypress="return noenter();" required <?php if ($row['fk_upload_type'] == 1) {
+                        echo "checked";
+                    } ?>>
+                    <!-- FreeForProfit Upload - Auswahl Sample -->
+                    <label for="f4pUpload-type-sample"><b>Sample</b></label>
+                    <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" onkeypress="return noenter();" required <?php if ($row['fk_upload_type'] == 2) {
+                        echo "checked";
+                    } ?>>
+                    <!-- FreeForProfit  Upload - BPM -->
+                    <label for="f4pUpload-bpm"><b>BPM*</b></label>
+                    <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" onkeypress="return noenter();" required>
+                    <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
+                    <label for="f4pUpload-key"><b>Key</b></label>
+                    <select name="f4pUpload-key" id="f4pUpload-key">
+                        <option value="0" disabled>Select a key</option>
+                        <option value="C" selected>C Major</option>
+                        <option value="Cm">C minor</option>
+                        <option value="Db">Db Major</option>
+                        <option value="C#m">C# minor</option>
+                        <option value="D">D Major</option>
+                        <option value="Dm">D minor</option>
+                        <option value="Eb">Eb Major</option>
+                        <option value="D#m">D# minor</option>
+                        <option value="E">E Major</option>
+                        <option value="Em">E minor</option>
+                        <option value="F">F Major</option>
+                        <option value="fm">F minor</option>
+                        <option value="Gb">Gb Major</option>
+                        <option value="F#m">F# minor</option>
+                        <option value="G">G Major</option>
+                        <option value="Gm">G minor</option>
+                        <option value="Ab">Ab Major</option>
+                        <option value="G#m">G# minor</option>
+                        <option value="A">A Major</option>
+                        <option value="Am">A minor</option>
+                        <option value="Bb">Bb Major</option>
+                        <option value="A#m">A# minor</option>
+                        <option value="B">B Major</option>
+                        <option value="bm">B minor</option>
+                    </select>
+                    <!-- FreeForProfit - Title des Uploads -->
+                    <label for="f4pUpload-title"><b>Title*</b></label>
+                    <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" onkeypress="return noenter();" value="Hallo">
+                    <!-- Blacklist, checked Banned Words-->
+                    <!-- <button type="button" onclick="checkBanWords();"> Blacklist Check </button> -->
+                    <p>Maximum 200 Characters allowed</p>
+                    <!-- FreeForProfit - Notizen -->
+                    <label for="f4pUpload-notes"><b>Notes</b></label>
+                    <textarea id="f4pUpload-notes" rows="4" cols="50" maxlength="200" name="f4pUpload-desc"></textarea>
+                    <div id="f4pCountNotes">Characters left: 200</div>
+                    <!-- FreeForProfit - Tags -->
+                    <label for="f4pUpload-tags"><b>Tags (5)</b></label>
+                    <input type="text" id="f4pUpload-tags" onkeypress="return noenter();" maxlength="30">
+                    <!-- Hidden Input, der die Values vom F4P Tags Array nimmt -->
+                    <input type="hidden" id="f4pUpload-tags-hidden" name="f4pUpload-tags" value='' />
+                    <!-- Tags Output -->
+                    <div id="f4pOutput"></div>
+                    <div id="f4pCountTags">Characters left: 30</div>
+                    <!-- FreeForProfit - File Upload -->
+                    <label for="f4pUpload-file"><b>File</b></label>
+                    <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
+                    <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onkeypress="return noenter();" required />
+                    <!-- Alle Einträge vom Forms Löschen -->
+                    <button type="button" onclick="clearF4PForm();"> Clear All </button>
+                    <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+                    <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords(); radioButtonsF4P();  bpmF4P(); titleF4P(); fileF4P();" class="continue" id="f4pUpload-submit">Finish</button>
+                    <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
+                    <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
+                    <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
 
