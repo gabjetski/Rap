@@ -18,6 +18,7 @@ try {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="script.js" defer></script>
+    <script src="global.js" defer></script>
   </head>
 
   <?php
@@ -37,6 +38,10 @@ try {
     // ANCHOR: PHP Zeugs
     //Reset or reload page
     if (isset($_GET['reset'])) {
+      session_destroy();
+      header('Location:index.php');
+    }
+    if (isset($_GET['logout'])) {
       session_destroy();
       header('Location:index.php');
     }
@@ -110,12 +115,47 @@ try {
       echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
 
-    // View Profile Button als Test 
+    /* View Profile Button als Test 
     echo '<h1> <a href="user/my"> View Profile </a></h1>';
 
 
     // View Profil als Icon
-    echo '<a href="user/my"><img src="\images\profil-avatar.png" alt="Funkt nicht"></a>';
+    echo '<a href="user/my"><img src="./images/profil-avatar.png" alt="Funkt nicht"></a>';*/
+    ?>
+    <div id="dropMenu">
+      <div class="dropContainer">
+
+        <div id="navToggle" class="nav-toggle">
+          <a href="user/my"><img src="./images/profil-avatar.png" alt="Funkt nicht"></a>
+        </div>
+
+
+        <div id="dropNav" class="dropNav">
+          <ul id="list">
+            <li class="dropList">
+              <h3> <a href="user/my"> View Profile </a></h3>
+            </li>
+            <li class="dropList">
+              <h3> <a href="user/my/settings"> Settings </h3>
+            </li>
+            <li class="dropList">
+              <h3>
+                Notifications
+              </h3>
+            </li>
+            <li class="dropList">
+              <h3>
+                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+                  <input type="submit" value="Log Out" name="logout">
+                </form>
+              </h3>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <?php
 
     //var_dump($_SESSION);
     //echo "<br><br>";
@@ -420,7 +460,7 @@ try {
       <div class="blocker" onclick="closeUploadSuccess();"></div>
       <div class="form-popup">
         <div>
-          <h1>Congratulation!</h1>
+          <h1>Congratulations!</h1>
           <h2>Your upload completed succesfully</h2>
           <!-- <button type="button" class="continueButton" onclick="closeUploadSuccess();" name="viewTrack" value="viewTrack" class="continue">View Your rack here</button> !-->
         </div>

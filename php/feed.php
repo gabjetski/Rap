@@ -154,6 +154,8 @@
     }
 
     function openSettings(id, title, path, tag1, tag2, tag3, tag4, tag5, desc, userID, bpm, key_short, typeID, monetID) {
+        deleteTagFields();
+        tsettags = [];
         settings.style.display = 'block';
 
         sett_title.value = title;
@@ -191,6 +193,23 @@
     document.getElementById('tset-notes').onkeyup = function() {
         document.getElementById('tset-CountNotes').innerHTML = "Characters left: " + (200 - this.value.length);
     };
+
+    function deleteTagFields() {
+        tsettags = [];
+        let allTags = document.querySelectorAll('.tagsListing');
+        const allTagsParent = document.getElementById('tset-Output');
+
+
+        allTags.forEach(element => {
+            allTagsParent.removeChild(element);
+            console.log(element);
+        });
+        tsettags = [];
+        itset = 0;
+        tsetext = "";
+        tsetSplitText = [];
+        tsetextReplaced;
+    }
 
 
     function tagsTSET(a) {
@@ -232,40 +251,7 @@
     // tset-Event Listener für das Hinzufügen von Tags
     document.addEventListener('keyup', function(e) {
         if (e.code === 'Enter' && tsettags.length < 5) {
-            let tsetStr = document.getElementById("tset-tags").value;
-            let tsetWordArray = tsetStr.split(' ').filter(char => char !== "");
-            let tsetResult = "#";
-            tsetSplitText = [];
-
-            if (tsetWordArray.length === 0) {
-                return false;
-            }
-            tsetResult = tsetResult + tsetWordArray.map(word => {
-                let tsetCapitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-                return tsetCapitalizedWord;
-            }).join('');
-
-            if (tsettags.includes(tsetResult) === false) {
-                tsettags.push(tsetResult);
-                document.getElementById('tset-tags-hidden').value = tsettags;
-                tsetext += "<h1 class='tagsListing' id='tsetag" + itset + "'>" + tsettags[itset] + "<button id='tsetBtn" + itset + "' class='btn deleteTags' onclick='deletetsettags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
-                tsetextReplaced = tsetext.replace(/<h1/g, ",<h1");
-                tsetSplitText = tsetextReplaced.split(",");
-                tsetSplitText.splice(0, 1);
-                document.getElementById("tset-tags").value = '';
-                let tsetDiv = document.getElementById('tset-Output').innerHTML = tsetext;
-                itset++;
-            } else {
-                document.getElementById("tset-tags").setCustomValidity("u already used this tag");
-                document.getElementById("tset-tags").reportValidity();
-            }
-
-            if (tsettags.length >= 5) {
-                document.getElementById("tset-tags").disabled = true;
-                document.getElementById('tset-tags').onkeyup = function() {
-                    document.getElementById('tset-CountTags').innerHTML = "Characters left: " + (30 - this.value.length);
-                };
-            }
+            tagsTSET(document.getElementById("tset-tags").value);
         }
     });
 

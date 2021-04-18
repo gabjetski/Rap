@@ -257,3 +257,51 @@ a {
   position: fixed;
   bottom: 50px;
 }
+
+/* CSS for dropdown menu */
+
+.dropContainer {
+  display: flex;
+
+  justify-content: center;
+  text-align: center;
+}
+
+#list {
+  margin: 0;
+  padding: 0;
+  border: 2px solid black;
+}
+
+.dropList {
+  text-decoration: none;
+}
+
+.dropList {
+  list-style-type: none;
+  padding: 2px, 10px, 2px, 10px;
+}
+
+.dropNav {
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+  transition: 350ms height ease-in-out;
+}
+
+.nav-toggle {
+  position: absolute;
+  padding: 10px 30px 10px 30px;
+}
+
+.open {
+  height: 255px;
+}
+
+.navIcon {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
