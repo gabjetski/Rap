@@ -136,7 +136,7 @@ try {
               <h3> <a href="user/my"> View Profile </a></h3>
             </li>
             <li class="dropList">
-              <h3> <a href="user/my/settings"> Settings </h3>
+              <h3> <a href="user/my/settings"> Settings </a></h3>
             </li>
             <li class="dropList">
               <h3>
@@ -339,7 +339,7 @@ try {
           <!-- FreeForProfit - File Upload -->
           <label for="f4pUpload-file"><b>File</b></label>
           <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
-          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onkeypress="return noenter();" required />
+          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onchange="fileValid()" onkeypress="return noenter();" required />
           <!-- Alle Einträge vom Forms Löschen -->
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
@@ -367,16 +367,16 @@ try {
           <label for="tagInfo"><b><button type="button" class="classBtn" onclick="closeTagged(); openTagInfo();">Learn More About Tags</button></b></label><br>
           <!-- Tagged Upload - Auswahl Beat -->
           <label for="taggedUpload-type-beat"><b>Beat</b></label>
-          <input type="radio" id="taggedUpload-type-beat" name="taggedUpload-type" value="beat" checked>
+          <input type="radio" id="taggedUpload-type-beat" name="taggedUpload-type" value="beat" required checked>
           <!-- Tagged Upload - Auswahl Sample -->
           <label for="taggedUpload-type-sample"><b>Sample</b></label>
-          <input type="radio" id="taggedUpload-type-sample" name="taggedUpload-type" value="sample">
+          <input type="radio" id="taggedUpload-type-sample" name="taggedUpload-type" value="sample" required>
           <!-- Tagged Upload - Auswahl Snippet-->
           <label for="taggedUpload-type-snippet"><b>Snippet</b></label>
           <input type="radio" id="taggedUpload-type-snippet" name="taggedUpload-type" value="snippet">
           <!-- Tagged Upload - BPM -->
           <label for="taggedUpload-bpm"><b>BPM</b></label>
-          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" pattern="^\d{2,3}$" value="123">
+          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" pattern="^\d{2,3}$" onkeypress="return noenter();" value="123" required>
           <!-- Tagged Upload - Key -->
           <label for="taggedUpload-key"><b>Key</b></label>
           <select name="taggedUpload-key" id="taggedUpload-key">
@@ -427,7 +427,7 @@ try {
           <!-- Tagged - File Upload -->
           <label for="taggedUpload-file"><b> File</b></label>
           <!--<input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
-          <input type="file" accept=".mp3" id="taggedUpload-file" name="taggedUpload-file" required />
+          <input type="file" accept=".mp3" id="taggedUpload-file" onchange="fileValid2()" onkeypress="return noenter();" name="taggedUpload-file" required />
           <!-- Alle Einträge vom Forms Löschen -->
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->

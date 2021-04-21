@@ -73,6 +73,38 @@ try {
     }
   }
 
+
+  // ANCHOR Password Validations und Änderungen
+  if(isset($_GET['changePassword'])){
+    unset($_SESSION['passwordChange-Error']);
+    $oldPassword = $pdo->query('SELECT Passwort from User where pk_user_id = '.$_SESSION['userID']);
+    $oldPassword2 = $oldPassword->fetch(PDO::FETCH_ASSOC);
+    //echo '<div>' . $_GET['newPassword'] . '</div>';
+    $hashedPassword = sha1($_GET['newPassword']);
+    echo $hashedPassword;
+    print_r($oldPassword2);
+    // Altes Passwort ist neues
+    if($hashedPassword == $oldPassword2['Passwort']){
+      echo "<hr>";
+      $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
+      $_SESSION['passwordChange-Error']['id'] = -1;
+      header('Location:/user/my/settings');
+    } 
+
+    // Passwort hat Validations gefailed
+    if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/u", $_GET['newPassword'])){
+      $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
+      $_SESSION['passwordChange-Error']['id'] = -2;
+      header('Location:/user/my/settings');
+    } 
+    // keine Fehler
+    if(!isset($_SESSION['passwordChange-Error'])) {
+    $updateUsername = $pdo->prepare('UPDATE user set Passwort="'.sha1($_GET['newPassword']).'" where pk_user_id = '.$_SESSION['userID']);
+    $updateUsername->execute();
+    //header('Location:/user/my/settings');
+    }
+  }
+
   // Wenn ein Error Auftritt, SettingsError aufrufen
     if (isset($_SESSION['emailChange-Error'])) {
         require "settingsError.php";
@@ -80,6 +112,10 @@ try {
     
     if (isset($_SESSION['usernameChange-Error'])) { 
         require "settingsError.php";
+    }
+
+    if (isset($_SESSION['passwordChange-Error'])) {
+      require "settingsError.php";
     }
   
   /*if (isset($_GET['quickLog'])) {
@@ -121,28 +157,46 @@ try {
     elseif ($_SESSION['userID'] > 0) {
       $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
       $stmntGetUserInfos->execute();
+      $oldPassword = $pdo->prepare('SELECT Passwort from User where pk_user_id = '.$_SESSION['userID']);
+      $oldPassword->execute();
       foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $_SESSION['userName'] = $row['Username'];
         $_SESSION['email'] = $row['Email'];
-
       }
+
+      
+
       echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
       echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div>';
-
     }
     ?>
 
     <!-- Username Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container" id="usernameForm">
       <input type="text" placeholder="Enter new Username" name="newUsername" id="change-username" required>
-      <input type="submit" name="changeUsername" class="changeUsername" id="changeUsername" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
+      <input type="submit" name="changeUsername" id="changeUsername" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
     </form>
 
     <!-- Email Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter new Email" name="newEmail" id="change-email" required>
-      <input type="submit" name="changeEmail" class="changeEmail" id="changeEmail" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
+      <input type="submit" name="changeEmail" id="changeEmail" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
     </form>
+
+    <!-- Password Change -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter Password" name="newPassword" id="change-password" required>
+      <input type="submit" name="changePassword" id="changePassword" value="Change"/>
+    </form>
+
+    <!-- Password Change Repeat
+    <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="password" placeholder="Repeat Password" name="changePasswordRepeat" id="change-password-repeat" required>
+      <input type="submit" name="changePasword" id="changePassword" value="Change"/>
+    </form>
+
+    -->
+
 
     <br>
     <hr>

@@ -146,7 +146,7 @@
     }
 
     function openInfo(id) {
-        eval('songInfo' + id).style.display = 'block';
+        eval('songInfo' + id).classList.toggle('songInfoOpen');
     }
 
     function noenter() {
@@ -344,6 +344,21 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         echo "
     <div class=\"songPlayer\">
     <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
+        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
+            <h3>Description:</h3>
+            <div>{$row['Description']}</div>
+            <h3>BPM:</h3>
+            <div>{$row['fk_bpm_id']}</div>
+            <h3>Tags:</h3>
+            <div>
+                <div>{$row['Tag1']}</div>
+                <div>{$row['Tag2']}</div>
+                <div>{$row['Tag3']}</div>
+                <div>{$row['Tag4']}</div>
+                <div>{$row['Tag5']}</div>
+            </div>
+            <script>console.log({$row['Description']});</script>
+        </div>
         <div class=\"songControls\">
             <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
             <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
@@ -353,12 +368,6 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         </div>
         
         <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
-        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
-            <div id=\"blocker{$row['pk_files_id']}\" class=\"blocker\"></div>
-            <div class=\"form-popup\">
-                <div>HALLOO</div>
-            </div>
-        </div>
         ";
 
         if ($row['fk_monet_id'] == 1) {
@@ -389,7 +398,17 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         echo "
     <div class=\"songPlayer\">
     <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
+        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
+            <h2>Description:</h2>
+            <div>{$row['Description']}</div>
+            <h2>BPM:</h2>
+            <div>{$row['fk_bpm_id']}</div>
+            <h2>Tags:</h2>
+            <div>{$row['Tag1']}</div>
+            <script>console.log({$row['Description']});</script>
+        </div>
         <div class=\"songControls\">
+            <p>penis</p>
             <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
             <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
             <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
@@ -398,12 +417,6 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         </div>
         
         <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
-        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
-            <div id=\"blocker{$row['pk_files_id']}\" class=\"blocker\"></div>
-            <div class=\"form-popup\">
-                <div>HALLOO</div>
-            </div>
-        </div>
         <button id=\"openSettings{$row['pk_files_id']}\">Edit</button>
         ";
 

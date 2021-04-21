@@ -243,6 +243,12 @@ a {
 /* info popup for tracks*/
 .songInfo {
   display: none;
+  height: 0px;
+  overflow: hidden;
+}
+.songInfoOpen {
+  display: block;
+  height: min-content
 }
 .trackSettings {
   display: none;

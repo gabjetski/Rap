@@ -50,6 +50,7 @@
         <?php
     } 
     
+    // Errors for Email
     if (isset($_SESSION['emailChange-Error'])) {
         //echo $_SESSION['loginError']['id'];
     $errValues = ['change-email' => $_SESSION['emailChange-Error']['value']];
@@ -80,6 +81,41 @@
 
                 //call error function
                 errorFun('changeEmail', <?php echo 'values, "'.$errMsg.'"';?>);
+            };
+        </script>
+        <?php
+    }
+
+    if (isset($_SESSION['passwordChange-Error'])) {
+    $errValues = ['change-password' => $_SESSION['passwordChange-Error']['value']];
+        switch ($_SESSION['passwordChange-Error']['id']) {
+            case '-1':  // -1 -> username is already used
+                //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
+                $errMsg = 'Idk bruh';
+                break;
+            case '-2':  // -1 -> username is already used
+                //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
+                $errMsg = 'Wrong Validations Idiot';
+                break;
+            default:
+                $errMsg = 'Success!';
+                break;
+        }
+        
+        ?>
+
+        <script type="text/javascript">
+            //funtion triggered onload
+            window.onload = function(){
+                //store values from php array into js array
+                let values = [];
+                <?php
+                    foreach ($errValues as $key => $value)
+                        echo "values['".$key."'] = '".$value."';";
+                    ?>
+
+                //call error function
+                errorFun('changePassword', <?php echo 'values, "'.$errMsg.'"';?>);
             };
         </script>
         <?php
