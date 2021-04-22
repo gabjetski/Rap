@@ -120,6 +120,108 @@
         </script>
         <?php
     }
+
+    // ANCHOR FirstName Errors
+    if (isset($_SESSION['firstNameChange-Error'])) {
+        $errValues = ['change-firstName' => $_SESSION['firstNameChange-Error']['value']];
+            switch ($_SESSION['firstNameChange-Error']['id']) {
+                case '-1':  // -1 -> First Name failed the validation
+                    $errMsg = 'Your new First Name failed the validation';
+                    break;
+                case '-2':  // -2 -> New First Name is the current First Name
+                    $errMsg = 'Please make sure to use a new First Name';
+                    break; 
+                default:
+                    $errMsg = 'Success!';
+                    break;
+            }
+            
+            ?>
+    
+            <script type="text/javascript">
+                //funtion triggered onload
+                window.onload = function(){
+                    //store values from php array into js array
+                    let values = [];
+                    <?php
+                        foreach ($errValues as $key => $value)
+                            echo "values['".$key."'] = '".$value."';";
+                        ?>
+    
+                    //call error function
+                    errorFun('changeFirstName', <?php echo 'values, "'.$errMsg.'"';?>);
+                };
+            </script>
+            <?php
+        }
+
+        // ANCHOR LastName Errors 
+        if (isset($_SESSION['lastNameChange-Error'])) {
+            $errValues = ['change-lastName' => $_SESSION['lastNameChange-Error']['value']];
+                switch ($_SESSION['lastNameChange-Error']['id']) {
+                    case '-1':  // -1 -> Last Name failed the validation
+                        $errMsg = 'Your new Last Name failed the validation';
+                        break;
+                    case '-2':  // -2 -> New First Name is the current First Name
+                        $errMsg = 'Please make sure to use a new Last Name';
+                        break;    
+                    default:
+                        $errMsg = 'Success!';
+                        break;
+                }
+                
+                ?>
+        
+                <script type="text/javascript">
+                    //funtion triggered onload
+                    window.onload = function(){
+                        //store values from php array into js array
+                        let values = [];
+                        <?php
+                            foreach ($errValues as $key => $value)
+                                echo "values['".$key."'] = '".$value."';";
+                            ?>
+        
+                        //call error function
+                        errorFun('changeLastName', <?php echo 'values, "'.$errMsg.'"';?>);
+                    };
+                </script>
+                <?php
+            }
+
+            // ANCHOR Instagram Errors
+            if (isset($_SESSION['instagramNameChange-Error'])) {
+                $errValues = ['change-instagramName' => $_SESSION['instagramNameChange-Error']['value']];
+                    switch ($_SESSION['instagramNameChange-Error']['id']) {
+                        case '-1':  // -1 -> Last Name failed the validation
+                            $errMsg = 'Instagram Username is not available';
+                            break;
+                        case '-2':  // -2 -> New First Name is the current First Name
+                            $errMsg = 'Wrong Validation Bruh';
+                            break;    
+                        default:
+                            $errMsg = 'Success!';
+                            break;
+                    }
+                    
+                    ?>
+            
+                    <script type="text/javascript">
+                        //funtion triggered onload
+                        window.onload = function(){
+                            //store values from php array into js array
+                            let values = [];
+                            <?php
+                                foreach ($errValues as $key => $value)
+                                    echo "values['".$key."'] = '".$value."';";
+                                ?>
+            
+                            //call error function
+                            errorFun('changeInstagramName', <?php echo 'values, "'.$errMsg.'"';?>);
+                        };
+                    </script>
+                    <?php
+                }
 ?>
 
 

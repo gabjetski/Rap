@@ -105,6 +105,92 @@ try {
     }
   }
 
+  // ANCHOR First Name Validations und Änderungen
+  if(isset($_GET['changeFirstName'])){
+    unset($_SESSION['firstNameChange-Error']);
+    $stmntGetFirstNames = $pdo->prepare("SELECT FirstName FROM user");
+    $stmntGetFirstNames->execute();
+
+    // neuer Username ist nicht vergeben hat aber Validations gefailed
+    if(!preg_match("/^[a-zA-ZÄÜÖäüö]{1,}$/u", $_GET['newFirstName'])){
+      echo "akdafuigidash";
+      $_SESSION['firstNameChange-Error']['value'] = $_GET['newFirstName'];
+      $_SESSION['firstNameChange-Error']['id'] = -1;
+      header('Location:/user/my/settings');
+    }
+
+    if($_SESSION['firstName'] == $_GET['newFirstName']){
+      $_SESSION['firstNameChange-Error']['value'] = $_GET['newFirstName'];
+      $_SESSION['firstNameChange-Error']['id'] = -2;
+      header('Location:/user/my/settings');
+    } 
+
+    // keine Fehler
+    if(!isset($_SESSION['firstNameChange-Error'])) {
+    $updateFirstName = $pdo->prepare('UPDATE user set FirstName="'.$_GET['newFirstName'].'" where pk_user_id = '.$_SESSION['userID']);
+    $updateFirstName->execute();
+    header('Location:/user/my/settings');
+    }
+  }
+
+  // ANCHOR Last Name Validations und Änderungen 
+  if(isset($_GET['changeLastName'])){
+    unset($_SESSION['lastNameChange-Error']);
+    $stmntGetLastNames = $pdo->prepare("SELECT LastName FROM user");
+    $stmntGetLastNames->execute();
+
+    // neuer Username ist nicht vergeben hat aber Validations gefailed
+    if(!preg_match("/^[a-zA-ZÄÜÖäüö]{1,}$/u", $_GET['newLastName'])){
+      echo "akdafuigidash";
+      $_SESSION['lastNameChange-Error']['value'] = $_GET['newLastName'];
+      $_SESSION['lastNameChange-Error']['id'] = -1;
+      header('Location:/user/my/settings');
+    } 
+
+    if($_SESSION['lastName'] == $_GET['newLastName']){
+      $_SESSION['lastNameChange-Error']['value'] = $_GET['newLastName'];
+      $_SESSION['lastNameChange-Error']['id'] = -2;
+      header('Location:/user/my/settings');
+    }
+    // keine Fehler
+    if(!isset($_SESSION['lastNameChange-Error'])) {
+    $updateLastName = $pdo->prepare('UPDATE user set LastName="'.$_GET['newLastName'].'" where pk_user_id = '.$_SESSION['userID']);
+    $updateLastName->execute();
+    header('Location:/user/my/settings');
+    }
+  }
+
+  // ANCHRO Instagram Validations und Änderungen
+  if(isset($_GET['changeInstagramName'])){
+    unset($_SESSION['instagramNameChange-Error']);
+    $stmntGetInstagram = $pdo->prepare("SELECT Insta FROM user");
+    $stmntGetInstagram->execute();
+
+    // vergebener Instagram Username
+    foreach ($stmntGetInstagram->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        if($_GET['newInstagramName'] == $row['Insta']){
+          $_SESSION['instagramNameChange-Error']['value'] = $_GET['newInstagramName'];
+          $_SESSION['instagramNameChange-Error']['id'] = -1;
+          header('Location:/user/my/settings');
+        }
+      }
+
+    // neuer Username ist nicht vergeben hat aber Validations gefailed
+    if(!preg_match("/^[a-zA-Z0-9._]+$/u", $_GET['newInstagramName'])){
+      echo "akdafuigidash";
+      $_SESSION['instagramNameChange-Error']['value'] = $_GET['newInstagramName'];
+      $_SESSION['instagramNameChange-Error']['id'] = -2;
+      header('Location:/user/my/settings');
+    } 
+
+    // keine Fehler
+    if(!isset($_SESSION['instagramNameChange-Error'])) {
+      $updateInstagramName = $pdo->prepare('UPDATE user set Insta="'.$_GET['newInstagramName'].'" where pk_user_id = '.$_SESSION['userID']);
+      $updateInstagramName->execute();
+      header('Location:/user/my/settings');
+    }
+  }
+
   // Wenn ein Error Auftritt, SettingsError aufrufen
     if (isset($_SESSION['emailChange-Error'])) {
         require "settingsError.php";
@@ -115,6 +201,18 @@ try {
     }
 
     if (isset($_SESSION['passwordChange-Error'])) {
+      require "settingsError.php";
+    }
+
+    if (isset($_SESSION['firstNameChange-Error'])) {
+      require "settingsError.php";
+    }
+
+    if (isset($_SESSION['lastNameChange-Error'])) {
+      require "settingsError.php";
+    }
+
+    if (isset($_SESSION['instagramNameChange-Error'])) {
       require "settingsError.php";
     }
   
@@ -162,30 +260,36 @@ try {
       foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $_SESSION['userName'] = $row['Username'];
         $_SESSION['email'] = $row['Email'];
+        $_SESSION['firstName'] = $row['FirstName'];
+        $_SESSION['lastName'] = $row['LastName'];
+        $_SESSION['instagram'] = $row['Insta'];
       }
 
       
 
       echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
       echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-instagram"> Instagram: '. $_SESSION['instagram'] . '</i></div>';
     }
     ?>
 
     <!-- Username Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container" id="usernameForm">
-      <input type="text" placeholder="Enter new Username" name="newUsername" id="change-username" required>
+      <input type="text" placeholder="Enter new Username" name="newUsername" id="change-username" value = "<?php echo $_SESSION['userName'] ?>">
       <input type="submit" name="changeUsername" id="changeUsername" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
     </form>
 
     <!-- Email Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
-      <input type="text" placeholder="Enter new Email" name="newEmail" id="change-email" required>
+      <input type="text" placeholder="Enter new Email" name="newEmail" id="change-email" value = "<?php echo $_SESSION['email'] ?>">
       <input type="submit" name="changeEmail" id="changeEmail" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
     </form>
 
     <!-- Password Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
-      <input type="text" placeholder="Enter Password" name="newPassword" id="change-password" required>
+      <input type="text" placeholder="Enter Password" name="newPassword" id="change-password">
       <input type="submit" name="changePassword" id="changePassword" value="Change"/>
     </form>
 
@@ -197,6 +301,23 @@ try {
 
     -->
 
+    <!-- First Name Change -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter New First Name" name="newFirstName" id="change-firstName" value = "<?php echo $_SESSION['firstName'] ?>">
+      <input type="submit" name="changeFirstName" id="changeFirstName" value="Change"/>
+    </form>
+
+    <!-- Last Name Change -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter New Last Name" name="newLastName" id="change-lastName" value = "<?php echo $_SESSION['lastName'] ?>">
+      <input type="submit" name="changeLastName" id="changeLastName" value="Change"/>
+    </form>
+
+    <!-- Instagram Change / Instagram Connect -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter Instagram Name" name="newInstagramName" id="change-instagramName" value = "<?php echo $_SESSION['instagram'] ?>">
+      <input type="submit" name="changeInstagramName" id="changeInstagramName" value="Change"/>
+    </form>
 
     <br>
     <hr>
