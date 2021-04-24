@@ -222,6 +222,74 @@
                     </script>
                     <?php
                 }
+
+                // ANCHOR Twitter Errors
+            if (isset($_SESSION['twitterNameChange-Error'])) {
+                $errValues = ['change-twitterName' => $_SESSION['twitterNameChange-Error']['value']];
+                    switch ($_SESSION['twitterNameChange-Error']['id']) {
+                        case '-1':  // -1 -> Last Name failed the validation
+                            $errMsg = 'Twitter Username is not available';
+                            break;
+                        case '-2':  // -2 -> New First Name is the current First Name
+                            $errMsg = 'Wrong Validation Bruh';
+                            break;    
+                        default:
+                            $errMsg = 'Success!';
+                            break;
+                    }
+                    
+                    ?>
+            
+                    <script type="text/javascript">
+                        //funtion triggered onload
+                        window.onload = function(){
+                            //store values from php array into js array
+                            let values = [];
+                            <?php
+                                foreach ($errValues as $key => $value)
+                                    echo "values['".$key."'] = '".$value."';";
+                                ?>
+            
+                            //call error function
+                            errorFun('changeTwitterName', <?php echo 'values, "'.$errMsg.'"';?>);
+                        };
+                    </script>
+                    <?php
+                }
+
+                 // ANCHOR Soundcloud Errors
+            if (isset($_SESSION['scNameChange-Error'])) {
+                $errValues = ['change-scName' => $_SESSION['scNameChange-Error']['value']];
+                    switch ($_SESSION['scNameChange-Error']['id']) {
+                        case '-1':  // -1 -> Last Name failed the validation
+                            $errMsg = 'Sc Username is not available';
+                            break;
+                        case '-2':  // -2 -> New First Name is the current First Name
+                            $errMsg = 'Wrong Validation Bruh';
+                            break;    
+                        default:
+                            $errMsg = 'Success!';
+                            break;
+                    }
+                    
+                    ?>
+            
+                    <script type="text/javascript">
+                        //funtion triggered onload
+                        window.onload = function(){
+                            //store values from php array into js array
+                            let values = [];
+                            <?php
+                                foreach ($errValues as $key => $value)
+                                    echo "values['".$key."'] = '".$value."';";
+                                ?>
+            
+                            //call error function
+                            errorFun('changeScName', <?php echo 'values, "'.$errMsg.'"';?>);
+                        };
+                    </script>
+                    <?php
+                }
 ?>
 
 

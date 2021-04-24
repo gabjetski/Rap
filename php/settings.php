@@ -160,7 +160,7 @@ try {
     }
   }
 
-  // ANCHRO Instagram Validations und Änderungen
+  // ANCHOR Instagram Validations und Änderungen
   if(isset($_GET['changeInstagramName'])){
     unset($_SESSION['instagramNameChange-Error']);
     $stmntGetInstagram = $pdo->prepare("SELECT Insta FROM user");
@@ -191,6 +191,83 @@ try {
     }
   }
 
+  // ANCHOR Twitter Validations und Änderungen
+  if(isset($_GET['changeTwitterName'])){
+    unset($_SESSION['twitterNameChange-Error']);
+    $stmntGetTwitter = $pdo->prepare("SELECT Twitter FROM user");
+    $stmntGetTwitter->execute();
+
+    // vergebener Instagram Username
+    foreach ($stmntGetTwitter->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        if($_GET['newTwitterName'] == $row['Twitter']){
+          $_SESSION['twitterNameChange-Error']['value'] = $_GET['newTwitterName'];
+          $_SESSION['twitterNameChange-Error']['id'] = -1;
+          header('Location:/user/my/settings');
+        }
+      }
+
+    // neuer Username ist nicht vergeben hat aber Validations gefailed
+    if(!preg_match("/^[A-Za-z0-9_]+$/u", $_GET['newTwitterName'])){
+      echo "akdafuigidash";
+      $_SESSION['twitterNameChange-Error']['value'] = $_GET['newTwitterName'];
+      $_SESSION['twitterNameChange-Error']['id'] = -2;
+      header('Location:/user/my/settings');
+    } 
+
+    // keine Fehler
+    if(!isset($_SESSION['twitterNameChange-Error'])) {
+      $updateTwitterName = $pdo->prepare('UPDATE user set Twitter="'.$_GET['newTwitterName'].'" where pk_user_id = '.$_SESSION['userID']);
+      $updateTwitterName->execute();
+      header('Location:/user/my/settings');
+    }
+  }
+
+   // ANCHOR Soundcloud Validations und Änderungen
+   if(isset($_GET['changeScName'])){
+    unset($_SESSION['scNameChange-Error']);
+    $stmntGetSc = $pdo->prepare("SELECT Soundcloud FROM user");
+    $stmntGetSc->execute();
+
+    // vergebener Instagram Username
+    foreach ($stmntGetSc->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        if($_GET['newScName'] == $row['Soundcloud']){
+          $_SESSION['scNameChange-Error']['value'] = $_GET['newScName'];
+          $_SESSION['scNameChange-Error']['id'] = -1;
+          header('Location:/user/my/settings');
+        }
+      }
+
+    // neuer Username ist nicht vergeben hat aber Validations gefailed
+    // FIXME 
+    if(!preg_match("/^[A-Za-z0-9_.]+$/u", $_GET['newScName'])){
+      echo "akdafuigidash";
+      $_SESSION['scNameChange-Error']['value'] = $_GET['newScName'];
+      $_SESSION['scNameChange-Error']['id'] = -2;
+      header('Location:/user/my/settings');
+    } 
+
+    // keine Fehler
+    if(!isset($_SESSION['scNameChange-Error'])) {
+      $updateTwitterName = $pdo->prepare('UPDATE user set Soundcloud="'.$_GET['newScName'].'" where pk_user_id = '.$_SESSION['userID']);
+      $updateTwitterName->execute();
+      header('Location:/user/my/settings');
+    }
+  }
+
+  // ANCHOR Bio Validations und Änderungen
+  if(isset($_GET['changeBioName'])){
+    unset($_SESSION['bioNameChange-Error']);
+    $stmntGetBio = $pdo->prepare("SELECT Bio FROM user");
+    $stmntGetBio->execute();
+    
+    // keine Fehler
+    if(!isset($_SESSION['bioNameChange-Error'])) {
+      $updateBioName = $pdo->prepare('UPDATE user set Bio="'.$_GET['newBioName'].'" where pk_user_id = '.$_SESSION['userID']);
+      $updateBioName->execute();
+      header('Location:/user/my/settings');
+    }
+  }
+
   // Wenn ein Error Auftritt, SettingsError aufrufen
     if (isset($_SESSION['emailChange-Error'])) {
         require "settingsError.php";
@@ -213,6 +290,18 @@ try {
     }
 
     if (isset($_SESSION['instagramNameChange-Error'])) {
+      require "settingsError.php";
+    }
+
+    if (isset($_SESSION['twitterNameChange-Error'])) {
+      require "settingsError.php";
+    }
+
+    if (isset($_SESSION['scNameChange-Error'])) {
+      require "settingsError.php";
+    }
+
+    if (isset($_SESSION['bioNameChange-Error'])) {
       require "settingsError.php";
     }
   
@@ -263,6 +352,10 @@ try {
         $_SESSION['firstName'] = $row['FirstName'];
         $_SESSION['lastName'] = $row['LastName'];
         $_SESSION['instagram'] = $row['Insta'];
+        $_SESSION['twitter'] = $row['Twitter'];
+        $_SESSION['soundcloud'] = $row['Soundcloud'];
+        $_SESSION['bio'] = $row['Bio'];
+
       }
 
       
@@ -272,6 +365,9 @@ try {
       echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
       echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
       echo '<div class="profileForm"><i class="fa fa-instagram"> Instagram: '. $_SESSION['instagram'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-twitter"> Twitter: '. $_SESSION['twitter'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-soundcloud"> Soundcloud: '. $_SESSION['soundcloud'] . '</i></div>';
+      echo '<div class="profileForm"> Bio: '. $_SESSION['bio'] . '</div>';
     }
     ?>
 
@@ -317,6 +413,22 @@ try {
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter Instagram Name" name="newInstagramName" id="change-instagramName" value = "<?php echo $_SESSION['instagram'] ?>">
       <input type="submit" name="changeInstagramName" id="changeInstagramName" value="Change"/>
+    </form>
+
+    <!-- Twitter Change / Twitter Connect -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter Twitter Name" name="newTwitterName" id="change-twitterName" value = "<?php echo $_SESSION['twitter'] ?>">
+      <input type="submit" name="changeTwitterName" id="changeTwitterName" value="Change"/>
+    </form>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter Sc Name" name="newScName" id="change-scName" value = "<?php echo $_SESSION['soundcloud'] ?>">
+      <input type="submit" name="changeScName" id="changeScName" value="Change"/>
+    </form>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <textarea placeholder="Enter Bio" rows="4" cols="50" name="newBioName" id="change-bioName" value = "<?php echo $_SESSION['bio'] ?>" maxlength="200"></textarea>
+      <input type="submit" name="changeBioName" id="changeBioName" value="Change"/>
     </form>
 
     <br>
