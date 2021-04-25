@@ -19,11 +19,18 @@ try {
     <title>Rap</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <style>
+    i{
+      float:left;
+    }
+    </style>
   </head>
 
   <body>
     <h2><a href="/home"> Rap Plattform</a></h2>
     <a href="/user/my/settings"><i class="fa fa-gear fa-5x"></i></a>
+    <hr>
     <?php
     var_dump($_SESSION);
     // ANCHOR: PHP Zeugs
@@ -41,14 +48,21 @@ try {
         $_SESSION['insta'] = $row['Insta'];
         $_SESSION['twitter'] = $row['Twitter'];
       }
-      echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
-      echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>';
-      echo '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['insta'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div>';
-      echo '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div>';
-      echo '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div>';
-      echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
-
     }
+    echo '<hr>';
+    echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
+    echo '<br>';
+    echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
+    echo '<hr>';
+    echo '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['insta'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div>';
+    echo '<br>';
+    echo '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div>';
+    echo '<br>';
+    echo '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div>';
+    echo '<br>';
+    echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>';
+
+
     ?>
 
     <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>
@@ -62,6 +76,7 @@ try {
     <hr>
     <br>
 
+    
     <?php
     $feedPurp = 'profile';
     require "./feed.php";

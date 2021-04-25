@@ -32,6 +32,7 @@ try {
     $stmntGetUserInfos->execute();
     foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
     }
+    
     ?>
     <br>
     <hr>

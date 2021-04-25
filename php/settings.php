@@ -238,7 +238,7 @@ try {
       }
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
-    // FIXME 
+    // FIXME Soundcloud validation?
     if(!preg_match("/^[A-Za-z0-9_.]+$/u", $_GET['newScName'])){
       echo "akdafuigidash";
       $_SESSION['scNameChange-Error']['value'] = $_GET['newScName'];
@@ -371,6 +371,10 @@ try {
     }
     ?>
 
+
+    <a href="/user/my"><i class="fa fa-arrow-circle-left fa-5x"></i></a>
+
+
     <!-- Username Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container" id="usernameForm">
       <input type="text" placeholder="Enter new Username" name="newUsername" id="change-username" value = "<?php echo $_SESSION['userName'] ?>">
@@ -383,6 +387,7 @@ try {
       <input type="submit" name="changeEmail" id="changeEmail" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
     </form>
 
+    <!-- FIXME Passwort geht tbh überhaupt nicht, fixen! -->
     <!-- Password Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter Password" name="newPassword" id="change-password">
@@ -426,6 +431,7 @@ try {
       <input type="submit" name="changeScName" id="changeScName" value="Change"/>
     </form>
 
+    <!-- FIXME in Textarea wird die aktuelle Bio nicht angezeigt -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <textarea placeholder="Enter Bio" rows="4" cols="50" name="newBioName" id="change-bioName" value = "<?php echo $_SESSION['bio'] ?>" maxlength="200"></textarea>
       <input type="submit" name="changeBioName" id="changeBioName" value="Change"/>
