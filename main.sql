@@ -11,7 +11,7 @@ CREATE OR REPLACE TABLE User(
     LastName VARCHAR(30) NOT NULL, 
     Username VARCHAR(20) NOT NULL, 
     Email VARCHAR(50) NOT NULL, 
-    Passwort VARCHAR(30) NOT NULL, 
+    Passwort VARCHAR(40) NOT NULL, 
     Bio VARCHAR(100), 
     Insta VARCHAR(40), 
     Twitter VARCHAR(40), 
@@ -203,7 +203,7 @@ CREATE OR REPLACE PROCEDURE createUser(
     IN `p_last_name` VARCHAR(30), 
     IN `p_username` VARCHAR(20), 
     IN `p_email` VARCHAR(50), 
-    IN `p_passwort` VARCHAR(30), 
+    IN `p_passwort` VARCHAR(40), 
     IN `p_passwort_sec` VARCHAR(30), 
     OUT `p_id` INT) 
     BEGIN
@@ -267,7 +267,7 @@ END;
 
 CREATE OR REPLACE PROCEDURE loginUser(
     IN `p_input` VARCHAR(50), 
-    IN `p_passwort` VARCHAR(30), 
+    IN `p_passwort` VARCHAR(40), 
     OUT `p_id` INT) 
     BEGIN
     DECLARE v_usernameCheck INT;

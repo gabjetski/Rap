@@ -75,27 +75,30 @@ try {
 
 
   // ANCHOR Password Validations und Änderungen
-  if(isset($_GET['changePassword'])){
+  if(isset($_GET['changePassword']) && $_GET['newPassword'] == $_GET['newPasswordRepeat']){
     unset($_SESSION['passwordChange-Error']);
     $oldPassword = $pdo->query('SELECT Passwort from User where pk_user_id = '.$_SESSION['userID']);
     $oldPassword2 = $oldPassword->fetch(PDO::FETCH_ASSOC);
     //echo '<div>' . $_GET['newPassword'] . '</div>';
     $hashedPassword = sha1($_GET['newPassword']);
+
     echo $hashedPassword;
+
     print_r($oldPassword2);
+
     // Altes Passwort ist neues
     if($hashedPassword == $oldPassword2['Passwort']){
       echo "<hr>";
       $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
       $_SESSION['passwordChange-Error']['id'] = -1;
-      header('Location:/user/my/settings');
+      //header('Location:/user/my/settings');
     } 
 
     // Passwort hat Validations gefailed
     if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/u", $_GET['newPassword'])){
       $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
       $_SESSION['passwordChange-Error']['id'] = -2;
-      header('Location:/user/my/settings');
+      //header('Location:/user/my/settings');
     } 
     // keine Fehler
     if(!isset($_SESSION['passwordChange-Error'])) {
@@ -103,6 +106,9 @@ try {
     $updateUsername->execute();
     //header('Location:/user/my/settings');
     }
+  } else{
+    $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
+    $_SESSION['passwordChange-Error']['id'] = -3;
   }
 
   // ANCHOR First Name Validations und Änderungen
@@ -118,12 +124,12 @@ try {
       $_SESSION['firstNameChange-Error']['id'] = -1;
       header('Location:/user/my/settings');
     }
-
+    /*
     if($_SESSION['firstName'] == $_GET['newFirstName']){
       $_SESSION['firstNameChange-Error']['value'] = $_GET['newFirstName'];
       $_SESSION['firstNameChange-Error']['id'] = -2;
       header('Location:/user/my/settings');
-    } 
+    } */
 
     // keine Fehler
     if(!isset($_SESSION['firstNameChange-Error'])) {
@@ -147,11 +153,12 @@ try {
       header('Location:/user/my/settings');
     } 
 
-    if($_SESSION['lastName'] == $_GET['newLastName']){
+    /*if($_SESSION['lastName'] == $_GET['newLastName']){
       $_SESSION['lastNameChange-Error']['value'] = $_GET['newLastName'];
       $_SESSION['lastNameChange-Error']['id'] = -2;
       header('Location:/user/my/settings');
-    }
+    }*/
+    
     // keine Fehler
     if(!isset($_SESSION['lastNameChange-Error'])) {
     $updateLastName = $pdo->prepare('UPDATE user set LastName="'.$_GET['newLastName'].'" where pk_user_id = '.$_SESSION['userID']);
@@ -324,6 +331,11 @@ try {
     <title>Rap</title>
     <link rel="stylesheet" href="../../style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <style>
+    i{
+      float:left;
+    }
+    </style>
   </head>
 
   <body>
@@ -358,16 +370,27 @@ try {
 
       }
 
-      
-
-      echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
-      echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div>';
+      echo '<hr>';
       echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
+      echo '<hr>';
       echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
-      echo '<div class="profileForm"><i class="fa fa-instagram"> Instagram: '. $_SESSION['instagram'] . '</i></div>';
-      echo '<div class="profileForm"><i class="fa fa-twitter"> Twitter: '. $_SESSION['twitter'] . '</i></div>';
-      echo '<div class="profileForm"><i class="fa fa-soundcloud"> Soundcloud: '. $_SESSION['soundcloud'] . '</i></div>';
-      echo '<div class="profileForm"> Bio: '. $_SESSION['bio'] . '</div>';
+      echo '<hr>';
+      echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
+      echo '<br>';
+      echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
+      echo '<hr>';
+      echo '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div>';
+      echo '<br>';
+      echo '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div>';
+      echo '<br>';
+      echo '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div>';
+      echo '<br>';
+      echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>';
+      echo '<hr>';
+      echo '<hr>';
+
+    
+    
     }
     ?>
 
@@ -390,17 +413,11 @@ try {
     <!-- FIXME Passwort geht tbh überhaupt nicht, fixen! -->
     <!-- Password Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
-      <input type="text" placeholder="Enter Password" name="newPassword" id="change-password">
+      <input type="password" placeholder="Enter Password" name="newPassword" id="change-password" maxlength="30" required>
+      <input type="password" placeholder="Repeat Password" name="newPasswordRepeat" id="change-password-repeat" maxlength="30" required>
       <input type="submit" name="changePassword" id="changePassword" value="Change"/>
     </form>
 
-    <!-- Password Change Repeat
-    <form action="<?php // echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
-      <input type="password" placeholder="Repeat Password" name="changePasswordRepeat" id="change-password-repeat" required>
-      <input type="submit" name="changePasword" id="changePassword" value="Change"/>
-    </form>
-
-    -->
 
     <!-- First Name Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">

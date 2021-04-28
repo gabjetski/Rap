@@ -87,15 +87,18 @@
     }
 
     if (isset($_SESSION['passwordChange-Error'])) {
-    $errValues = ['change-password' => $_SESSION['passwordChange-Error']['value']];
         switch ($_SESSION['passwordChange-Error']['id']) {
             case '-1':  // -1 -> username is already used
                 //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
-                $errMsg = 'Idk bruh';
+                $errMsg = 'Your new password is your old password';
                 break;
             case '-2':  // -1 -> username is already used
                 //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
                 $errMsg = 'Wrong Validations Idiot';
+                break;
+            case '-3':  // -1 -> username is already used
+            //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
+                $errMsg = 'Not matching';
                 break;
             default:
                 $errMsg = 'Success!';
@@ -109,11 +112,6 @@
             window.onload = function(){
                 //store values from php array into js array
                 let values = [];
-                <?php
-                    foreach ($errValues as $key => $value)
-                        echo "values['".$key."'] = '".$value."';";
-                    ?>
-
                 //call error function
                 errorFun('changePassword', <?php echo 'values, "'.$errMsg.'"';?>);
             };
@@ -128,9 +126,9 @@
                 case '-1':  // -1 -> First Name failed the validation
                     $errMsg = 'Your new First Name failed the validation';
                     break;
-                case '-2':  // -2 -> New First Name is the current First Name
+                /*case '-2':  // -2 -> New First Name is the current First Name
                     $errMsg = 'Please make sure to use a new First Name';
-                    break; 
+                    break; */
                 default:
                     $errMsg = 'Success!';
                     break;
@@ -162,9 +160,9 @@
                     case '-1':  // -1 -> Last Name failed the validation
                         $errMsg = 'Your new Last Name failed the validation';
                         break;
-                    case '-2':  // -2 -> New First Name is the current First Name
+                    /*case '-2':  // -2 -> New First Name is the current First Name
                         $errMsg = 'Please make sure to use a new Last Name';
-                        break;    
+                        break;*/
                     default:
                         $errMsg = 'Success!';
                         break;

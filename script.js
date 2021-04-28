@@ -99,6 +99,11 @@ function validatePassword(){
     let password = document.getElementById("register-psw");
     let confirm_password = document.getElementById("register-psw-repeat");
 
+    console.log(password);
+    
+
+    console.log(confirm_password);
+    
     if(password.value === confirm_password.value) {
     confirm_password.setCustomValidity("");
     } else {
@@ -513,47 +518,57 @@ function addDownloadCount(id) {
     const oldNumber = count.innerHTML;
     count.innerHTML = parseInt(oldNumber,10) + 1;
     //alert(oldNumber);
-
+}
 // Uploaddata Validations
-function fileValid() {
-    const fi = document.getElementById('f4pUpload-file');
+function fileValidation() {
+    console.log('looolll');
+    let fi = document.getElementById('f4pUpload-file');
+    console.log(fi);
     // Check if any file is selected.
     if (fi.files.length > 0) {
-        for (const i = 0; i <= fi.files.length - 1; i++) {
-
-            const fsize = fi.files.item(i).size;
-            const file = Math.round((fsize / 1024));
+        for (let i = 0; i <= fi.files.length - 1; i++) {
+            console.log('for---');
+            console.log(fi.files.length);
+            let fsize = fi.files.item(i).size;
+            console.log('---');
+            console.log(fsize);
+            let file = Math.round((fsize / 1024));
+            console.log('---');
+            console.log(file);
             // The size of the file.
-            if (file >= 102400) {
-                alert(
-                  "File too Big, please select a file less than 100mib");
-            } else {
-                document.getElementById('size').innerHTML = '<b>'
-                + file + '</b> KB';
-            }
+            if (file >= 10) {
+                fi.value = '';
+                document.getElementById('errorFile').style.display = '';
+                document.getElementById('errorFile').innerHTML = 'Select smaller file';
+            } 
         }
     }
 }
 
-function fileValid2() {
-    const fi = document.getElementById('taggedupload-file');
+function fileValidation2() {
+    console.log('looolll');
+    let fi = document.getElementById('taggedUpload-file');
+    console.log(fi);
     // Check if any file is selected.
     if (fi.files.length > 0) {
-        for (const i = 0; i <= fi.files.length - 1; i++) {
-
-            const fsize = fi.files.item(i).size;
-            const file = Math.round((fsize / 1024));
+        for (let i = 0; i <= fi.files.length - 1; i++) {
+            console.log('for---');
+            console.log(fi.files.length);
+            let fsize = fi.files.item(i).size;
+            console.log('---');
+            console.log(fsize);
+            let file = Math.round((fsize / 1024));
+            console.log('---');
+            console.log(file);
             // The size of the file.
-            if (file >= 100000) {
-                alert(
-                  "File too Big, please select a file less than 100mib");
-            } else {
-                document.getElementById('size').innerHTML = '<b>'
-                + file + '</b> KB';
-            }
+            if (file >= 10) {
+                fi.value = '';
+                document.getElementById('errorFile2').style.display = '';
+                document.getElementById('errorFile2').innerHTML = 'Select smaller file';
+            } 
         }
     }
 }
 
 
-}
+

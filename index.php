@@ -111,22 +111,12 @@ try {
       foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $_SESSION['userUName'] = $row['Username'];
       }
-      echo '<div class="openForm">' . $_SESSION['userID'] . ' - ' . $_SESSION['userUName'] . '</div>';
-      echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
-    }
-
-    /* View Profile Button als Test 
-    echo '<h1> <a href="user/my"> View Profile </a></h1>';
-
-
-    // View Profil als Icon
-    echo '<a href="user/my"><img src="./images/profil-avatar.png" alt="Funkt nicht"></a>';*/
-    ?>
+      echo '
     <div id="dropMenu">
       <div class="dropContainer">
 
         <div id="navToggle" class="nav-toggle">
-          <a href="user/my"><img src="./images/profil-avatar.png" alt="Funkt nicht"></a>
+          <a href="user/my"><div class="openForm">' . $_SESSION['userID'] . ' - ' . $_SESSION['userUName'] . '</div></a>
         </div>
 
 
@@ -145,7 +135,7 @@ try {
             </li>
             <li class="dropList">
               <h3>
-                <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+                <form action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" method="get" class="form-container">
                   <input type="submit" value="Log Out" name="logout">
                 </form>
               </h3>
@@ -155,7 +145,17 @@ try {
 
       </div>
     </div>
-    <?php
+    ';
+      echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
+    }
+
+    /* View Profile Button als Test 
+    echo '<h1> <a href="user/my"> View Profile </a></h1>';
+
+
+    // View Profil als Icon
+    echo '<a href="user/my"><img src="./images/profil-avatar.png" alt="Funkt nicht"></a>';*/
+    
 
     //var_dump($_SESSION);
     //echo "<br><br>";
@@ -278,7 +278,7 @@ try {
     <div id="freeForProfitForm">
       <div class="blocker" onclick="closeF4P();"></div>
       <form id="f4pForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="form-popup" enctype="multipart/form-data">
-        <h1>F4P Upload</h1>
+        <h1>F4P Upload</h1> 
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
@@ -339,10 +339,11 @@ try {
           <!-- FreeForProfit - File Upload -->
           <label for="f4pUpload-file"><b>File</b></label>
           <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
-          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onchange="fileValid()" onkeypress="return noenter();" required />
+          <input type="file" accept=".mp3" id="f4pUpload-file" name="f4pUpload-file" onchange="fileValidation()" onkeypress="return noenter();" required />
           <!-- Alle Einträge vom Forms Löschen -->
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+          <p class="error" id="errorFile" style="display: none"></p>
           <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords(); radioButtonsF4P();  bpmF4P(); titleF4P(); fileF4P();" class="continue" id="f4pUpload-submit">Finish</button>
           <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
@@ -426,11 +427,12 @@ try {
           <div id="taggedCountTags">Characters left: 30</div>
           <!-- Tagged - File Upload -->
           <label for="taggedUpload-file"><b> File</b></label>
-          <!--<input type="hidden" name="MAX_FILE_SIZE" value="1000000"/>-->
-          <input type="file" accept=".mp3" id="taggedUpload-file" onchange="fileValid2()" onkeypress="return noenter();" name="taggedUpload-file" required />
+          <!-- <input type="hidden" name="MAX_FILE_SIZE" value="1000"/> -->
+          <input type="file" accept=".mp3" id="taggedUpload-file" onchange="fileValidation2()" onkeypress="return noenter();" name="taggedUpload-file" required />
           <!-- Alle Einträge vom Forms Löschen -->
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
+          <p class="error" id="errorFile2" style="display: none"></p>
           <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" id="taggedUpload-submit">Finish</button>
           <!-- onclick="openUploadSuccess();" -->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>

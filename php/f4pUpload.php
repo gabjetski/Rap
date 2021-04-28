@@ -22,7 +22,7 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     $_SESSION['uploadError']['id'] = -11;
       //echo "File must be a mp3 file";
       //check if uploaded file is to large
-  }elseif ($_FILES["f4pUpload-file"]["size"] > 104857600) {
+  }elseif ($_FILES["f4pUpload-file"]["size"] > 104857600) { //104857600
     $_SESSION['uploadError']['id'] = -12;
       //echo "Sorry, your file is too large.";
   }elseif ($_POST['f4pUpload-bpm'] == '') {

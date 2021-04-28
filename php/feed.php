@@ -113,8 +113,7 @@
         const allPlayer = document.getElementsByClassName('audioPlayer');
         for (let i = 0; i < allPlayer.length; i++) {
             if (allPlayer[i].paused == false) {
-                //console.log('false: '+i);
-                togglePlayPause(allPlayer.length - i);
+                togglePlayPause(allPlayer[i].id.replace('player', ''));
                 //togglePlayPause('M');
             }
             allPlayer[i].pause();
@@ -295,7 +294,8 @@
 <?php
 if (!isset($feedPurp) || $feedPurp == 'main') {
     // select all songs which schould be displayed
-    $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id
+    INNER JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
     $stmntGetSongs->execute();
     $pathAddition = "";
     //fetch the results
@@ -306,6 +306,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     // select all songs which schould be displayed
     $stmntGetSongs = $pdo->prepare('SELECT * FROM files 
                                     INNER JOIN user ON user.pk_user_id = files.fk_user_id 
+                                    INNER JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id 
                                     WHERE pk_user_id = ? 
                                     ORDER BY pk_files_id DESC');
     $stmntGetSongs->bindParam(1, $_GET['userID'], PDO::PARAM_STR, 5000);
@@ -318,7 +319,8 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
 } elseif ($feedPurp == 'profile') {
     // select all songs which schould be displayed
     $stmntGetSongs = $pdo->prepare('SELECT * FROM files 
-                                    INNER JOIN user ON user.pk_user_id = files.fk_user_id 
+                                    INNER JOIN user ON user.pk_user_id = files.fk_user_id  
+                                    INNER JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id 
                                     WHERE pk_user_id = ? 
                                     ORDER BY pk_files_id DESC');
     $stmntGetSongs->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
@@ -326,7 +328,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     $pathAddition = "../../";
     //fetch the results
     if ($stmntGetSongs->rowCount() == 0) {
-        echo "Looks like this user hasn't shared his creativity. Maybe he'll post one day :)";
+        echo "You could start uploading your beats :)";
     }
 }
 
@@ -341,23 +343,30 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     $stmntGetDownloads->execute();
     $downloadsCount = $stmntGetDownloads->rowCount();
     if (!isset($feedPurp) || $feedPurp != 'profile') {
+        $tags = "";
+        $notags = 0;
+        for($i = 1; $i <= 5; $i++){
+            if($row['Tag'.$i] != ""){ 
+                $tags .= $row['Tag'.$i].", "; 
+            } else {
+                $notags++;
+            }
+            if($notags == 5){
+                $tags = "The artist has not added any tags to this Track!";
+            }
+        }
+        $tags = rtrim($tags, ", ");
         echo "
     <div class=\"songPlayer\">
-    <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
+    <h class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
         <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
             <h3>Description:</h3>
             <div>{$row['Description']}</div>
-            <h3>BPM:</h3>
-            <div>{$row['fk_bpm_id']}</div>
+            <div>{$row['fk_bpm_id']} bpm, {$row['root_note']} {$row['Addition']}</div>
             <h3>Tags:</h3>
             <div>
-                <div>{$row['Tag1']}</div>
-                <div>{$row['Tag2']}</div>
-                <div>{$row['Tag3']}</div>
-                <div>{$row['Tag4']}</div>
-                <div>{$row['Tag5']}</div>
+                <div>$tags</div>
             </div>
-            <script>console.log({$row['Description']});</script>
         </div>
         <div class=\"songControls\">
             <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
@@ -395,31 +404,42 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
             echo "<span>Contact the Artist for access to this File!</span>";
         }
     } elseif ($feedPurp == 'profile') {
+        $tags = "";
+        $notags = 0;
+        for($i = 1; $i <= 5; $i++){
+            if($row['Tag'.$i] != ""){ 
+                $tags .= $row['Tag'.$i].", "; 
+            } else {
+                $notags++;
+            }
+            if($notags == 5){
+                $tags = "The artist has not added any tags to this Track!";
+            }
+        }
+        $tags = rtrim($tags, ", ");
         echo "
-    <div class=\"songPlayer\">
-    <div class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></div>
-        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
-            <h2>Description:</h2>
-            <div>{$row['Description']}</div>
-            <h2>BPM:</h2>
-            <div>{$row['fk_bpm_id']}</div>
-            <h2>Tags:</h2>
-            <div>{$row['Tag1']}</div>
-            <script>console.log({$row['Description']});</script>
-        </div>
-        <div class=\"songControls\">
-            <p>penis</p>
-            <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
-            <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
-            <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
-            <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
-            <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
-        </div>
-        
-        <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
-        <button id=\"openSettings{$row['pk_files_id']}\">Edit</button>
+        <div class=\"songPlayer\">
+        <h class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
+            <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
+                <h3>Description:</h3>
+                <div>{$row['Description']}</div>
+                <div>{$row['fk_bpm_id']} bpm, {$row['root_note']} {$row['Addition']}</div>
+                <h3>Tags:</h3>
+                <div>
+                    <div>$tags</div>
+                </div>
+            </div>
+            <div class=\"songControls\">
+                <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
+                <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
+                <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
+                <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
+                <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
+            </div>
+            
+            <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
+            <button id=\"openSettings{$row['pk_files_id']}\">Edit</button>
         ";
-
         $stmntGetKey = $pdo->prepare('SELECT * FROM keysignature WHERE pk_key_signature_id = ' . $row['fk_key_signature_id']);
         $stmntGetKey->execute();
         foreach ($stmntGetKey->fetchAll(PDO::FETCH_ASSOC) as $rowKey) {

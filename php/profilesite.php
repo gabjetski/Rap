@@ -20,6 +20,7 @@ try {
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
+    <script src="../global.js" defer></script>
     <style>
     i{
       float:left;
@@ -29,6 +30,41 @@ try {
 
   <body>
     <h2><a href="/home"> Rap Plattform</a></h2>
+    <?php echo '
+    <div id="dropMenu">
+      <div class="dropContainer">
+
+        <div id="navToggle" class="nav-toggle">
+          <a href="../user/my"><div class="openForm">' . $_SESSION['userID'] . ' - ' . $_SESSION['userUName'] . '</div></a>
+        </div>
+
+
+        <div id="dropNav" class="dropNav">
+          <ul id="list">
+            <li class="dropList">
+              <h3> <a href="../user/my"> View Profile </a></h3>
+            </li>
+            <li class="dropList">
+              <h3> <a href="../user/my/settings"> Settings </a></h3>
+            </li>
+            <li class="dropList">
+              <h3>
+                Notifications
+              </h3>
+            </li>
+            <li class="dropList">
+              <h3>
+                <form action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" method="get" class="form-container">
+                  <input type="submit" value="Log Out" name="logout">
+                </form>
+              </h3>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    '; ?>
     <a href="/user/my/settings"><i class="fa fa-gear fa-5x"></i></a>
     <hr>
     <?php
@@ -48,7 +84,6 @@ try {
         $_SESSION['insta'] = $row['Insta'];
         $_SESSION['twitter'] = $row['Twitter'];
       }
-    }
     echo '<hr>';
     echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
     echo '<br>';
@@ -61,8 +96,6 @@ try {
     echo '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div>';
     echo '<br>';
     echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>';
-
-
     ?>
 
     <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>
@@ -87,6 +120,7 @@ try {
 
 
   <?php
+    }
   $pdo = null;
 } catch (PDOException $e) {
   //catch potentual error

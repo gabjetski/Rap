@@ -91,6 +91,7 @@ a {
   width: 100%;
   opacity: 0.9;
 }
+
 .signupButton :hover {
   opacity: -1;
 }
@@ -202,7 +203,7 @@ a {
 /* Styling for player */
 .songPlayer {
   background-color: #f5edd1;
-  padding: 20px;
+  padding: 10px;
   border: solid 2px black;
   border-radius: 10px;
 }
@@ -289,7 +290,8 @@ a {
 }
 
 .dropNav {
-  padding-top: 30px;
+  margin-left: 80%;
+  left: 80%;
   height: 0;
   overflow: hidden;
   transition: 350ms height ease-in-out;
