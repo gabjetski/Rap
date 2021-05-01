@@ -92,13 +92,13 @@
                 //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
                 $errMsg = 'Your new password is your old password';
                 break;
-            case '-2':  // -1 -> username is already used
+            case '-2':  // -3 -> username is already used
                 //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
                 $errMsg = 'Wrong Validations Idiot';
                 break;
-            case '-3':  // -1 -> username is already used
+            case '-3':  // -3 -> username is already used
             //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
-                $errMsg = 'Not matching';
+                $errMsg = 'Not matchinggg';
                 break;
             default:
                 $errMsg = 'Success!';

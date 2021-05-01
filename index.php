@@ -224,7 +224,7 @@ try {
 
             <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
             <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName()" name="registerSubmit" value="Register">Sign Up</button>
-            <button type="submit" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here!</button>
+            <button type="button" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here!</button>
             <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
           </fieldset>
         </form>

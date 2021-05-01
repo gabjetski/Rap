@@ -75,41 +75,44 @@ try {
 
 
   // ANCHOR Password Validations und Änderungen
-  if(isset($_GET['changePassword']) && $_GET['newPassword'] == $_GET['newPasswordRepeat']){
-    unset($_SESSION['passwordChange-Error']);
-    $oldPassword = $pdo->query('SELECT Passwort from User where pk_user_id = '.$_SESSION['userID']);
-    $oldPassword2 = $oldPassword->fetch(PDO::FETCH_ASSOC);
-    //echo '<div>' . $_GET['newPassword'] . '</div>';
-    $hashedPassword = sha1($_GET['newPassword']);
+  if(isset($_GET['changePassword'])){
+    if ($_GET['newPassword'] == $_GET['newPasswordRepeat']) {
+      unset($_SESSION['passwordChange-Error']);
+      $oldPassword = $pdo->query('SELECT Passwort from User where pk_user_id = '.$_SESSION['userID']);
+      $oldPassword2 = $oldPassword->fetch(PDO::FETCH_ASSOC);
+      //echo '<div>' . $_GET['newPassword'] . '</div>';
+      $hashedPassword = sha1($_GET['newPassword']);
 
-    echo $hashedPassword;
+      echo $hashedPassword;
 
-    print_r($oldPassword2);
+      print_r($oldPassword2);
 
-    // Altes Passwort ist neues
-    if($hashedPassword == $oldPassword2['Passwort']){
-      echo "<hr>";
+      // Altes Passwort ist neues
+      if($hashedPassword == $oldPassword2['Passwort']){
+        echo "<hr>";
+        $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
+        $_SESSION['passwordChange-Error']['id'] = -1;
+        header('Location:/user/my/settings');
+      }
+
+      // Passwort hat Validations gefailed
+      if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/u", $_GET['newPassword'])){
+        $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
+        $_SESSION['passwordChange-Error']['id'] = -2;
+        header('Location:/user/my/settings');
+      } 
+      // keine Fehler
+      if(!isset($_SESSION['passwordChange-Error'])) {
+      $updateUsername = $pdo->prepare('UPDATE user set Passwort="'.sha1($_GET['newPassword']).'" where pk_user_id = '.$_SESSION['userID']);
+      $updateUsername->execute();
+      header('Location:/user/my/settings');
+      }
+    } else {
       $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
-      $_SESSION['passwordChange-Error']['id'] = -1;
-      //header('Location:/user/my/settings');
-    } 
-
-    // Passwort hat Validations gefailed
-    if(!preg_match("/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/u", $_GET['newPassword'])){
-      $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
-      $_SESSION['passwordChange-Error']['id'] = -2;
-      //header('Location:/user/my/settings');
-    } 
-    // keine Fehler
-    if(!isset($_SESSION['passwordChange-Error'])) {
-    $updateUsername = $pdo->prepare('UPDATE user set Passwort="'.sha1($_GET['newPassword']).'" where pk_user_id = '.$_SESSION['userID']);
-    $updateUsername->execute();
-    //header('Location:/user/my/settings');
+      $_SESSION['passwordChange-Error']['id'] = -3;
+      header('Location:/user/my/settings');
     }
-  } else{
-    $_SESSION['passwordChange-Error']['value'] = $_GET['newPassword'];
-    $_SESSION['passwordChange-Error']['id'] = -3;
-  }
+  } 
 
   // ANCHOR First Name Validations und Änderungen
   if(isset($_GET['changeFirstName'])){
@@ -194,8 +197,13 @@ try {
     if(!isset($_SESSION['instagramNameChange-Error'])) {
       $updateInstagramName = $pdo->prepare('UPDATE user set Insta="'.$_GET['newInstagramName'].'" where pk_user_id = '.$_SESSION['userID']);
       $updateInstagramName->execute();
-      header('Location:/user/my/settings');
     }
+  }
+
+  // ANCHOR Delete Instagram Name 
+  if(isset($_GET['deleteInstagramName'])){
+    $deleteInstagramName = $pdo->prepare('UPDATE user set Insta = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteInstagramName->execute();
   }
 
   // ANCHOR Twitter Validations und Änderungen
@@ -367,30 +375,26 @@ try {
         $_SESSION['twitter'] = $row['Twitter'];
         $_SESSION['soundcloud'] = $row['Soundcloud'];
         $_SESSION['bio'] = $row['Bio'];
-
       }
 
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $row['FirstName'] . '</i></div>';
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $row['LastName'] . '</i></div>';
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user">' . $row['Username'] . '</i></div>';
       echo '<br>';
       echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
       echo '<hr>';
-      echo '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div>';
-      echo '<br>';
-      echo '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div>';
-      echo '<br>';
-      echo '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div>';
-      echo '<br>';
-      echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>';
+      echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Insta'] . '" target="_blank"><i class="fa fa-instagram">' . $row['Insta'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $row['Twitter'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['email']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Email'] . '" target="_blank"><i class="fa fa-envelope">' . $row['Email'] . '</i></a></div><br>' : '');
       echo '<hr>';
-      echo '<hr>';
+      echo '<hr>';  
 
-    
-    
+      // INSTAGRAM 
+
     }
     ?>
 
@@ -410,7 +414,6 @@ try {
       <input type="submit" name="changeEmail" id="changeEmail" value="Change" /> <!--index.php?newUsername=peter&changeUsername=Change-->
     </form>
 
-    <!-- FIXME Passwort geht tbh überhaupt nicht, fixen! -->
     <!-- Password Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="password" placeholder="Enter Password" name="newPassword" id="change-password" maxlength="30" required>
@@ -435,6 +438,7 @@ try {
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter Instagram Name" name="newInstagramName" id="change-instagramName" value = "<?php echo $_SESSION['instagram'] ?>">
       <input type="submit" name="changeInstagramName" id="changeInstagramName" value="Change"/>
+      <input type="submit" name="deleteInstagramName" id="deleteInstagramName" value="Delete" />
     </form>
 
     <!-- Twitter Change / Twitter Connect -->
@@ -450,7 +454,7 @@ try {
 
     <!-- FIXME in Textarea wird die aktuelle Bio nicht angezeigt -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
-      <textarea placeholder="Enter Bio" rows="4" cols="50" name="newBioName" id="change-bioName" value = "<?php echo $_SESSION['bio'] ?>" maxlength="200"></textarea>
+      <textarea placeholder="Enter Bio" rows="4" cols="50" name="newBioName" id="change-bioName" value = "<?php echo $_SESSION['bio'] ?>" maxlength="200"> <?php echo $_SESSION['bio'] ?> </textarea>
       <input type="submit" name="changeBioName" id="changeBioName" value="Change"/>
     </form>
 

@@ -99,15 +99,14 @@ function validatePassword(){
     let password = document.getElementById("register-psw");
     let confirm_password = document.getElementById("register-psw-repeat");
 
-    console.log(password);
-    
-
-    console.log(confirm_password);
-    
     if(password.value === confirm_password.value) {
     confirm_password.setCustomValidity("");
+    console.log(password);
+    console.log(confirm_password);
     } else {
-    confirm_password.setCustomValidity("Passwords Don't Match");
+    confirm_password.setCustomValidity("Passwords don't match");
+    console.log(password);
+    console.log(confirm_password);
     }
 }
 
@@ -153,8 +152,6 @@ function fName(){
     let fName = document.getElementById("register-firstName");
     const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
 
-    console.log(pattern.test(fName.value));
-
     if(fName.value.length < 1){
         fName.setCustomValidity("Your first name can't be empty");
     } else if(pattern.test(fName.value) === false){
@@ -168,8 +165,6 @@ function fName(){
 function lName(){
     let lName = document.getElementById("register-lastName");
     const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
-
-    console.log(pattern.test(fName.value));
 
     if(lName.value.length < 1){
         lName.setCustomValidity("Your last name can't be empty");
@@ -519,24 +514,20 @@ function addDownloadCount(id) {
     count.innerHTML = parseInt(oldNumber,10) + 1;
     //alert(oldNumber);
 }
+
+
 // Uploaddata Validations
 function fileValidation() {
-    console.log('looolll');
     let fi = document.getElementById('f4pUpload-file');
-    console.log(fi);
+
     // Check if any file is selected.
     if (fi.files.length > 0) {
         for (let i = 0; i <= fi.files.length - 1; i++) {
-            console.log('for---');
-            console.log(fi.files.length);
             let fsize = fi.files.item(i).size;
-            console.log('---');
-            console.log(fsize);
             let file = Math.round((fsize / 1024));
-            console.log('---');
-            console.log(file);
+            
             // The size of the file.
-            if (file >= 10) {
+            if (file >= 100000) {
                 fi.value = '';
                 document.getElementById('errorFile').style.display = '';
                 document.getElementById('errorFile').innerHTML = 'Select smaller file';
@@ -546,22 +537,16 @@ function fileValidation() {
 }
 
 function fileValidation2() {
-    console.log('looolll');
     let fi = document.getElementById('taggedUpload-file');
-    console.log(fi);
+    
     // Check if any file is selected.
     if (fi.files.length > 0) {
         for (let i = 0; i <= fi.files.length - 1; i++) {
-            console.log('for---');
-            console.log(fi.files.length);
             let fsize = fi.files.item(i).size;
-            console.log('---');
-            console.log(fsize);
             let file = Math.round((fsize / 1024));
-            console.log('---');
-            console.log(file);
+            
             // The size of the file.
-            if (file >= 10) {
+            if (file >= 100000) {
                 fi.value = '';
                 document.getElementById('errorFile2').style.display = '';
                 document.getElementById('errorFile2').innerHTML = 'Select smaller file';
