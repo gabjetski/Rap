@@ -1,10 +1,18 @@
 <!--//TODO Comment Code-->
+
+<?php
+if(isset($_GET['tset-submit'])){
+    require 'editTracks.php';
+}
+?>
+
 <div id="settings" class="trackSettings" style="display: none;">
     <div id="blocker" onclick="closeSettings()" class="blocker"></div>
     <div class="form-popup">
         <form id="trackSettingsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="form-popup" enctype="multipart/form-data">
             <h1>Edit Track</h1>
             <div>
+                <input type="hidden" id="tset-track-id-hidden" name="tset-track-id" />
                 <!-- FreeForProfit Upload - Auswahl Beat -->
                 <label for="tset-type-beat"><b>Beat</b></label>
                 <input type="radio" id="tset-type-beat" name="tset-type" value="beat" onkeypress="return noenter();">
@@ -82,6 +90,7 @@
     const blocker = document.getElementById('blocker');
 
     const sett_title = document.getElementById('tset-title');
+    const sett_id = document.getElementById('tset-track-id-hidden');
     const sett_tags = document.getElementById('tset-tags');
     const sett_desc = document.getElementById('tset-notes');
     const sett_bpm = document.getElementById('tset-bpm');
@@ -157,11 +166,12 @@
         tsettags = [];
         settings.style.display = 'block';
 
+        sett_id.value = id;
         sett_title.value = title;
         tsettagsArr = [tag1, tag2, tag3, tag4, tag5];
         tsettagsArr.forEach(element => {
             console.log(element);
-            tagsTSET(element.substr(1));
+            tagsTSET(element.substring(1));
         });
         sett_desc.value = desc;
         sett_keyID.value = key_short;
@@ -250,6 +260,7 @@
     // tset-Event Listener für das Hinzufügen von Tags
     document.addEventListener('keyup', function(e) {
         if (e.code === 'Enter' && tsettags.length < 5) {
+            console.log(document.getElementById("tset-tags").value);
             tagsTSET(document.getElementById("tset-tags").value);
         }
     });
@@ -358,7 +369,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $tags = rtrim($tags, ", ");
         echo "
     <div class=\"songPlayer\">
-    <h class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
+    <h class=\"songTitle\"> {$row['Title']} - by <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
         <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
             <h3>Description:</h3>
             <div>{$row['Description']}</div>
@@ -419,7 +430,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $tags = rtrim($tags, ", ");
         echo "
         <div class=\"songPlayer\">
-        <h class=\"songTitle\"> {$row['Title']} - by <a href=\"user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
+        <h class=\"songTitle\"> {$row['Title']} - by <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
             <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
                 <h3>Description:</h3>
                 <div>{$row['Description']}</div>

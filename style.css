@@ -297,11 +297,6 @@ a {
   transition: 350ms height ease-in-out;
 }
 
-.nav-toggle {
-  position: absolute;
-  padding: 10px 30px 10px 30px;
-}
-
 .open {
   height: 255px;
 }

@@ -20,7 +20,6 @@ try {
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-    <script src="../global.js" defer></script>
     <style>
     i{
       float:left;
@@ -31,6 +30,7 @@ try {
   <body>
     <h2><a href="/home"> Rap Plattform</a></h2>
     <?php echo '
+    <script src="../global.js" defer></script>
     <div id="dropMenu">
       <div class="dropContainer">
 
@@ -80,22 +80,29 @@ try {
       $stmntGetUserInfos->execute();
       foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $_SESSION['userName'] = $row['Username'];
-        $_SESSION['mail'] = $row['Email'];
-        $_SESSION['insta'] = $row['Insta'];
+        $_SESSION['email'] = $row['Email'];
+        $_SESSION['firstName'] = $row['FirstName'];
+        $_SESSION['lastName'] = $row['LastName'];
+        $_SESSION['instagram'] = $row['Insta'];
         $_SESSION['twitter'] = $row['Twitter'];
+        $_SESSION['soundcloud'] = $row['Soundcloud'];
+        $_SESSION['bio'] = $row['Bio'];
       }
-    echo '<hr>';
-    echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
-    echo '<br>';
-    echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
-    echo '<hr>';
-    echo '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['insta'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div>';
-    echo '<br>';
-    echo '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div>';
-    echo '<br>';
-    echo '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div>';
-    echo '<br>';
-    echo '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>';
+      echo '<hr>';
+      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
+      echo '<hr>';
+      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
+      echo '<hr>';
+      echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
+      echo '<br>';
+      echo '<div class="profileForm"> Bio: ' . $_SESSION['bio']  . '</div>';
+      echo '<hr>';
+      echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['instagram'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
+      echo '<hr>';
+      echo '<hr>'; 
     ?>
 
     <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>

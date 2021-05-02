@@ -22,12 +22,13 @@ try {
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   
-    <script src="../global.js" defer></script>
+    
   </head>
 
   <body>
     <h2><a href="/home"> Rap Plattform</a></h2>
     <?php echo '
+    <script src="../global.js" defer></script>
     <div id="dropMenu">
       <div class="dropContainer">
 
@@ -72,6 +73,7 @@ try {
         $_SESSION['insta'] = $row['Insta'];
         $_SESSION['twitter'] = $row['Twitter'];
         $_SESSION['soundcloud'] = $row['Soundcloud'];
+        $_SESSION['bio'] = $row['Bio'];
         $date = strtotime($row['user_added']);
         $_SESSION['userSince'] = date("Y-m-d", $date); //FIXME DB new runnen
       }
@@ -79,11 +81,11 @@ try {
     echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
     echo '<br>';
     echo (isset($_SESSION['userSince']) ? '<div class="profileForm">User since: '.$_SESSION['userSince'].'</div><br>' : '');
-     echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
+     echo '<div class="profileForm"> Bio: ' . $_SESSION['bio']  . '</div>';
     echo '<hr>';
     echo (isset($_SESSION['insta']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['insta'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div><br>' : '');
     echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
-    echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div><br>' : '');
+    echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['Soundcloud'] . '</i></a></div><br>' : '');
     echo (isset($_SESSION['mail']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>' : '');
 
     echo (!isset($_SESSION['insta']) && !isset($_SESSION['twitter']) && !isset($_SESSION['soundcloud']) && !isset($_SESSION['mail']) ? 'This user has no contact details' : '');

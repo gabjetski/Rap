@@ -101,12 +101,8 @@ function validatePassword(){
 
     if(password.value === confirm_password.value) {
     confirm_password.setCustomValidity("");
-    console.log(password);
-    console.log(confirm_password);
     } else {
     confirm_password.setCustomValidity("Passwords don't match");
-    console.log(password);
-    console.log(confirm_password);
     }
 }
 

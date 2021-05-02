@@ -28,7 +28,6 @@ try {
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
     if(!preg_match("/^[a-zA-Z0-9ÄÜÖäüö_.\-]{3,20}$/u", $_GET['newUsername'])){
-      echo "akdafuigidash";
       $_SESSION['usernameChange-Error']['value'] = $_GET['newUsername'];
       $_SESSION['usernameChange-Error']['id'] = -2;
       header('Location:/user/my/settings');
@@ -176,15 +175,6 @@ try {
     $stmntGetInstagram = $pdo->prepare("SELECT Insta FROM user");
     $stmntGetInstagram->execute();
 
-    // vergebener Instagram Username
-    foreach ($stmntGetInstagram->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        if($_GET['newInstagramName'] == $row['Insta']){
-          $_SESSION['instagramNameChange-Error']['value'] = $_GET['newInstagramName'];
-          $_SESSION['instagramNameChange-Error']['id'] = -1;
-          header('Location:/user/my/settings');
-        }
-      }
-
     // neuer Username ist nicht vergeben hat aber Validations gefailed
     if(!preg_match("/^[a-zA-Z0-9._]+$/u", $_GET['newInstagramName'])){
       echo "akdafuigidash";
@@ -212,14 +202,8 @@ try {
     $stmntGetTwitter = $pdo->prepare("SELECT Twitter FROM user");
     $stmntGetTwitter->execute();
 
-    // vergebener Instagram Username
-    foreach ($stmntGetTwitter->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        if($_GET['newTwitterName'] == $row['Twitter']){
-          $_SESSION['twitterNameChange-Error']['value'] = $_GET['newTwitterName'];
-          $_SESSION['twitterNameChange-Error']['id'] = -1;
-          header('Location:/user/my/settings');
-        }
-      }
+    // vergebener Twitter Username
+   
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
     if(!preg_match("/^[A-Za-z0-9_]+$/u", $_GET['newTwitterName'])){
@@ -243,14 +227,8 @@ try {
     $stmntGetSc = $pdo->prepare("SELECT Soundcloud FROM user");
     $stmntGetSc->execute();
 
-    // vergebener Instagram Username
-    foreach ($stmntGetSc->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        if($_GET['newScName'] == $row['Soundcloud']){
-          $_SESSION['scNameChange-Error']['value'] = $_GET['newScName'];
-          $_SESSION['scNameChange-Error']['id'] = -1;
-          header('Location:/user/my/settings');
-        }
-      }
+    // vergebener Soundcloud Username
+    
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
     // FIXME Soundcloud validation?
@@ -378,18 +356,18 @@ try {
       }
 
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $row['FirstName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $row['LastName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user">' . $row['Username'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
       echo '<br>';
-      echo '<div class="profileForm"> Bio: ' . $row['Bio']  . '</div>';
+      echo '<div class="profileForm"> Bio: ' . $_SESSION['bio']  . '</div>';
       echo '<hr>';
-      echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Insta'] . '" target="_blank"><i class="fa fa-instagram">' . $row['Insta'] . '</i></a></div><br>' : '');
-      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $row['Twitter'] . '</i></a></div><br>' : '');
-      echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $row['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $row['Soundcloud'] . '</i></a></div><br>' : '');
-      echo (isset($_SESSION['email']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $row['Email'] . '" target="_blank"><i class="fa fa-envelope">' . $row['Email'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['instagram'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
       echo '<hr>';
       echo '<hr>';  
 

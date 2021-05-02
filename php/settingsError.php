@@ -42,7 +42,7 @@
                 ?>
 
             //call error function
-            errorFun('changeUsername', <?php echo 'values, "'.$errMsg.'"';?>);
+            errorFun('changeUsername', <?php echo 'values, "'.$errMsg.'"';?>)
             //errorFun('loginButton', <?php // echo 'values, "'.$errMsg.'", "'.$posErrWarning.'"';?>); --- only if fields are highlighted 
             
         };
@@ -94,11 +94,11 @@
                 break;
             case '-2':  // -3 -> username is already used
                 //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
-                $errMsg = 'Wrong Validations Idiot';
+                $errMsg = 'Validation failed';
                 break;
             case '-3':  // -3 -> username is already used
             //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
-                $errMsg = 'Not matchinggg';
+                $errMsg = "Passwords don't match";
                 break;
             default:
                 $errMsg = 'Success!';
@@ -191,11 +191,8 @@
             if (isset($_SESSION['instagramNameChange-Error'])) {
                 $errValues = ['change-instagramName' => $_SESSION['instagramNameChange-Error']['value']];
                     switch ($_SESSION['instagramNameChange-Error']['id']) {
-                        case '-1':  // -1 -> Last Name failed the validation
-                            $errMsg = 'Instagram Username is not available';
-                            break;
                         case '-2':  // -2 -> New First Name is the current First Name
-                            $errMsg = 'Wrong Validation Bruh';
+                            $errMsg = 'Validation Failed';
                             break;    
                         default:
                             $errMsg = 'Success!';
@@ -225,9 +222,6 @@
             if (isset($_SESSION['twitterNameChange-Error'])) {
                 $errValues = ['change-twitterName' => $_SESSION['twitterNameChange-Error']['value']];
                     switch ($_SESSION['twitterNameChange-Error']['id']) {
-                        case '-1':  // -1 -> Last Name failed the validation
-                            $errMsg = 'Twitter Username is not available';
-                            break;
                         case '-2':  // -2 -> New First Name is the current First Name
                             $errMsg = 'Wrong Validation Bruh';
                             break;    
@@ -259,9 +253,6 @@
             if (isset($_SESSION['scNameChange-Error'])) {
                 $errValues = ['change-scName' => $_SESSION['scNameChange-Error']['value']];
                     switch ($_SESSION['scNameChange-Error']['id']) {
-                        case '-1':  // -1 -> Last Name failed the validation
-                            $errMsg = 'Sc Username is not available';
-                            break;
                         case '-2':  // -2 -> New First Name is the current First Name
                             $errMsg = 'Wrong Validation Bruh';
                             break;    

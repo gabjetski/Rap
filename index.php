@@ -18,7 +18,6 @@ try {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="script.js" defer></script>
-    <script src="global.js" defer></script>
   </head>
 
   <?php
@@ -112,6 +111,7 @@ try {
         $_SESSION['userUName'] = $row['Username'];
       }
       echo '
+    <script src="global.js" defer></script>
     <div id="dropMenu">
       <div class="dropContainer">
 

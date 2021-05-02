@@ -16,6 +16,8 @@ CREATE OR REPLACE TABLE User(
     Insta VARCHAR(40), 
     Twitter VARCHAR(40), 
     Soundcloud VARCHAR(40),
+    YouTube VARCHAR(40),
+    Location VARCHAR(40),
     user_added DATETIME
 );
 
@@ -127,8 +129,8 @@ CREATE OR REPLACE TABLE Feed(
 CREATE OR REPLACE PROCEDURE bpmValues()
 BEGIN
 DECLARE v_counter INTEGER;
-    SET v_counter = 30;
-  WHILE v_counter <= 240 DO
+    SET v_counter = 1;
+  WHILE v_counter <= 999 DO
   INSERT INTO bpm (pk_bpm_id) VALUE  (v_counter);
   SET v_counter = v_counter + 1;
   END WHILE;
@@ -204,7 +206,7 @@ CREATE OR REPLACE PROCEDURE createUser(
     IN `p_username` VARCHAR(20), 
     IN `p_email` VARCHAR(50), 
     IN `p_passwort` VARCHAR(40), 
-    IN `p_passwort_sec` VARCHAR(30), 
+    IN `p_passwort_sec` VARCHAR(40), 
     OUT `p_id` INT) 
     BEGIN
     DECLARE v_firstName_pattern INT;
