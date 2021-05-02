@@ -34,7 +34,7 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
     $_SESSION['uploadCheck'] = $_POST;
     //split tags
     $tagsSplitted = explode(",", $_POST['f4pUpload-tags']);
-    $_SESSION['tags'] = $tagsSplitted;
+    // $_SESSION['tags'] = $tagsSplitted;
     //Prepare Procedure call
     $stmntUploadF4P = $pdo->prepare("CALL addTrack(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'f4p', @id);");
     //define the in-parameters

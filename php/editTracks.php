@@ -1,11 +1,10 @@
 <?php
-echo "lol<br>";
 $stmntGetKey = $pdo->prepare("SELECT * FROM keysignature WHERE short = ?");
 $stmntGetKey->bindParam(1, $_GET['tset-key'], PDO::PARAM_STR, 4000);
 $stmntGetKey->execute();
 
 $tagsSplitted = explode(",", $_GET['tset-tags']);
-$_SESSION['tags'] = $tagsSplitted;
+// $_SESSION['tags'] = $tagsSplitted;
 
 switch ($_GET['tset-type']) {
         case 'beat':
@@ -38,3 +37,6 @@ $stmtEditTrack->bindParam(8, $tagsSplitted[3], PDO::PARAM_STR, 4000);
 $stmtEditTrack->bindParam(9, $tagsSplitted[4], PDO::PARAM_STR, 4000);
 $stmtEditTrack->bindParam(10, $_GET['tset-track-id'], PDO::PARAM_INT);
 $stmtEditTrack->execute();
+// TODO serverside validations
+
+header('location: /user/my');

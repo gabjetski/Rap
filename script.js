@@ -302,6 +302,10 @@ function deleteF4PTags(f4pBtnId){
     f4pTags.splice(f4pBtnNum, 1);
     f4pSplitText[f4pBtnNum] = "";
     iF4P = f4pTags.length;
+    
+
+    console.log('numb: ' + f4pBtnNum);
+    console.log('other: ' + f4pTags.length);
 
     for(let k = f4pBtnNum; k < f4pTags.length; k++){
             document.getElementById("f4pTag" + (k+1)).id = "f4pTag" + k;

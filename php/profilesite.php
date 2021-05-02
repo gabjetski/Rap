@@ -8,6 +8,25 @@ try {
   {
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
   }
+  if (isset($_GET['reset'])) {
+    session_destroy();
+    header('Location:/user/my');
+  }
+  if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location:/home');
+  }
+  if (isset($_GET['quickLog'])) {
+    session_destroy();
+    session_start();
+    $_SESSION['userID'] = '4';
+    $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
+    $stmntGetUserInfos->execute();
+    foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
+      $_SESSION['userUName'] = $row['Username'];
+    }
+    header('Location:/user/my');
+  }
 
 
 ?>
@@ -21,9 +40,9 @@ try {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <style>
-    i{
-      float:left;
-    }
+      i {
+        float: left;
+      }
     </style>
   </head>
 
@@ -54,7 +73,7 @@ try {
             </li>
             <li class="dropList">
               <h3>
-                <form action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" method="get" class="form-container">
+                <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="get" class="form-container">
                   <input type="submit" value="Log Out" name="logout">
                 </form>
               </h3>
@@ -89,9 +108,9 @@ try {
         $_SESSION['bio'] = $row['Bio'];
       }
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: '. $_SESSION['firstName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> FirstName: ' . $_SESSION['firstName'] . '</i></div>';
       echo '<hr>';
-      echo '<div class="profileForm"><i class="fa fa-user"> LastName: '. $_SESSION['lastName'] . '</i></div>';
+      echo '<div class="profileForm"><i class="fa fa-user"> LastName: ' . $_SESSION['lastName'] . '</i></div>';
       echo '<hr>';
       echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
       echo '<br>';
@@ -102,37 +121,37 @@ try {
       echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
       echo '<hr>';
-      echo '<hr>'; 
+      echo '<hr>';
     ?>
 
-    <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>
+      <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>
     <input type="button" class="changeUsername" onclick="changeUsername();" value="Change" />
 
       
         $updateUsername = $pdo->prepare('UPDATE user set Username="newUsername" where pk_user_id = '<?php //echo $_SESSION['userID']; 
                                                                                                     ?>');
           $updateUsername->execute();-->
-    <br>
-    <hr>
-    <br>
+      <br>
+      <hr>
+      <br>
 
-    
-    <?php
-    $feedPurp = 'profile';
-    require "./feed.php";
-    ?>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
-      <input type="submit" value="quickLog" name="quickLog">
-    </form>
+
+      <?php
+      $feedPurp = 'profile';
+      require "./feed.php";
+      ?>
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+        <input type="submit" value="quickLog" name="quickLog">
+      </form>
 
 
   <?php
     }
-  $pdo = null;
-} catch (PDOException $e) {
-  //catch potentual error
-  print "Error!: " . $e->getMessage() . "<br/>";
-  die();
-}
+    $pdo = null;
+  } catch (PDOException $e) {
+    //catch potentual error
+    print "Error!: " . $e->getMessage() . "<br/>";
+    die();
+  }
 
   ?>

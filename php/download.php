@@ -11,7 +11,7 @@ if (file_exists($filepath)) {
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
     //sets the name as which the file will be downloaded
-    header('Content-Disposition: attachment; filename="'.$_GET['username_file'].'-'.$_GET['title_file'].'.mp3"');
+    header('Content-Disposition: attachment; filename="' . $_GET['username_file'] . '-' . $_GET['title_file'] . '.mp3"');
     //header('Content-Disposition: attachment; filename=' . basename($filepath));
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
@@ -34,7 +34,7 @@ if (file_exists($filepath)) {
         //if guest downloads, set user id to 1 (which is guest id)
         if (!isset($_SESSION['userID'])) {
             $userID = 1;
-        }else {
+        } else {
             $userID = $_SESSION['userID'];
         }
         $stmtAddDownload->bindParam(2, $userID, PDO::PARAM_STR, 4000);
@@ -45,7 +45,7 @@ if (file_exists($filepath)) {
         $sql = "SELECT @id AS id";
         $stmtGetId = $pdo->prepare($sql);
         $stmtGetId->execute();
-        foreach($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row){
+        foreach ($stmtGetId->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $id = $row['id'];
         }
 
@@ -56,14 +56,13 @@ if (file_exists($filepath)) {
             header('Location:index.php');
         }
         //else store download in session and reload page
-        else{
+        else {
             $_SESSION['download'][$fileID] = true;
             $_SESSION['downloadSuccess'] = $fileID;
             unset($_SESSION['downloadError']);
             header('Location:index.php');
         }
-    }else {
-        
+    } else {
     }
-}else{
+} else {
 }

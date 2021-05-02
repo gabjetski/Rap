@@ -4,6 +4,9 @@
 if (isset($_GET['tset-submit'])) {
     require 'editTracks.php';
 }
+if (isset($_GET['tset-del'])) {
+    require 'deleteTracks.php';
+}
 ?>
 
 <div id="settings" class="trackSettings" style="display: none;">
@@ -76,11 +79,21 @@ if (isset($_GET['tset-submit'])) {
                 <!-- Tags Output -->
                 <div id="tset-Output"></div>
                 <div id="tset-CountTags">Characters left: 30</div>
+                <button type="button" class="cancelButton" value="delete" onclick="delTrack1()" class="continue" id="tset-del">Delete Track</button>
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
                 <button type="submit" class="continueButton" name="tset-submit" value="Finish" onclick="checkBanWords(); radioButtonstset();  bpmtset(); titletset(); filetset();" class="continue" id="tset-submit">Finish</button>
                 <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
                 <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closetset(); openUpload();">Back</button>
                 <button type="button" class="cancelButton" onclick="closetset();">Cancel</button>
+            </div>
+            <div class="delAsk" id="delAsk" style="display: none;">
+                <div id=" blocker" onclick="closeDelAsk()" class="blocker"></div>
+                <div class="form-popup">
+                    You really wanna delete the track?
+                    <button type="submit" class="cancelButton" name="tset-del" value="deleteFin" class="continue" id="tset-del-fin">Yes</button>
+                    <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
+                    <button type="button" class="continueButton" value="Back" class="continue" onclick="closeDelAsk()">No</button>
+                </div>
             </div>
         </form>
     </div>
@@ -262,24 +275,27 @@ if (isset($_GET['tset-submit'])) {
     // tset-Event Listener für das Hinzufügen von Tags
     document.addEventListener('keyup', function(e) {
         if (e.code === 'Enter' && tsettags.length < 5) {
-            console.log(document.getElementById("tset-tags").value);
             tagsTSET(document.getElementById("tset-tags").value);
         }
     });
 
     // tset-Funktion für das Löschen von Tags
     function deletetsettags(tsetBtnId) {
-        console.log(tsetBtnId);
         tsetBtn = document.getElementById(tsetBtnId);
-        tsetBtnNum = parseInt(tsetBtnId.substring(6), 10);
+        tsetBtnNum = parseInt(tsetBtnId.substring(7), 10);
         tsettags.splice(tsetBtnNum, 1);
         tsetSplitText[tsetBtnNum] = "";
         itset = tsettags.length;
+
+        // console.log('numb: ' + tsetBtnNum);
+        // console.log('other: ' + tsettags.length);
 
         for (let k = tsetBtnNum; k < tsettags.length; k++) {
             document.getElementById("tsetag" + (k + 1)).id = "tsetag" + k;
             document.getElementById("tsetBtn" + (k + 1)).id = "tsetBtn" + k;
             tsetSplitText[k + 1] = "<h1 class='tagsListing' id='tsetag" + (k) + "'>" + tsettags[k] + "<button id='tsetBtn" + (k) + "' class='btn deleteTags' onclick='deletetsettags(this.id);' type='button'><i class='fa fa-close'></i></button>" + "</h1>";
+
+            // console.log('k: ' + k + ' - Text: ' + tsetSplitText[k + 1]);
         }
 
         if (tsettags.length < 5) {
@@ -291,7 +307,7 @@ if (isset($_GET['tset-submit'])) {
                 tsetSplitText.splice(j, 1);
             }
         }
-
+        // console.log(tsetBtn.parentNode);
         tsetBtn.parentNode.parentNode.removeChild(tsetBtn.parentNode);
         tsetext = tsetSplitText.toString();
         tsetext = tsetext.replace(/,/g, '');
@@ -301,6 +317,15 @@ if (isset($_GET['tset-submit'])) {
 
     function gettsetFocus() {
         document.getElementById("tset-tags").focus();
+    }
+
+    function delTrack1() {
+        document.getElementById('delAsk').style.display = '';
+        console.log('test');
+    }
+
+    function closeDelAsk() {
+        document.getElementById('delAsk').style.display = 'none';
     }
 </script>
 
