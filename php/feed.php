@@ -1,7 +1,7 @@
 <!--//TODO Comment Code-->
 
 <?php
-if(isset($_GET['tset-submit'])){
+if (isset($_GET['tset-submit'])) {
     require 'editTracks.php';
 }
 ?>
@@ -9,7 +9,9 @@ if(isset($_GET['tset-submit'])){
 <div id="settings" class="trackSettings" style="display: none;">
     <div id="blocker" onclick="closeSettings()" class="blocker"></div>
     <div class="form-popup">
-        <form id="trackSettingsForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="form-popup" enctype="multipart/form-data">
+        <form id="trackSettingsForm" action="/user/my" method="get" class="form-popup" enctype="multipart/form-data">
+            <!-- <form id="trackSettingsForm" action="<?php  // echo htmlspecialchars($_SERVER["PHP_SELF"]); 
+                                                        ?>" method="post" class="form-popup" enctype="multipart/form-data"> -->
             <h1>Edit Track</h1>
             <div>
                 <input type="hidden" id="tset-track-id-hidden" name="tset-track-id" />
@@ -21,7 +23,7 @@ if(isset($_GET['tset-submit'])){
                 <input type="radio" id="tset-type-sample" name="tset-type" value="sample" onkeypress="return noenter();" required>
 
                 <label for="tset-type-snippet" id="tset-type-snippet-label"><b>Snippet</b></label>
-                <input type="radio" id="tset-type-snippet" name="tset-type" value="sample" onkeypress="return noenter();" required>
+                <input type="radio" id="tset-type-snippet" name="tset-type" value="snippet" onkeypress="return noenter();" required>
 
                 <!-- FreeForProfit  Upload - BPM -->
                 <label for="tset-bpm"><b>BPM*</b></label>
@@ -356,13 +358,13 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     if (!isset($feedPurp) || $feedPurp != 'profile') {
         $tags = "";
         $notags = 0;
-        for($i = 1; $i <= 5; $i++){
-            if($row['Tag'.$i] != ""){ 
-                $tags .= $row['Tag'.$i].", "; 
+        for ($i = 1; $i <= 5; $i++) {
+            if ($row['Tag' . $i] != "") {
+                $tags .= $row['Tag' . $i] . ", ";
             } else {
                 $notags++;
             }
-            if($notags == 5){
+            if ($notags == 5) {
                 $tags = "The artist has not added any tags to this Track!";
             }
         }
@@ -417,13 +419,13 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     } elseif ($feedPurp == 'profile') {
         $tags = "";
         $notags = 0;
-        for($i = 1; $i <= 5; $i++){
-            if($row['Tag'.$i] != ""){ 
-                $tags .= $row['Tag'.$i].", "; 
+        for ($i = 1; $i <= 5; $i++) {
+            if ($row['Tag' . $i] != "") {
+                $tags .= $row['Tag' . $i] . ", ";
             } else {
                 $notags++;
             }
-            if($notags == 5){
+            if ($notags == 5) {
                 $tags = "The artist has not added any tags to this Track!";
             }
         }
