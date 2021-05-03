@@ -61,11 +61,11 @@ CREATE OR REPLACE TABLE Files(
     pk_files_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
     Title VARCHAR(60) NOT NULL, 
     Path VARCHAR(100) NOT NULL, 
-    Tag1 VARCHAR(30),
-    Tag2 VARCHAR(30),
-    Tag3 VARCHAR(30),
-    Tag4 VARCHAR(30),
-    Tag5 VARCHAR(30), 
+    Tag1 VARCHAR(31),
+    Tag2 VARCHAR(31),
+    Tag3 VARCHAR(31),
+    Tag4 VARCHAR(31),
+    Tag5 VARCHAR(31), 
     Description VARCHAR(200), 
     fk_user_id INTEGER NOT NULL, 
     fk_bpm_id INTEGER NOT NULL, 
@@ -89,11 +89,11 @@ CREATE OR REPLACE TABLE archiveFiles(
     pk_files_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
     Title VARCHAR(60) NOT NULL, 
     Path VARCHAR(100) NOT NULL, 
-    Tag1 VARCHAR(30),
-    Tag2 VARCHAR(30),
-    Tag3 VARCHAR(30),
-    Tag4 VARCHAR(30),
-    Tag5 VARCHAR(30), 
+    Tag1 VARCHAR(31),
+    Tag2 VARCHAR(31),
+    Tag3 VARCHAR(31),
+    Tag4 VARCHAR(31),
+    Tag5 VARCHAR(31), 
     Description VARCHAR(200), 
     fk_user_id INTEGER NOT NULL, 
     fk_bpm_id INTEGER NOT NULL, 
@@ -363,11 +363,11 @@ END;
  CREATE OR REPLACE PROCEDURE addTrack(
     IN `p_title` VARCHAR(60),
     IN `p_title_replaced` VARCHAR(30),
-    IN `p_tag1` VARCHAR(30),
-    IN `p_tag2` VARCHAR(30),
-    IN `p_tag3` VARCHAR(30),
-    IN `p_tag4` VARCHAR(30),
-    IN `p_tag5` VARCHAR(30),
+    IN `p_tag1` VARCHAR(31),
+    IN `p_tag2` VARCHAR(31),
+    IN `p_tag3` VARCHAR(31),
+    IN `p_tag4` VARCHAR(31),
+    IN `p_tag5` VARCHAR(31),
     IN `p_description` VARCHAR(200),
     IN `p_user_id` INTEGER,
     IN `p_bpm` INTEGER,
@@ -380,6 +380,12 @@ END;
     DECLARE v_title_pattern INT;
     DECLARE v_file_name_pattern INT;
     DECLARE v_description_pattern INT;
+    DECLARE v_tag1_pattern INT;
+    DECLARE v_tag2_pattern INT;
+    DECLARE v_tag3_pattern INT;
+    DECLARE v_tag4_pattern INT;
+    DECLARE v_tag5_pattern INT;
+    DECLARE v_tags_pattern INT;
     
     DECLARE v_key_id INT;
     DECLARE v_upload_type INT;
@@ -389,6 +395,18 @@ END;
     
     SELECT p_title REGEXP "^.{0,60}$" INTO v_title_pattern;
     SELECT p_description REGEXP "^.{0,120}$" INTO v_description_pattern;
+
+    SELECT p_tag1 REGEXP "((\#(\w){0,30})|.{0})$" INTO v_tag1_pattern;
+    SELECT p_tag2 REGEXP "((\#(\w){0,30})|.{0})$" INTO v_tag2_pattern;
+    SELECT p_tag3 REGEXP "((\#(\w){0,30})|.{0})$" INTO v_tag3_pattern;
+    SELECT p_tag4 REGEXP "((\#(\w){0,30})|.{0})$" INTO v_tag4_pattern;
+    SELECT p_tag5 REGEXP "((\#(\w){0,30})|.{0})$" INTO v_tag5_pattern;
+
+    SET v_tags_pattern = v_tag1_pattern + v_tag2_pattern + v_tag3_pattern + v_tag4_pattern + v_tag5_pattern;
+
+
+
+    
     #-- FIXME filename-pattern: SELECT p_path REGEXP "^[[:word:]\-. ]+\.(mp3)$" INTO v_file_name_pattern;
 
     IF (p_bpm >= 0 AND p_bpm <= 1000) THEN
@@ -424,6 +442,8 @@ END;
         SET p_id = -6;
     ELSEIF (v_key_id < 0) THEN
         SET p_id = -7;
+    ELSEIF (v_tags_pattern < 5) THEN
+        SET p_id = -8;
     ELSE
 
         SELECT pk_files_id INTO p_id FROM files 

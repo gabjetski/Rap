@@ -4,6 +4,9 @@
 if (isset($_GET['tset-submit'])) {
     require 'editTracks.php';
 }
+if (isset($_SESSION['trackEdit-error'])) {
+    require 'editError.php';
+}
 if (isset($_GET['tset-del'])) {
     require 'deleteTracks.php';
 }
@@ -79,6 +82,7 @@ if (isset($_GET['tset-del'])) {
                 <!-- Tags Output -->
                 <div id="tset-Output"></div>
                 <div id="tset-CountTags">Characters left: 30</div>
+                <p class="error" id="tset-error" style="display: none;"></p>
                 <button type="button" class="cancelButton" value="delete" onclick="delTrack1()" class="continue" id="tset-del">Delete Track</button>
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
                 <button type="submit" class="continueButton" name="tset-submit" value="Finish" onclick="checkBanWords(); radioButtonstset();  bpmtset(); titletset(); filetset();" class="continue" id="tset-submit">Finish</button>
@@ -176,7 +180,7 @@ if (isset($_GET['tset-del'])) {
         return !(window.event && window.event.keyCode == 13);
     }
 
-    function openSettings(id, title, path, tag1, tag2, tag3, tag4, tag5, desc, userID, bpm, key_short, typeID, monetID) {
+    function openSettings(id, title, tag1, tag2, tag3, tag4, tag5, desc, bpm, key_short, typeID, monetID, error) {
         deleteTagFields();
         tsettags = [];
         settings.style.display = 'block';
@@ -209,6 +213,12 @@ if (isset($_GET['tset-del'])) {
                 break;
         }
         document.getElementById('tset-CountNotes').innerHTML = "Characters left: " + (200 - sett_desc.value.length);
+
+        if (error) {
+            console.log('err123 ' + error);
+            document.getElementById('tset-error').style.display = '';
+            document.getElementById('tset-error').innerHTML = error;
+        }
     }
 
     function closeSettings(id) {
@@ -491,21 +501,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
             const openSettings<?php echo $row['pk_files_id']; ?> = document.getElementById('openSettings<?php echo $row['pk_files_id']; ?>');
 
             openSettings<?php echo $row['pk_files_id']; ?>.addEventListener("click", function() {
-                openSettings("<?php echo
-                                $row['pk_files_id'] . '", "' .
-                                    $row['Title'] . '", "' .
-                                    $row['Path'] . '", "' .
-                                    $row['Tag1'] . '", "' .
-                                    $row['Tag2'] . '", "' .
-                                    $row['Tag3'] . '", "' .
-                                    $row['Tag4'] . '", "' .
-                                    $row['Tag5'] . '", "' .
-                                    $row['Description'] . '", "' .
-                                    $row['fk_user_id'] . '", "' .
-                                    $row['fk_bpm_id'] . '", "' .
-                                    $keyVal . '", "' .
-                                    $row['fk_upload_type_id'] . '", "' .
-                                    $row['fk_monet_id']; ?>");
+                openSettings("<?php echo $row['pk_files_id'] . '", "' . $row['Title'] . '", "' . $row['Tag1'] . '", "' . $row['Tag2'] . '", "' . $row['Tag3'] . '", "' . $row['Tag4'] . '", "' . $row['Tag5'] . '", "' . $row['Description'] . '", "' . $row['fk_bpm_id'] . '", "' . $keyVal . '", "' . $row['fk_upload_type_id'] . '", "' . $row['fk_monet_id']; ?>");
             });
             blocker.addEventListener("click", function() {
                 closeSettings(numb);
