@@ -1,9 +1,11 @@
 <?php
+echo "help";
 $stmntGetKey = $pdo->prepare("SELECT * FROM keysignature WHERE short = ?");
 $stmntGetKey->bindParam(1, $_GET['tset-key'], PDO::PARAM_STR, 4000);
 $stmntGetKey->execute();
 
 $tagsSplitted = explode(",", $_GET['tset-tags']);
+unset($_SESSION['trackEdit-error']);
 // $_SESSION['tags'] = $tagsSplitted;
 
 switch ($_GET['tset-type']) {
@@ -62,4 +64,4 @@ if (!isset($_SESSION['trackEdit-error'])) {
         $_SESSION['trackEdit-error']['get'] = $_GET;
 }
 
-//header('location: /user/my');
+header('location: /user/my');

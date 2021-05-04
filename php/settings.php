@@ -141,6 +141,12 @@ try {
     }
   }
 
+   // ANCHOR Delete Last Name 
+   if(isset($_GET['deleteLastName'])){
+    $deleteLastName = $pdo->prepare('UPDATE user set LastName = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteLastName->execute();
+  }
+
   // ANCHOR Last Name Validations und Änderungen 
   if(isset($_GET['changeLastName'])){
     unset($_SESSION['lastNameChange-Error']);
@@ -167,6 +173,12 @@ try {
     $updateLastName->execute();
     header('Location:/user/my/settings');
     }
+  }
+
+  // ANCHOR Delete FirstName Name 
+  if(isset($_GET['deleteFirstName'])){
+    $deleteFirstName = $pdo->prepare('UPDATE user set FirstName = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteFirstName->execute();
   }
 
   // ANCHOR Instagram Validations und Änderungen
@@ -221,13 +233,17 @@ try {
     }
   }
 
+    // ANCHOR Delete Twitter Name 
+    if(isset($_GET['deleteTwitterName'])){
+      $deleteTwitterName = $pdo->prepare('UPDATE user set Twitter = NULL where pk_user_id = '.$_SESSION['userID']);
+      $deleteTwitterName->execute();
+    }
+
    // ANCHOR Soundcloud Validations und Änderungen
    if(isset($_GET['changeScName'])){
     unset($_SESSION['scNameChange-Error']);
     $stmntGetSc = $pdo->prepare("SELECT Soundcloud FROM user");
     $stmntGetSc->execute();
-
-    // vergebener Soundcloud Username
     
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
@@ -247,6 +263,12 @@ try {
     }
   }
 
+  // ANCHOR Delete Soundcloud Name 
+  if(isset($_GET['deleteScName'])){
+    $deleteScName = $pdo->prepare('UPDATE user set Soundcloud = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteScName->execute();
+  }
+
   // ANCHOR Bio Validations und Änderungen
   if(isset($_GET['changeBioName'])){
     unset($_SESSION['bioNameChange-Error']);
@@ -259,6 +281,64 @@ try {
       $updateBioName->execute();
       header('Location:/user/my/settings');
     }
+  }
+
+  // ANCHOR Delete Bio  
+  if(isset($_GET['deleteBioName'])){
+    $deleteBioName = $pdo->prepare('UPDATE user set Bio = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteBioName->execute();
+  }
+
+  // ANCHOR Change Youtube Name 
+  if(isset($_GET['changeYtName'])){
+    unset($_SESSION['ytNameChange-Error']);
+    $stmntGetYt = $pdo->prepare("SELECT Youtube FROM user");
+    $stmntGetYt->execute();
+  
+    // keine Fehler
+    if(!isset($_SESSION['ytNameChange-Error'])) {
+      $updateYtName = $pdo->prepare('UPDATE user set Youtube="'.$_GET['newYtName'].'" where pk_user_id = '.$_SESSION['userID']);
+      $updateYtName->execute();
+      header('Location:/user/my/settings');
+    }
+  }
+
+  // ANCHOR Delete Youtube  
+  if(isset($_GET['deleteYtName'])){
+    $deleteYtName = $pdo->prepare('UPDATE user set YouTube = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteYtName->execute();
+  }
+
+   // ANCHOR Change Location  
+   if(isset($_GET['changeLocationName'])){
+    unset($_SESSION['locationNameChange-Error']);
+    $stmntGetLocation = $pdo->prepare("SELECT Location FROM user");
+    $stmntGetLocation->execute();
+  
+    // keine Fehler
+    if(!isset($_SESSION['locationNameChange-Error'])) {
+      $updateLocationName = $pdo->prepare('UPDATE user set Location="'.$_GET['newLocationName'].'" where pk_user_id = '.$_SESSION['userID']);
+      $updateLocationName->execute();
+      header('Location:/user/my/settings');
+    }
+  }
+
+  // ANCHOR Delete Location  
+  if(isset($_GET['deleteLocationName'])){
+    $deleteLocationName = $pdo->prepare('UPDATE user set Location = NULL where pk_user_id = '.$_SESSION['userID']);
+    $deleteLocationName->execute();
+  }
+
+  // ANCHOR Delete Account 
+  if(isset($_GET['deleteAccountConfirm'])) {
+    $stmtDelUser = $pdo->prepare("INSERT INTO archiveuser SELECT * FROM user WHERE pk_user_id = ?; 
+                                DELETE FROM user WHERE pk_user_id = ?");
+    //define the in-parameters
+    $stmtDelUser->bindParam(1, $_SESSION['userID'], PDO::PARAM_INT);
+    $stmtDelUser->bindParam(2, $_SESSION['userID'], PDO::PARAM_INT);
+    $stmtDelUser->execute();
+
+    header('Location:/user/my/settings');
   }
 
   // Wenn ein Error Auftritt, SettingsError aufrufen
@@ -353,6 +433,9 @@ try {
         $_SESSION['twitter'] = $row['Twitter'];
         $_SESSION['soundcloud'] = $row['Soundcloud'];
         $_SESSION['bio'] = $row['Bio'];
+        $_SESSION['youtube'] = $row['YouTube'];
+        $_SESSION['location'] = $row['Location'];
+
       }
 
       echo '<hr>';
@@ -368,6 +451,8 @@ try {
       echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
+      echo (isset($_SESSION['youtube']) ? '<div class="profileForm"><a href="https://www.youtube.com/channel/' . $_SESSION['youtube'] . '" target="_blank"><i class="fa fa-youtube">' . $_SESSION['youtube'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['location']) ? '<div class="profileForm"><i class="fa fa-map-marker">' . $_SESSION['location'] . '</i></div><br>' : '');
       echo '<hr>';
       echo '<hr>';  
 
@@ -404,12 +489,15 @@ try {
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter New First Name" name="newFirstName" id="change-firstName" value = "<?php echo $_SESSION['firstName'] ?>">
       <input type="submit" name="changeFirstName" id="changeFirstName" value="Change"/>
+      <input type="submit" name="deleteFirstName" id="deleteFirstName" value="Delete" />
     </form>
 
     <!-- Last Name Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter New Last Name" name="newLastName" id="change-lastName" value = "<?php echo $_SESSION['lastName'] ?>">
       <input type="submit" name="changeLastName" id="changeLastName" value="Change"/>
+      <input type="submit" name="deleteLastName" id="deleteLastName" value="Delete" />
+
     </form>
 
     <!-- Instagram Change / Instagram Connect -->
@@ -423,27 +511,60 @@ try {
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter Twitter Name" name="newTwitterName" id="change-twitterName" value = "<?php echo $_SESSION['twitter'] ?>">
       <input type="submit" name="changeTwitterName" id="changeTwitterName" value="Change"/>
+      <input type="submit" name="deleteTwitterName" id="deleteTwitterName" value="Delete" />
+
     </form>
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter Sc Name" name="newScName" id="change-scName" value = "<?php echo $_SESSION['soundcloud'] ?>">
       <input type="submit" name="changeScName" id="changeScName" value="Change"/>
+      <input type="submit" name="deleteScName" id="deleteScName" value="Delete" />
     </form>
 
     <!-- FIXME in Textarea wird die aktuelle Bio nicht angezeigt -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <textarea placeholder="Enter Bio" rows="4" cols="50" name="newBioName" id="change-bioName" value = "<?php echo $_SESSION['bio'] ?>" maxlength="200"> <?php echo $_SESSION['bio'] ?> </textarea>
       <input type="submit" name="changeBioName" id="changeBioName" value="Change"/>
+      <input type="submit" name="deleteBioName" id="deleteBioName" value="Delete" />
     </form>
 
+    <!-- Youtube Change / Youtube Connect -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter Yt Name" name="newYtName" id="change-ytName" value = "<?php echo $_SESSION['youtube'] ?>">
+      <input type="submit" name="changeYtName" id="changeYtName" value="Change"/>
+      <input type="submit" name="deleteYtName" id="deleteYtName" value="Delete" />
+    </form>
+
+    <!-- Location Change / Location Connect -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="text" placeholder="Enter Location Name" name="newLocationName" id="change-LocationName" value = "<?php echo $_SESSION['location'] ?>">
+      <input type="submit" name="changeLocationName" id="changeLocationName" value="Change"/>
+      <input type="submit" name="deleteLocationName" id="deleteLocationName" value="Delete" />
+    </form>
+    
+    <hr>
+    <h3>Delete Account</h3>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="button" name="deleteAccount" id="deleteAccount" value="Delete" onclick="openDeleteAccount()"/>
+    </form>
+    <div id="deleteAccountForm">
+      <div class="blocker" onclick="closeDeleteAccount()"></div>
+      <div class="form-popup">
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
+          <h1>Are you sure you want to delete your account?</h1>
+          <div>
+            <button type="submit" class="loginButton" name="deleteAccountConfirm" value="Delete" id="deleteAccountConfirm">Delete Account</button>
+            <button type="button" class="cancelButton" onclick="closeDeleteAccount()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <br>
     <hr>
     <br>
 
-    <?php
-    $feedPurp = 'profile';
-    require "./feed.php";
-    ?>
+    <script src="../../settings.js"></script>
+
   <?php
   $pdo = null;
 } catch (PDOException $e) {

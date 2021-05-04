@@ -3,9 +3,11 @@
 <?php
 if (isset($_GET['tset-submit'])) {
     require 'editTracks.php';
+    //unset($_SESSION['trackEdit-error']);
 }
 if (isset($_SESSION['trackEdit-error'])) {
     require 'editError.php';
+    //unset($_SESSION['trackEdit-error']);
 }
 if (isset($_GET['tset-del'])) {
     require 'deleteTracks.php';
@@ -18,7 +20,7 @@ if (isset($_GET['tset-del'])) {
         <form id="trackSettingsForm" action="/user/my" method="get" class="form-popup" enctype="multipart/form-data">
             <!-- <form id="trackSettingsForm" action="<?php  // echo htmlspecialchars($_SERVER["PHP_SELF"]); 
                                                         ?>" method="post" class="form-popup" enctype="multipart/form-data"> -->
-            <h1>Edit Track</h1>
+            <h1>Edit Track</h1> 
             <div>
                 <input type="hidden" id="tset-track-id-hidden" name="tset-track-id" />
                 <!-- FreeForProfit Upload - Auswahl Beat -->
@@ -32,8 +34,9 @@ if (isset($_GET['tset-del'])) {
                 <input type="radio" id="tset-type-snippet" name="tset-type" value="snippet" onkeypress="return noenter();" required>
 
                 <!-- FreeForProfit  Upload - BPM -->
-                <label for="tset-bpm"><b>BPM*</b></label>
+                <!-- <label for="tset-bpm"><b>BPM*</b></label> -->
                 <input type="text" id="tset-bpm" name="tset-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" onkeypress="return noenter();" required>
+                <!-- <input type="text" id="tset-bpm" name="tset-bpm" value="123" onkeypress="return noenter();" required> -->
                 <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
                 <label for="tset-key"><b>Key</b></label>
                 <select name="tset-key" id="tset-key">
@@ -85,7 +88,7 @@ if (isset($_GET['tset-del'])) {
                 <p class="error" id="tset-error" style="display: none;"></p>
                 <button type="button" class="cancelButton" value="delete" onclick="delTrack1()" class="continue" id="tset-del">Delete Track</button>
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
-                <button type="submit" class="continueButton" name="tset-submit" value="Finish" onclick="checkBanWords(); radioButtonstset();  bpmtset(); titletset(); filetset();" class="continue" id="tset-submit">Finish</button>
+                <button type="submit" class="continueButton" name="tset-submit" value="Finish" onclick="" class="continue" id="tset-submit">Finish</button>
                 <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
                 <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closetset(); openUpload();">Back</button>
                 <button type="button" class="cancelButton" onclick="closetset();">Cancel</button>
@@ -189,7 +192,7 @@ if (isset($_GET['tset-del'])) {
         sett_title.value = title;
         tsettagsArr = [tag1, tag2, tag3, tag4, tag5];
         tsettagsArr.forEach(element => {
-            console.log(element);
+            // console.log(element);
             tagsTSET(element.substring(1));
         });
         sett_desc.value = desc;
@@ -215,9 +218,32 @@ if (isset($_GET['tset-del'])) {
         document.getElementById('tset-CountNotes').innerHTML = "Characters left: " + (200 - sett_desc.value.length);
 
         if (error) {
-            console.log('err123 ' + error);
+            let errorMsg;
+
+            switch (error) {
+                case '-1':
+                    errorMsg = 'Please select a type';
+                    break;
+                case '-2':
+                    errorMsg = 'Please enter a BPM between 0 and 999';
+                    break;
+                case '-3':
+                    errorMsg = 'Please enter a valid title';
+                    break;
+                case '-4':
+                    errorMsg = 'Please enter a valid description';
+                    break;
+            
+                default:
+                    errorMsg = 'Something went wrong';
+                    break;
+            }
             document.getElementById('tset-error').style.display = '';
-            document.getElementById('tset-error').innerHTML = error;
+            document.getElementById('tset-error').innerHTML = errorMsg;
+
+        }else {
+            document.getElementById('tset-error').style.display = 'none';
+            document.getElementById('tset-error').innerHTML = '';
         }
     }
 
@@ -501,7 +527,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
             const openSettings<?php echo $row['pk_files_id']; ?> = document.getElementById('openSettings<?php echo $row['pk_files_id']; ?>');
 
             openSettings<?php echo $row['pk_files_id']; ?>.addEventListener("click", function() {
-                openSettings("<?php echo $row['pk_files_id'] . '", "' . $row['Title'] . '", "' . $row['Tag1'] . '", "' . $row['Tag2'] . '", "' . $row['Tag3'] . '", "' . $row['Tag4'] . '", "' . $row['Tag5'] . '", "' . $row['Description'] . '", "' . $row['fk_bpm_id'] . '", "' . $keyVal . '", "' . $row['fk_upload_type_id'] . '", "' . $row['fk_monet_id']; ?>");
+                openSettings("<?php echo $row['pk_files_id'] . '", "' . $row['Title'] . '", "' . $row['Tag1'] . '", "' . $row['Tag2'] . '", "' . $row['Tag3'] . '", "' . $row['Tag4'] . '", "' . $row['Tag5'] . '", "' . $row['Description'] . '", "' . $row['fk_bpm_id'] . '", "' . $keyVal . '", "' . $row['fk_upload_type_id'] . '", "' . $row['fk_monet_id']; ?>", "");
             });
             blocker.addEventListener("click", function() {
                 closeSettings(numb);

@@ -107,6 +107,10 @@ a {
   opacity: 0.9;
 }
 
+#deleteAccountForm {
+  display: none;
+}
+
 .newAccountButton {
   background-color: #4caf50;
   color: white;

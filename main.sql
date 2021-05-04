@@ -6,8 +6,8 @@ USE rap;
 
 CREATE OR REPLACE TABLE User(
     pk_user_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-    FirstName VARCHAR(30) NOT NULL, 
-    LastName VARCHAR(30) NOT NULL, 
+    FirstName VARCHAR(30), 
+    LastName VARCHAR(30), 
     Username VARCHAR(20) NOT NULL, 
     Email VARCHAR(50) NOT NULL, 
     Passwort VARCHAR(40) NOT NULL, 

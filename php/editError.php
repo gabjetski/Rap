@@ -41,6 +41,8 @@ $desc = $_SESSION['trackEdit-error']['get']['tset-desc'];
 $bpm = $_SESSION['trackEdit-error']['get']['tset-bpm'];
 $key = $_SESSION['trackEdit-error']['get']['tset-key'];
 
+//unset($_SESSION['trackEdit-error']);
+
 
 //    function openSettings(id, title, tag1, tag2, tag3, tag4, tag5, desc, bpm, key_short, typeID, monetID, error) {
 
@@ -50,6 +52,7 @@ $key = $_SESSION['trackEdit-error']['get']['tset-key'];
     window.onload = function() {
         //store values from php array into js array
         //openSettings(id, title, tag1, tag2, tag3, tag4, tag5, desc, bpm, key_short, typeID, monetID, error)
+        console.log('20');
         openSettings("<?php echo $id . '", "' . $title . '", "' . $tag1 . '", "' . $tag2 . '", "' . $tag3 . '", "' . $tag4 . '", "' . $tag5 . '", "' . $desc . '", "' . $bpm . '", "' . $key . '", "' . $type . '", "' . $monet . '", "' . $_SESSION['trackEdit-error']['id']; ?>");
 
     };
