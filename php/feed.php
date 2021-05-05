@@ -20,7 +20,7 @@ if (isset($_GET['tset-del'])) {
         <form id="trackSettingsForm" action="/user/my" method="get" class="form-popup" enctype="multipart/form-data">
             <!-- <form id="trackSettingsForm" action="<?php  // echo htmlspecialchars($_SERVER["PHP_SELF"]); 
                                                         ?>" method="post" class="form-popup" enctype="multipart/form-data"> -->
-            <h1>Edit Track</h1> 
+            <h1>Edit Track</h1>
             <div>
                 <input type="hidden" id="tset-track-id-hidden" name="tset-track-id" />
                 <!-- FreeForProfit Upload - Auswahl Beat -->
@@ -233,7 +233,7 @@ if (isset($_GET['tset-del'])) {
                 case '-4':
                     errorMsg = 'Please enter a valid description';
                     break;
-            
+
                 default:
                     errorMsg = 'Something went wrong';
                     break;
@@ -241,7 +241,7 @@ if (isset($_GET['tset-del'])) {
             document.getElementById('tset-error').style.display = '';
             document.getElementById('tset-error').innerHTML = errorMsg;
 
-        }else {
+        } else {
             document.getElementById('tset-error').style.display = 'none';
             document.getElementById('tset-error').innerHTML = '';
         }
@@ -409,7 +409,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
 
 # code...
 foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
-    //set the path of the file
+    // set the path of the file
     $path = $pathAddition . "uploads/" . str_replace('#', '%23', $row['Path']);
     //select count of downloads for that file
     $stmntGetDownloads = $pdo->prepare('SELECT * FROM user_downloaded_file WHERE fk_files_id = ?;');
@@ -417,6 +417,11 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     $stmntGetDownloads->execute();
     $downloadsCount = $stmntGetDownloads->rowCount();
     if (!isset($feedPurp) || $feedPurp != 'profile') {
+        $id = $row['pk_files_id'];
+        $$id = new feedEntry();
+        $$id->feedEntry($id);
+        echo $$id->getPlayerCodeMain();
+
         $tags = "";
         $notags = 0;
         for ($i = 1; $i <= 5; $i++) {

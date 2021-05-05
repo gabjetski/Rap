@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'feedEntry.php';
 try {
   //database connection
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
@@ -135,7 +136,7 @@ try {
             </li>
             <li class="dropList">
               <h3>
-                <form action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" method="get" class="form-container">
+                <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="get" class="form-container">
                   <input type="submit" value="Log Out" name="logout">
                 </form>
               </h3>
@@ -155,7 +156,7 @@ try {
 
     // View Profil als Icon
     echo '<a href="user/my"><img src="./images/profil-avatar.png" alt="Funkt nicht"></a>';*/
-    
+
 
     //var_dump($_SESSION);
     //echo "<br><br>";
@@ -278,7 +279,7 @@ try {
     <div id="freeForProfitForm">
       <div class="blocker" onclick="closeF4P();"></div>
       <form id="f4pForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="form-popup" enctype="multipart/form-data">
-        <h1>F4P Upload</h1> 
+        <h1>F4P Upload</h1>
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
