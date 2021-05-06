@@ -95,7 +95,7 @@ try {
     if (isset($_GET['downloaded_file'])) {
       require "php/download.php";
     }
-    //var_dump($_SESSION);
+    var_dump($_SESSION);
     require "php/blacklist.php";
     if (isset($_SESSION['downloadSuccess'])) {
       // require "php/downloadSuccess.php";

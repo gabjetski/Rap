@@ -2,9 +2,13 @@
 
 // set filename of downloaded file
 $filename = $_GET['downloaded_file'];
+echo $_GET['downloaded_file'];
+// $filepath = 'uploads/' . $filename;
 $filepath = 'uploads/' . $filename;
 
 //check if file exists
+var_dump($filepath);
+var_dump(file_exists($filepath));
 if (file_exists($filepath)) {
 
     //sets the header to download file

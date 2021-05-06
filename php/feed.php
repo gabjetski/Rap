@@ -416,218 +416,226 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     $stmntGetDownloads->bindParam(1, $row['pk_files_id'], PDO::PARAM_STR, 5000);
     $stmntGetDownloads->execute();
     $downloadsCount = $stmntGetDownloads->rowCount();
-    if (!isset($feedPurp) || $feedPurp != 'profile') {
+    if (!isset($feedPurp) || $feedPurp == 'main') {
         $id = $row['pk_files_id'];
         $$id = new feedEntry;
-        $$id->feedEntryO($id);
+        $$id->feedEntryO($id, 'main');
         echo $$id->getPlayerCodeMain();
 
-        $tags = "";
-        $notags = 0;
-        for ($i = 1; $i <= 5; $i++) {
-            if ($row['Tag' . $i] != "") {
-                $tags .= $row['Tag' . $i] . ", ";
-            } else {
-                $notags++;
-            }
-            if ($notags == 5) {
-                $tags = "The artist has not added any tags to this Track!";
-            }
-        }
-        $tags = rtrim($tags, ", ");
-        echo "
-    <div class=\"songPlayer\">
-    <h class=\"songTitle\"> {$row['Title']} - by <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
-        <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
-            <h3>Description:</h3>
-            <div>{$row['Description']}</div>
-            <div>{$row['fk_bpm_id']} bpm, {$row['root_note']} {$row['Addition']}</div>
-            <h3>Tags:</h3>
-            <div>
-                <div>$tags</div>
-            </div>
-        </div>
-        <div class=\"songControls\">
-            <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
-            <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
-            <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
-            <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
-            <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
-        </div>
-        
-        <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
-        ";
+        //         $tags = "";
+        //         $notags = 0;
+        //         for ($i = 1; $i <= 5; $i++) {
+        //             if ($row['Tag' . $i] != "") {
+        //                 $tags .= $row['Tag' . $i] . ", ";
+        //             } else {
+        //                 $notags++;
+        //             }
+        //             if ($notags == 5) {
+        //                 $tags = "The artist has not added any tags to this Track!";
+        //             }
+        //         }
+        //         $tags = rtrim($tags, ", ");
+        //         echo "
+        //     <div class=\"songPlayer\">
+        //     <h class=\"songTitle\"> {$row['Title']} - by <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
+        //         <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
+        //             <h3>Description:</h3>
+        //             <div>{$row['Description']}</div>
+        //             <div>{$row['fk_bpm_id']} bpm, {$row['root_note']} {$row['Addition']}</div>
+        //             <h3>Tags:</h3>
+        //             <div>
+        //                 <div>$tags</div>
+        //             </div>
+        //         </div>
+        //         <div class=\"songControls\">
+        //             <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
+        //             <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
+        //             <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
+        //             <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
+        //             <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
+        //         </div>
 
-        if ($row['fk_monet_id'] == 1) {
-            $showDownload = true;
-            if (isset($_SESSION['userID'])) {
-                $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
-                $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
-                $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
-                $stmntLookForSimularDownload->execute();
+        //         <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
+        //         ";
 
-                $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
-            }
-            if (isset($_SESSION['download'][$row['pk_files_id']])) {
-                $showDownload = false;
-            }
+        //         if ($row['fk_monet_id'] == 1) {
+        //             $showDownload = true;
+        //             if (isset($_SESSION['userID'])) {
+        //                 $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
+        //                 $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
+        //                 $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
+        //                 $stmntLookForSimularDownload->execute();
 
-            echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" ";
-            if ($showDownload) {
-                echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
-            }
-            echo "><i class=\"fa fa-download fa-2x\"></i></a>
-                <br>
-                <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads";
-        } else {
-            echo "<span>Contact the Artist for access to this File!</span>";
-        }
-    } elseif ($feedPurp == 'profile') {
-        $tags = "";
-        $notags = 0;
-        for ($i = 1; $i <= 5; $i++) {
-            if ($row['Tag' . $i] != "") {
-                $tags .= $row['Tag' . $i] . ", ";
-            } else {
-                $notags++;
-            }
-            if ($notags == 5) {
-                $tags = "The artist has not added any tags to this Track!";
-            }
-        }
-        $tags = rtrim($tags, ", ");
-        echo "
-        <div class=\"songPlayer\">
-        <h class=\"songTitle\"> {$row['Title']} - by <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
-            <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
-                <h3>Description:</h3>
-                <div>{$row['Description']}</div>
-                <div>{$row['fk_bpm_id']} bpm, {$row['root_note']} {$row['Addition']}</div>
-                <h3>Tags:</h3>
-                <div>
-                    <div>$tags</div>
-                </div>
-            </div>
-            <div class=\"songControls\">
-                <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
-                <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
-                <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
-                <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
-                <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
-            </div>
-            
-            <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
-            <button id=\"openSettings{$row['pk_files_id']}\">Edit</button>
-        ";
-        $stmntGetKey = $pdo->prepare('SELECT * FROM keysignature WHERE pk_key_signature_id = ' . $row['fk_key_signature_id']);
-        $stmntGetKey->execute();
-        foreach ($stmntGetKey->fetchAll(PDO::FETCH_ASSOC) as $rowKey) {
-            $keyVal = $rowKey['short'];
-        }
+        //                 $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
+        //             }
+        //             if (isset($_SESSION['download'][$row['pk_files_id']])) {
+        //                 $showDownload = false;
+        //             }
+
+        //             echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" ";
+        //             if ($showDownload) {
+        //                 echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
+        //             }
+        //             echo "><i class=\"fa fa-download fa-2x\"></i></a>
+        //                 <br>
+        //                 <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads";
+        //         } else {
+        //             echo "<span>Contact the Artist for access to this File!</span>";
+        //         }
+        //     } elseif ($feedPurp == 'profile') {
+        //         $tags = "";
+        //         $notags = 0;
+        //         for ($i = 1; $i <= 5; $i++) {
+        //             if ($row['Tag' . $i] != "") {
+        //                 $tags .= $row['Tag' . $i] . ", ";
+        //             } else {
+        //                 $notags++;
+        //             }
+        //             if ($notags == 5) {
+        //                 $tags = "The artist has not added any tags to this Track!";
+        //             }
+        //         }
+        //         $tags = rtrim($tags, ", ");
+        //         echo "
+        //         <div class=\"songPlayer\">
+        //         <h class=\"songTitle\"> {$row['Title']} - by <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\"> {$row['Username']} </a></h>
+        //             <div id=\"songInfo{$row['pk_files_id']}\" class=\"songInfo\">
+        //                 <h3>Description:</h3>
+        //                 <div>{$row['Description']}</div>
+        //                 <div>{$row['fk_bpm_id']} bpm, {$row['root_note']} {$row['Addition']}</div>
+        //                 <h3>Tags:</h3>
+        //                 <div>
+        //                     <div>$tags</div>
+        //                 </div>
+        //             </div>
+        //             <div class=\"songControls\">
+        //                 <audio class=\"audioPlayer\" id=\"player{$row['pk_files_id']}\" src=\"{$path}\"></audio>
+        //                 <button class=\"songPlayPause\" id=\"playBtn{$row['pk_files_id']}\"> Play </button>
+        //                 <button class=\"songPlayPause hidden\" id=\"pauseBtn{$row['pk_files_id']}\"> Pause </button>
+        //                 <input type=\"range\" min=\"0\" max=\"100\" value=\"35\" id=\"volume{$row['pk_files_id']}\">
+        //                 <input type=\"range\" id=\"progress{$row['pk_files_id']}\" value=\"0\" max=\"100\" style=\"width:400px;\"></input>
+        //             </div>
+
+        //             <button id=\"openInfo{$row['pk_files_id']}\">INFO</button>
+        //             <button id=\"openSettings{$row['pk_files_id']}\">Edit</button>
+        //         ";
+        //         $stmntGetKey = $pdo->prepare('SELECT * FROM keysignature WHERE pk_key_signature_id = ' . $row['fk_key_signature_id']);
+        //         $stmntGetKey->execute();
+        //         foreach ($stmntGetKey->fetchAll(PDO::FETCH_ASSOC) as $rowKey) {
+        //             $keyVal = $rowKey['short'];
+        //         }
+        // 
 ?>
 
 
         <script>
-            numb = <?php echo $row['pk_files_id']; ?>;
-            const openSettings<?php echo $row['pk_files_id']; ?> = document.getElementById('openSettings<?php echo $row['pk_files_id']; ?>');
+            //             numb = <?php // echo $row['pk_files_id']; 
+                                    ?>;
+            //             const openSettings<?php // echo $row['pk_files_id']; 
+                                                ?> = document.getElementById('openSettings<?php // echo $row['pk_files_id']; 
+                                                                                            ?>');
 
-            openSettings<?php echo $row['pk_files_id']; ?>.addEventListener("click", function() {
-                openSettings("<?php echo $row['pk_files_id'] . '", "' . $row['Title'] . '", "' . $row['Tag1'] . '", "' . $row['Tag2'] . '", "' . $row['Tag3'] . '", "' . $row['Tag4'] . '", "' . $row['Tag5'] . '", "' . $row['Description'] . '", "' . $row['fk_bpm_id'] . '", "' . $keyVal . '", "' . $row['fk_upload_type_id'] . '", "' . $row['fk_monet_id']; ?>", "");
-            });
-            blocker.addEventListener("click", function() {
-                closeSettings(numb);
-            });
+            //             openSettings<?php // echo $row['pk_files_id']; 
+                                        ?>.addEventListener("click", function() {
+            //                 openSettings("<?php // echo $row['pk_files_id'] . '", "' . $row['Title'] . '", "' . $row['Tag1'] . '", "' . $row['Tag2'] . '", "' . $row['Tag3'] . '", "' . $row['Tag4'] . '", "' . $row['Tag5'] . '", "' . $row['Description'] . '", "' . $row['fk_bpm_id'] . '", "' . $keyVal . '", "' . $row['fk_upload_type_id'] . '", "' . $row['fk_monet_id']; 
+                                                ?>", "");
+            //             });
+            //             blocker.addEventListener("click", function() {
+            //                 closeSettings(numb);
+            //             });
+            //         
         </script>
 
 <?php
 
-        if ($row['fk_monet_id'] == 1) {
-            $showDownload = true;
-            if (isset($_SESSION['userID'])) {
-                $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
-                $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
-                $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
-                $stmntLookForSimularDownload->execute();
+        //         if ($row['fk_monet_id'] == 1) {
+        //             $showDownload = true;
+        //             if (isset($_SESSION['userID'])) {
+        //                 $stmntLookForSimularDownload = $pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
+        //                 $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
+        //                 $stmntLookForSimularDownload->bindParam(2, $row['pk_files_id'], PDO::PARAM_STR, 5000);
+        //                 $stmntLookForSimularDownload->execute();
 
-                $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
-            }
-            if (isset($_SESSION['download'][$row['pk_files_id']])) {
-                $showDownload = false;
-            }
+        //                 $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
+        //             }
+        //             if (isset($_SESSION['download'][$row['pk_files_id']])) {
+        //                 $showDownload = false;
+        //             }
 
-            echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" ";
-            if ($showDownload) {
-                echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
-            }
-            echo "><i class=\"fa fa-download fa-2x\"></i></a>
-                <br>
-                <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads";
-        } else {
-            echo "<span>Contact the Artist for access to this File!</span>";
-        }
+        //             echo "<a href=\"index.php?downloaded_file={$path}&username_file={$row['Username']}&title_file={$row['Title']}\" ";
+        //             if ($showDownload) {
+        //                 echo "onclick=\"addDownloadCount({$row['pk_files_id']})\"";
+        //             }
+        //             echo "><i class=\"fa fa-download fa-2x\"></i></a>
+        //                 <br>
+        //                 <span id='downloads{$row['pk_files_id']}'>{$downloadsCount}</span> Downloads";
+        //         } else {
+        //             echo "<span>Contact the Artist for access to this File!</span>";
+        //         }
+        //     }
+        //     //FIXME volume bar changes for all
+        //     //TODO general soundbar on bottom
+        //     echo
+        //     "</div>
+        //     <script>
+        //         const playBtn{$row['pk_files_id']} = document.getElementById(\"playBtn{$row['pk_files_id']}\");
+        //         const pauseBtn{$row['pk_files_id']} = document.getElementById(\"pauseBtn{$row['pk_files_id']}\");
+        //         const progress{$row['pk_files_id']} = document.getElementById(\"progress{$row['pk_files_id']}\");
+        //         const player{$row['pk_files_id']} = document.getElementById(\"player{$row['pk_files_id']}\");
+
+        //         const infoBtn{$row['pk_files_id']} = document.getElementById(\"openInfo{$row['pk_files_id']}\");
+
+        //         player{$row['pk_files_id']}.volume = 0.35;
+
+        //         const volume{$row['pk_files_id']} = document.getElementById(\"volume{$row['pk_files_id']}\");
+
+        //         volume{$row['pk_files_id']}.addEventListener(\"change\", function(){newVolume({$row['pk_files_id']});});
+
+        //         progress{$row['pk_files_id']}.addEventListener(\"change\", function(){console.log(progress{$row['pk_files_id']}.value);newProgress({$row['pk_files_id']});});
+        //         progress{$row['pk_files_id']}.addEventListener(\"mousedown\", function(){pause({$row['pk_files_id']});});
+        //         progress{$row['pk_files_id']}.addEventListener(\"mouseup\", function(){
+        //             if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
+        //                 playTrack({$row['pk_files_id']});
+        //             }
+        //         });
+
+        //         playBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){playTrack({$row['pk_files_id']});});
+        //         playBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){togglePlayPause({$row['pk_files_id']});});
+
+        //         pauseBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){pause({$row['pk_files_id']});});
+        //         pauseBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){togglePlayPause({$row['pk_files_id']});});
+
+        //         infoBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){openInfo({$row['pk_files_id']});});
+
+
+
+        //         let testPlayer{$row['pk_files_id']} = document.getElementById('player4');
+        //         let testProgessBar{$row['pk_files_id']} = document.getElementById('progess4');
+
+        //         player{$row['pk_files_id']}.ontimeupdate = function(){
+        //             //console.log('Hallo');
+        //             //console.log(testPlayer{$row['pk_files_id']}.value);
+        //         }
+
+
+        //         player{$row['pk_files_id']}.ontimeupdate = function(){
+        //             progress{$row['pk_files_id']}.value = player{$row['pk_files_id']}.currentTime / player{$row['pk_files_id']}.duration*100;
+        //             if(player{$row['pk_files_id']}.currentTime == player{$row['pk_files_id']}.duration){
+        //                 if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
+        //                     togglePlayPause({$row['pk_files_id']});
+        //                     //togglePlayPause('M');
+        //                 }
+        //             }
+        //             //console.log(player{$row['pk_files_id']}.currentTime);
+        //         };
+
+
+        //         //let vid{$row['pk_files_id']} = document.getElementById('volume4');
+        //         //vid{$row['pk_files_id']}.volume = 0.2;
+
+        //     </script>";
+        //     echo "<br>";
     }
-    //FIXME volume bar changes for all
-    //TODO general soundbar on bottom
-    echo
-    "</div>
-    <script>
-        const playBtn{$row['pk_files_id']} = document.getElementById(\"playBtn{$row['pk_files_id']}\");
-        const pauseBtn{$row['pk_files_id']} = document.getElementById(\"pauseBtn{$row['pk_files_id']}\");
-        const progress{$row['pk_files_id']} = document.getElementById(\"progress{$row['pk_files_id']}\");
-        const player{$row['pk_files_id']} = document.getElementById(\"player{$row['pk_files_id']}\");
-
-        const infoBtn{$row['pk_files_id']} = document.getElementById(\"openInfo{$row['pk_files_id']}\");
-
-        player{$row['pk_files_id']}.volume = 0.35;
-
-        const volume{$row['pk_files_id']} = document.getElementById(\"volume{$row['pk_files_id']}\");
-
-        volume{$row['pk_files_id']}.addEventListener(\"change\", function(){newVolume({$row['pk_files_id']});});
-        
-        progress{$row['pk_files_id']}.addEventListener(\"change\", function(){console.log(progress{$row['pk_files_id']}.value);newProgress({$row['pk_files_id']});});
-        progress{$row['pk_files_id']}.addEventListener(\"mousedown\", function(){pause({$row['pk_files_id']});});
-        progress{$row['pk_files_id']}.addEventListener(\"mouseup\", function(){
-            if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
-                playTrack({$row['pk_files_id']});
-            }
-        });
-
-        playBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){playTrack({$row['pk_files_id']});});
-        playBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){togglePlayPause({$row['pk_files_id']});});
-
-        pauseBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){pause({$row['pk_files_id']});});
-        pauseBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){togglePlayPause({$row['pk_files_id']});});
-
-        infoBtn{$row['pk_files_id']}.addEventListener(\"click\", function(){openInfo({$row['pk_files_id']});});
-
-
-        
-        let testPlayer{$row['pk_files_id']} = document.getElementById('player4');
-        let testProgessBar{$row['pk_files_id']} = document.getElementById('progess4');
-
-        player{$row['pk_files_id']}.ontimeupdate = function(){
-            //console.log('Hallo');
-            //console.log(testPlayer{$row['pk_files_id']}.value);
-        }
-
-
-        player{$row['pk_files_id']}.ontimeupdate = function(){
-            progress{$row['pk_files_id']}.value = player{$row['pk_files_id']}.currentTime / player{$row['pk_files_id']}.duration*100;
-            if(player{$row['pk_files_id']}.currentTime == player{$row['pk_files_id']}.duration){
-                if(playBtn{$row['pk_files_id']}.classList.contains('hidden')){
-                    togglePlayPause({$row['pk_files_id']});
-                    //togglePlayPause('M');
-                }
-            }
-            //console.log(player{$row['pk_files_id']}.currentTime);
-        };
-
-
-        //let vid{$row['pk_files_id']} = document.getElementById('volume4');
-        //vid{$row['pk_files_id']}.volume = 0.2;
-
-    </script>";
-    echo "<br>";
 }
 ?>
 <!--<div class="mainPlayer">
