@@ -1,9 +1,16 @@
 <?php
 session_start();
 require_once 'feedEntry.php';
+require_once 'permissions.php';
+if (!isset($_SESSION['userID'])) {
+  $_SESSION['userID'] = 1;
+}
+$userPerm = new Permissions;
 try {
   //database connection
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
+  var_dump($userPerm->permission($_SESSION['userID'], 1));
+  // $_SESSION['pdo'] = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
   //function to htmlspecialchar Arrays -> prevent injections
   function filter(&$value)
   {

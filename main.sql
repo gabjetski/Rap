@@ -4,6 +4,24 @@ DROP DATABASE IF EXISTS rap;
 CREATE DATABASE rap;
 USE rap;
 
+CREATE OR REPLACE TABLE usertype(
+    pk_user_type_id INTEGER PRIMARY KEY,
+    description VARCHAR(30)
+);
+CREATE OR REPLACE TABLE module(
+    pk_module_type_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(30),
+    description VARCHAR(30)
+);
+
+CREATE OR REPLACE TABLE Permission(
+    pk_permission_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    fk_user_type_id INTEGER,
+    fk_module_type_id INTEGER,
+    CONSTRAINT permission_user_type FOREIGN KEY (fk_user_type_id) REFERENCES usertype(pk_user_type_id) ON DELETE CASCADE,
+    CONSTRAINT permission_module_type FOREIGN KEY (fk_module_type_id) REFERENCES module(pk_module_type_id) ON DELETE CASCADE
+);
+
 CREATE OR REPLACE TABLE User(
     pk_user_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
     FirstName VARCHAR(30), 
@@ -17,7 +35,9 @@ CREATE OR REPLACE TABLE User(
     Soundcloud VARCHAR(40),
     YouTube VARCHAR(40),
     Location VARCHAR(40),
-    user_added DATETIME
+    user_added DATETIME,
+    fk_user_type_id INTEGER,
+    CONSTRAINT user_user_type FOREIGN KEY(fk_user_type_id) REFERENCES usertype(pk_user_type_id) ON DELETE CASCADE 
 );
 CREATE OR REPLACE TABLE archiveUser(
     pk_user_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
@@ -179,6 +199,10 @@ DECLARE v_counter INTEGER;
   SET v_counter = v_counter + 1;
   END WHILE;
 END;
+INSERT INTO `module` (`pk_module_type_id`, `name`, `description`) VALUES (NULL, 'download', 'download von track'), (NULL, 'upload', 'upload von track');
+INSERT INTO `usertype` (`pk_user_type_id`, `description`) VALUES ('0', 'gast'), ('1', 'user'), ('2', 'admin');
+INSERT INTO `permission` (`pk_permission_id`, `fk_user_type_id`, `fk_module_type_id`) VALUES (NULL, '0', '1'), (NULL, '1', '2'), (NULL, '1', '1'), (NULL, '2', '1'), (NULL, '2', '2');
+
 INSERT INTO `user` (`pk_user_id`, `FirstName`, `LastName`, `Username`, `Email`, `Passwort`, `Bio`, `Insta`, `Twitter`, `Soundcloud`) 
     VALUES (1, 'Guest', 'Guest', 'guest', 'guest', 'guest', NULL, NULL, NULL, NULL);
 INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
