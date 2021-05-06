@@ -21,7 +21,7 @@ class feedEntry
     public $fileData;
     public $uploaderData;
 
-    function feedEntry($id)
+    function feedEntryO($id)
     {
 
         $this->pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');

@@ -117,7 +117,7 @@ try {
       echo '<div class="profileForm"> Bio: ' . $_SESSION['bio']  . '</div>';
       echo '<hr>';
       echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['instagram'] . '</i></a></div><br>' : '');
-      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
       echo '<hr>';

@@ -418,8 +418,8 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     $downloadsCount = $stmntGetDownloads->rowCount();
     if (!isset($feedPurp) || $feedPurp != 'profile') {
         $id = $row['pk_files_id'];
-        $$id = new feedEntry();
-        $$id->feedEntry($id);
+        $$id = new feedEntry;
+        $$id->feedEntryO($id);
         echo $$id->getPlayerCodeMain();
 
         $tags = "";

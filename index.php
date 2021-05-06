@@ -41,7 +41,17 @@ try {
   <body>
     <h2>Rap Plattform</h2>
 
+    <div class="wrap">
+      <div class="search">
+        <input type="text" class="searchTerm" placeholder="Random Placeholder">
+        <button type="submit" class="searchButton">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+
     <?php
+
     // ANCHOR: PHP Zeugs
     //Reset or reload page
     if (isset($_GET['reset'])) {

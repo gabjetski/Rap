@@ -141,12 +141,6 @@ try {
     }
   }
 
-   // ANCHOR Delete Last Name 
-   if(isset($_GET['deleteLastName'])){
-    $deleteLastName = $pdo->prepare('UPDATE user set LastName = NULL where pk_user_id = '.$_SESSION['userID']);
-    $deleteLastName->execute();
-  }
-
   // ANCHOR Last Name Validations und Änderungen 
   if(isset($_GET['changeLastName'])){
     unset($_SESSION['lastNameChange-Error']);
@@ -173,12 +167,6 @@ try {
     $updateLastName->execute();
     header('Location:/user/my/settings');
     }
-  }
-
-  // ANCHOR Delete FirstName Name 
-  if(isset($_GET['deleteFirstName'])){
-    $deleteFirstName = $pdo->prepare('UPDATE user set FirstName = NULL where pk_user_id = '.$_SESSION['userID']);
-    $deleteFirstName->execute();
   }
 
   // ANCHOR Instagram Validations und Änderungen
@@ -448,7 +436,7 @@ try {
       echo '<div class="profileForm"> Bio: ' . $_SESSION['bio']  . '</div>';
       echo '<hr>';
       echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['instagram'] . '</i></a></div><br>' : '');
-      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
+      echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
       echo (isset($_SESSION['youtube']) ? '<div class="profileForm"><a href="https://www.youtube.com/channel/' . $_SESSION['youtube'] . '" target="_blank"><i class="fa fa-youtube">' . $_SESSION['youtube'] . '</i></a></div><br>' : '');
@@ -489,15 +477,12 @@ try {
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter New First Name" name="newFirstName" id="change-firstName" value = "<?php echo $_SESSION['firstName'] ?>">
       <input type="submit" name="changeFirstName" id="changeFirstName" value="Change"/>
-      <input type="submit" name="deleteFirstName" id="deleteFirstName" value="Delete" />
     </form>
 
     <!-- Last Name Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="text" placeholder="Enter New Last Name" name="newLastName" id="change-lastName" value = "<?php echo $_SESSION['lastName'] ?>">
       <input type="submit" name="changeLastName" id="changeLastName" value="Change"/>
-      <input type="submit" name="deleteLastName" id="deleteLastName" value="Delete" />
-
     </form>
 
     <!-- Instagram Change / Instagram Connect -->
