@@ -1,14 +1,26 @@
 <?php
 
 // set filename of downloaded file
+echo 'LOL<br>' . $_SERVER['PHP_SELF'] . '<br>';
+$currRealLocation = $_SERVER['PHP_SELF'];
+$currDephts = explode('/', $currRealLocation);
+// echo sizeof($currDephts);
+// echo "<br>";
 $filename = $_GET['downloaded_file'];
-echo $_GET['downloaded_file'];
+// echo $_GET['downloaded_file'];
 // $filepath = 'uploads/' . $filename;
-$filepath = 'uploads/' . $filename;
+$filepath = "";
+for ($i = 0; $i < sizeof($currDephts) - 2; $i++) {
+    $filepath .= "../";
+}
+$filepath .= 'uploads/' . $filename;
 
 //check if file exists
-var_dump($filepath);
-var_dump(file_exists($filepath));
+// echo "<hr>";
+// var_dump($filepath);
+// echo "<br>";
+// var_dump(file_exists($filepath));
+// echo "<hr>";
 if (file_exists($filepath)) {
 
     //sets the header to download file
@@ -20,9 +32,9 @@ if (file_exists($filepath)) {
     header('Expires: 0');
     header('Cache-Control: must-revalidate');
     header('Pragma: public');
-    header('Content-Length: ' . filesize('uploads/' . $filename));
+    header('Content-Length: ' . filesize($filepath));
     //download file
-    readfile('uploads/' . $filename);
+    readfile($filepath);
 
     //get id of file out of filename (2#abcde)
     $arr = explode("#", $_GET['downloaded_file'], 2);

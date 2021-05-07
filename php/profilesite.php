@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'autoload.php';
+$_SESSION['header'] = '/user/my';
 try {
   //database connection
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
@@ -27,7 +29,7 @@ try {
     }
     header('Location:/user/my');
   }
-
+  // var_dump($_SESSION);
 
 ?>
   <!DOCTYPE html>

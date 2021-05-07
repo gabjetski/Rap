@@ -18,3 +18,12 @@ list.addEventListener("mouseenter", () => {
 navToggle.addEventListener("mouseleave", () => {
 	nav.classList.remove('open');
 })
+
+
+// ANCHOR Download-Anzeige Funktione 
+function addDownloadCount(id) {
+    const count = document.getElementById('downloads'+id);
+    const oldNumber = count.innerHTML;
+    count.innerHTML = parseInt(oldNumber,10) + 1;
+    //alert(oldNumber);
+}

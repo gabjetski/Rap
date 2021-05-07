@@ -506,16 +506,6 @@ function clearTaggedForm(){
     //let tagsListing = document.getElementsByClassName('tagsListing');
 }
 
-
-// ANCHOR Download-Anzeige Funktione 
-function addDownloadCount(id) {
-    const count = document.getElementById('downloads'+id);
-    const oldNumber = count.innerHTML;
-    count.innerHTML = parseInt(oldNumber,10) + 1;
-    //alert(oldNumber);
-}
-
-
 // Uploaddata Validations
 function fileValidation() {
     let fi = document.getElementById('f4pUpload-file');

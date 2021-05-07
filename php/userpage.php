@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once 'autoload.php';
+$_SESSION['header'] = "/user/{$_GET['userID']}";
 try {
   //database connection
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');

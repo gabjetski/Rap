@@ -53,7 +53,8 @@ CREATE OR REPLACE TABLE archiveUser(
     YouTube VARCHAR(40),
     Location VARCHAR(40),
     user_added DATETIME,
-    archive_date DATETIME
+    fk_user_type_id INTEGER
+    #--archive_date DATETIME
 );
 
 CREATE OR REPLACE TABLE BPM(
@@ -121,7 +122,7 @@ CREATE OR REPLACE TABLE archiveFiles(
     fk_upload_type_id INTEGER NOT NULL, 
     fk_monet_id INTEGER NOT NULL, 
     file_added DATETIME,
-    archive_date DATETIME,
+    #--archive_date DATETIME,
     CONSTRAINT files_user_id_arch FOREIGN KEY (fk_user_id)
         REFERENCES User(pk_user_id) ON DELETE CASCADE,
     CONSTRAINT files_bpm_id_arch FOREIGN KEY (fk_bpm_id)

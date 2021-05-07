@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'feedEntry.php';
-require_once 'permissions.php';
+require_once 'php/autoload.php';
+$_SESSION['header'] = '/home';
 
 if (!isset($_SESSION['userID'])) {
   $_SESSION['userID'] = 1;
@@ -47,17 +47,17 @@ try {
     <h2>Rap Plattform</h2>
 
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container" id="searchBarForm">
-    <div class="wrap">
-      <div class="search">
-        <input type="text" class="searchTerm" placeholder="Random Placeholder" name="searchTerm">
-        <button type="submit" class="searchButton" name="searchButton">
-        </form>
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
+      <div class="wrap">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="Random Placeholder" name="searchTerm">
+          <button type="submit" class="searchButton" name="searchButton">
+    </form>
+    <i class="fa fa-search"></i>
+    </button>
+    </div>
     </div>
     </form>
-    
+
     <?php
 
     // ANCHOR: PHP Zeugs
@@ -100,9 +100,6 @@ try {
     if (isset($_POST['taggedUpload-submit'])) {
       require "php/taggedUpload.php";
     }
-    if (isset($_GET['downloaded_file'])) {
-      require "php/download.php";
-    }
     var_dump($_SESSION);
     require "php/blacklist.php";
     if (isset($_SESSION['downloadSuccess'])) {
@@ -115,6 +112,11 @@ try {
       var_dump($_SESSION['downloadError_GET']);
       echo "<br>";
       echo "<br>";*/
+    }
+
+    if (isset($_GET['downloaded_file'])) {
+      echo "yes2";
+      require "php/download.php";
     }
     if (isset($_SESSION['uploadSuccess'])) {
       echo "File - {$_SESSION['uploadSuccess']} was succesfully uploaded";
