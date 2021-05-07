@@ -2,6 +2,7 @@
 session_start();
 require_once 'feedEntry.php';
 require_once 'permissions.php';
+
 if (!isset($_SESSION['userID'])) {
   $_SESSION['userID'] = 1;
 }
@@ -16,6 +17,7 @@ try {
   {
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
   }
+  require 'php/searchbar.php';
 ?>
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
@@ -36,20 +38,26 @@ try {
   if (isset($_SESSION['uploadError'])) {
     require "php/uploadError.php";
   }
+
+
+
   ?>
 
   <body>
     <h2>Rap Plattform</h2>
 
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container" id="searchBarForm">
     <div class="wrap">
       <div class="search">
-        <input type="text" class="searchTerm" placeholder="Random Placeholder">
-        <button type="submit" class="searchButton">
+        <input type="text" class="searchTerm" placeholder="Random Placeholder" name="searchTerm">
+        <button type="submit" class="searchButton" name="searchButton">
+        </form>
           <i class="fa fa-search"></i>
         </button>
       </div>
     </div>
-
+    </form>
+    
     <?php
 
     // ANCHOR: PHP Zeugs

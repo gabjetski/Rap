@@ -99,7 +99,7 @@ try {
     echo '<hr>';
     echo (isset($_SESSION['insta']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['insta'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['insta'] . '</i></a></div><br>' : '');
     echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
-    echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['Soundcloud'] . '</i></a></div><br>' : '');
+    echo (isset($_SESSION['Soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['Soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['Soundcloud'] . '</i></a></div><br>' : '');
     echo (isset($_SESSION['mail']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['mail'] . '</i></div>' : '');
 
     echo (!isset($_SESSION['insta']) && !isset($_SESSION['twitter']) && !isset($_SESSION['soundcloud']) && !isset($_SESSION['mail']) ? 'This user has no contact details' : '');

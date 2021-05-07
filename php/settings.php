@@ -1,13 +1,13 @@
 <?php
 session_start();
-try {
-  //database connection
-  $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
-  //function to htmlspecialchar Arrays -> prevent injections
-  function filter(&$value)
-  {
-    $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-  }
+  try {
+    //database connection
+    $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
+    //function to htmlspecialchar Arrays -> prevent injections
+    function filter(&$value)
+    {
+      $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
     
   // ANCHOR Username Validation
   if(isset($_GET['changeUsername'])){
@@ -326,7 +326,8 @@ try {
     $stmtDelUser->bindParam(2, $_SESSION['userID'], PDO::PARAM_INT);
     $stmtDelUser->execute();
 
-    header('Location:/user/my/settings');
+    session_destroy();
+    header('Location:/home');
   }
 
   // Wenn ein Error Auftritt, SettingsError aufrufen
@@ -538,8 +539,8 @@ try {
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get">
           <h1>Are you sure you want to delete your account?</h1>
           <div>
-            <button type="submit" class="loginButton" name="deleteAccountConfirm" value="Delete" id="deleteAccountConfirm">Delete Account</button>
-            <button type="button" class="cancelButton" onclick="closeDeleteAccount()">Cancel</button>
+            <button type="submit" class="loginButton" name="deleteAccountConfirm" id="deleteAccountConfirm"> Delete Account </button>
+            <button type="button" class="cancelButton" onclick="closeDeleteAccount()"> Cancel </button>
           </div>
         </form>
       </div>
@@ -551,11 +552,10 @@ try {
     <script src="../../settings.js"></script>
 
   <?php
-  $pdo = null;
-} catch (PDOException $e) {
-  //catch potentual error
-  print "Error!: " . $e->getMessage() . "<br>";
-  die();
-}
-
+     $pdo = null;
+    } catch (PDOException $e) {
+        //catch potentual error
+        print "Error!: " . $e->getMessage() . "<br>";
+        die();
+      }
   ?>
