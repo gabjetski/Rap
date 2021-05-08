@@ -1,0 +1,54 @@
+Infos für die Tests Tests des Registrierungs-Formulars
+--------------------------------------------------
+Infos zur Anmeldung
+pk_use_id INTEGER PRIMARY KEY AUTO_INCREMENT 
+FirstName VARCHAR(30)
+LastName VARCHAR(30)
+Username VARCHAR(20) NOT NULL
+Email VARCHAR(50) NOT NULL
+Passwort VARCHAR(40) NOT NULL
+--------------------------------------------------
+Infos zu Usern die es bereits gibt für Testzwecke
+
+ID FirstName LastName Username Email 
+--------------------------------------------------
+2  Hans      Peter    hp       hp@gmail.com 
+3  Hans      Peter2   hp2      hp2@gmail.com
+4  fName     lName    user     email@mail.com
+--------------------------------------------------
+
+Infos zu den verschiedenen Fälle der Fehler
+-1... Username ist vergeben 
+-2... Email ist vergeben 
+-3... Email ist nicht valide 
+-4... Username ist eine Email Adresse?
+-5... First Name ist nicht valide
+-6... Last Name ist nicht valide
+-7... Username ist nicht valide
+-8... Passwords matchen nicht
+-9... ??????gibts nicht???????
+-10... Passwort hat nicht die required characters (7 bis 30 lang, mind. einen Groß- und Kleinbuchstabe und eine Zahl)
+-11... First Name ist leer
+-12... Last Name ist leer 
+-13... Username ist leer 
+-14... Email ist leer 
+-15... Passwort ist leer
+
+-16... AGBS wurden nicht "akzeptiert", wird dann per Hand gecheckt
+--------------------------------------------------
+
+Alle Validations
+--------------------------------------------------
+FirstName UND LastName Validation
+mind 1 Character lang, alle Buchstaben mit äöü, keine Special Character oder Zahlen 
+
+Username Validation
+3 bis 20 lang, Zahlen, Buchstaben mit äöü und Special Character _ . und - 
+
+EMail Validation (Ohne äöü) ^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$
+Zahlen Buchstaben Special Character % + - _ . dann @ Zahlen Buchstaben - . dann . und 2 bis 4 Endzahlen 
+z.B. gab-riel1@htl-rennweg1.at
+
+Passwort Validation 
+Mind 1 Zahl mind 1 Groß- mind 1 Kleinbuchstabe
+7 bis 30 lang, Alle Buchstaben mit äöü, Zahlen, und folgende Special Character !?{}@#$%^&*_.-
