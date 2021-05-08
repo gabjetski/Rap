@@ -46,17 +46,9 @@ try {
   <body>
     <h2>Rap Plattform</h2>
 
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container" id="searchBarForm">
-      <div class="wrap">
-        <div class="search">
-          <input type="text" class="searchTerm" placeholder="Random Placeholder" name="searchTerm">
-          <button type="submit" class="searchButton" name="searchButton">
-    </form>
-    <i class="fa fa-search"></i>
-    </button>
-    </div>
-    </div>
-    </form>
+    
+    
+    <!--</form> ????????????????? --> 
 
     <?php
 
