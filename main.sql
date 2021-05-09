@@ -24,8 +24,8 @@ CREATE OR REPLACE TABLE Permission(
 
 CREATE OR REPLACE TABLE User(
     pk_user_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-    FirstName VARCHAR(30), 
-    LastName VARCHAR(30), 
+    FirstName VARCHAR(50) NOT NULL, 
+    LastName VARCHAR(50) NOT NULL, 
     Username VARCHAR(20) NOT NULL, 
     Email VARCHAR(50) NOT NULL, 
     Passwort VARCHAR(40) NOT NULL, 
@@ -41,11 +41,11 @@ CREATE OR REPLACE TABLE User(
 );
 CREATE OR REPLACE TABLE archiveUser(
     pk_user_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-    FirstName VARCHAR(30) NOT NULL, 
-    LastName VARCHAR(30) NOT NULL, 
-    Username VARCHAR(20) NOT NULL, 
-    Email VARCHAR(50) NOT NULL, 
-    Passwort VARCHAR(40) NOT NULL, 
+    FirstName VARCHAR(50), 
+    LastName VARCHAR(50), 
+    Username VARCHAR(20), 
+    Email VARCHAR(50), 
+    Passwort VARCHAR(40), 
     Bio VARCHAR(100), 
     Insta VARCHAR(40), 
     Twitter VARCHAR(40), 
@@ -121,18 +121,8 @@ CREATE OR REPLACE TABLE archiveFiles(
     fk_key_signature_id INTEGER, 
     fk_upload_type_id INTEGER NOT NULL, 
     fk_monet_id INTEGER NOT NULL, 
-    file_added DATETIME,
-    #--archive_date DATETIME,
-    CONSTRAINT files_user_id_arch FOREIGN KEY (fk_user_id)
-        REFERENCES User(pk_user_id) ON DELETE CASCADE,
-    CONSTRAINT files_bpm_id_arch FOREIGN KEY (fk_bpm_id)
-        REFERENCES BPM(pk_bpm_id) ON DELETE NO ACTION,
-    CONSTRAINT files_key_signature_id_arch FOREIGN KEY (fk_key_signature_id)
-        REFERENCES KeySignature(pk_key_signature_id) ON DELETE NO ACTION,
-    CONSTRAINT files_upload_type_id_arch FOREIGN KEY (fk_upload_type_id)
-        REFERENCES UploadType(pk_upload_type_id) ON DELETE NO ACTION,
-    CONSTRAINT files_monet_id_arch FOREIGN KEY (fk_monet_id)
-        REFERENCES Monetizing(pk_monet_id) ON DELETE NO ACTION
+    file_added DATETIME
+    #--archive_date DATETIME
 );
 
 CREATE OR REPLACE TABLE user_liked_file(
@@ -247,8 +237,8 @@ INSERT INTO `monetizing` (`pk_monet_id`, `Name`)
     VALUES (NULL, 'Free for Profit'), 
             (NULL, 'Tagged');
 INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
-    VALUES (1, 'Test', '1#Test.mp3','', NULL, NULL, NULL, NULL, '', 4, 123, 1, 1, 1),
-            (2, 'Â²Â³$$&amp;%Â§@â‚¬', '2#.mp3', '', NULL, NULL, NULL, NULL, '', 4, 123, 1, 1, 1),
+    VALUES (1, 'Test', '1#Test.mp3','', NULL, NULL, NULL, NULL, '', 2, 123, 1, 1, 1),
+            (2, 'Â²Â³$$&amp;%Â§@â‚¬', '2#.mp3', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
             (3, 'Testt5itelderlangeistsehrlange,sehr,sehr,lange', '3#Testt5itel.mp3', '', NULL, NULL, NULL, NULL, '', 4, 123, 14, 1, 1),
             (4, 'R u dumb, stupid or dumb huh', '4#R u dumb, .mp3', '#R u dumb stupid or dumb huh ', '#R u ', NULL, NULL, NULL, 'R u dumb, stupid or dumb huh', 4, 123, 1, 1, 1);
 
@@ -270,8 +260,8 @@ INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`)
 #--         -7 -> username non valid
 #--         -8 -> passwords doesnt match
 CREATE OR REPLACE PROCEDURE createUser(
-    IN `p_first_name` VARCHAR(30), 
-    IN `p_last_name` VARCHAR(30), 
+    IN `p_first_name` VARCHAR(50), 
+    IN `p_last_name` VARCHAR(50), 
     IN `p_username` VARCHAR(20), 
     IN `p_email` VARCHAR(50), 
     IN `p_passwort` VARCHAR(40), 

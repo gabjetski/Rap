@@ -328,34 +328,16 @@ try {
 
   // ANCHOR Delete Account 
   if (isset($_GET['deleteAccountConfirm'])) {
-    // archive tracks of this user
-    $stmntGetTracksUser = $pdo->prepare("SELECT * FROM files WHERE fk_user_id = :user;");
-    $stmntGetTracksUser->bindParam('user', $_SESSION['userID'], PDO::PARAM_INT);
-    $stmntGetTracksUser->execute();
-    // $stmntGetTracksUser->closeCursor();
-
-    foreach ($stmntGetTracksUser->fetchAll(PDO::FETCH_ASSOC) as $row) {
-      echo "<pre>";
-      var_dump($row);
-      echo "</pre>";
-      $stmtDelTrackUser = $pdo->prepare("INSERT INTO archivefiles SELECT * FROM files WHERE pk_files_id = ?; 
-                                      DELETE FROM files WHERE pk_files_id = ?;");
-      //define the in-parameters
-      $stmtDelTrackUser->bindParam(1, $_row['pk_files_id'], PDO::PARAM_INT);
-      $stmtDelTrackUser->bindParam(2, $_row['pk_files_id'], PDO::PARAM_INT);
-      $stmtDelTrackUser->execute();
-    }
-    // $stmntGetTracksUser->closeCursor();
-
-    $stmtDelUser = $pdo->prepare("INSERT INTO archiveuser SELECT * FROM user WHERE pk_user_id = ?; 
-                                  DELETE FROM user WHERE pk_user_id = ?");
+    $stmtDelUser = $pdo->prepare("INSERT INTO archivefiles SELECT * FROM files WHERE fk_user_id = :id; 
+                                  DELETE FROM files WHERE fk_user_id = :id;
+                                  INSERT INTO archiveuser SELECT * FROM user WHERE pk_user_id = :id; 
+                                  DELETE FROM user WHERE pk_user_id = :id ");
     // define the in-parameters
-    $stmtDelUser->bindParam(1, $_SESSION['userID'], PDO::PARAM_INT);
-    $stmtDelUser->bindParam(2, $_SESSION['userID'], PDO::PARAM_INT);
-    // $stmtDelUser->execute();
+    $stmtDelUser->bindParam('id', $_SESSION['userID'], PDO::PARAM_INT);
+    $stmtDelUser->execute();
 
-    // session_destroy();
-    // header('Location:/home');
+    session_destroy();
+    header('Location:/home');
   }
 
   // Wenn ein Error Auftritt, SettingsError aufrufen
@@ -437,7 +419,7 @@ try {
     }
     //show username and id if logged in
     elseif ($_SESSION['userID'] > 0) {
-      $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
+      /* $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
       $stmntGetUserInfos->execute();
       $oldPassword = $pdo->prepare('SELECT Passwort from User where pk_user_id = ' . $_SESSION['userID']);
       // $oldPassword->execute();
@@ -452,7 +434,7 @@ try {
         $_SESSION['bio'] = $row['Bio'];
         $_SESSION['youtube'] = $row['YouTube'];
         $_SESSION['location'] = $row['Location'];
-      }
+      } */
 
       echo '<hr>';
       echo '<div class="profileForm"><i class="fa fa-user"> FirstName: ' . $_SESSION['firstName'] . '</i></div>';

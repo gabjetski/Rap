@@ -404,6 +404,16 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     if ($stmntGetSongs->rowCount() == 0) {
         echo "You could start uploading your beats :)";
     }
+} elseif ($feedPurp == 'search') {
+    // select all songs which schould be displayed
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files where Title like :keyword');
+    $stmntGetSongs->bindParam(':keyword', $keyword, PDO::PARAM_STR);
+    $stmntGetSongs->execute();
+    $pathAddition = "../../";
+    //fetch the results
+    if ($stmntGetSongs->rowCount() == 0) {
+        echo "No Tracks found with title " .  $_GET['searchTerm'];
+    }
 }
 
 

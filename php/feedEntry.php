@@ -14,6 +14,8 @@ class feedEntry
             $pathAddition = "../../";
         } elseif ($purp == 'profile') {
             $pathAddition = "../../";
+        } elseif ($purp == 'search') {
+            $pathAddition = "../../";
         }
 
 
@@ -184,8 +186,8 @@ class feedEntry
     function getPlayerCode($purp)
     {
         $returnCode = <<< returnCode
-        Server: {$_SERVER['SERVER_NAME']}<br>
-        Self: {$_SERVER['PHP_SELF']}
+        <!--Server: {$_SERVER['SERVER_NAME']}<br>
+        Self: {$_SERVER['PHP_SELF']}-->
         <div class="songPlayer">
         <h3 class="songTitle"> {$this->fileData['title']} - by <a href="http://{$_SERVER['SERVER_NAME']}/user/{$this->fileData['user_id']}"> {$this->uploaderData['username']} </a></h3>
             <div id="songInfo{$this->fileData['id']}" class="songInfo">

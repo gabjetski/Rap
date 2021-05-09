@@ -146,10 +146,12 @@ function wrongUsername(){
 // Funktion für Vornamen Validation beim Registrieren, d.h. wenn der Vorname zu kurz ist und ob Special Character verwendet wurden 
 function fName(){
     let fName = document.getElementById("register-firstName");
-    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
+    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,50}$/);
 
     if(fName.value.length < 1){
         fName.setCustomValidity("Your first name can't be empty");
+    } else if(fName.value.length > 50){
+        fName.setCustomValidity("Your first name is too long");
     } else if(pattern.test(fName.value) === false){
         fName.setCustomValidity("Please use a real first name");
     } else {
@@ -160,10 +162,12 @@ function fName(){
 // Funktion für Nachnamen Validation beim Registrieren, d.h. wenn der Nachname zu kurz ist und ob Special Character verwendet wurden 
 function lName(){
     let lName = document.getElementById("register-lastName");
-    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,}$/);
+    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,50}$/);
 
     if(lName.value.length < 1){
         lName.setCustomValidity("Your last name can't be empty");
+    } else if(lName.value.length > 50){
+        lName.setCustomValidity("Your last is too long");
     } else if(pattern.test(lName.value) === false){
         lName.setCustomValidity("Please use a real last name");
     } else {

@@ -1,7 +1,7 @@
 <?php
 
 // set filename of downloaded file
-echo 'LOL<br>' . $_SERVER['PHP_SELF'] . '<br>';
+// echo 'LOL<br>' . $_SERVER['PHP_SELF'] . '<br>';
 $currRealLocation = $_SERVER['PHP_SELF'];
 $currDephts = explode('/', $currRealLocation);
 // echo sizeof($currDephts);

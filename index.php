@@ -46,9 +46,9 @@ try {
   <body>
     <h2>Rap Plattform</h2>
 
-    
-    
-    <!--</form> ????????????????? --> 
+
+
+    <!--</form> ????????????????? -->
 
     <?php
 
@@ -56,21 +56,25 @@ try {
     //Reset or reload page
     if (isset($_GET['reset'])) {
       session_destroy();
-      header('Location:index.php');
+      header('Location:/home');
     }
+    if (isset($_GET['runsql'])) {
+      require_once "php/runSql.php";
+    }
+
     if (isset($_GET['logout'])) {
       session_destroy();
-      header('Location:index.php');
+      header('Location:/home');
     }
     if (isset($_GET['quickLog'])) {
       session_destroy();
       session_start();
       $_SESSION['userID'] = '4';
-      header('Location:index.php');
+      header('Location:/home');
     }
     if (isset($_GET['head'])) {
       //session_destroy();
-      header('Location:index.php');
+      header('Location:/home');
     }
     //Go to form without JS Validations to test Serverside Validations
     if (isset($_GET['withoutValidations'])) {
@@ -540,6 +544,9 @@ try {
     </form>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="submit" value="withoutValidations" name="withoutValidations">
+    </form>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <input type="submit" value="Run SQL" name="runsql">
     </form>
   </body>
 
