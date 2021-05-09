@@ -85,9 +85,15 @@ try {
 
       </div>
     </div>
-    '; ?>
-    <a href="/user/my/settings"><i class="fa fa-gear fa-5x"></i></a>
-    <hr>
+    ';
+
+    if ($userPerm->permission($_SESSION['userID'], 7)) {
+      echo <<< setIcon
+      <a href="/user/my/settings"><i class="fa fa-gear fa-5x"></i></a>
+      <hr>
+      setIcon;
+    }
+    ?>
     <?php
     var_dump($_SESSION);
     // ANCHOR: PHP Zeugs

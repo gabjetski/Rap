@@ -15,6 +15,7 @@ class permissions
         if ($stmntGetPermission->rowCount() >= 1) {
             return true;
         } else {
+            // echo $userId . ' ' . $module . '<br>';
             return false;
         }
     }

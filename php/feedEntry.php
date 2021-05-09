@@ -4,6 +4,7 @@ class feedEntry
     public $fileData;
     public $uploaderData;
     public $otherInfo;
+    public $perm;
 
     function __construct($id, $purp)
     {
@@ -17,6 +18,8 @@ class feedEntry
         } elseif ($purp == 'search') {
             $pathAddition = "../../";
         }
+
+        $this->perm = new Permissions;
 
 
         $this->pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
@@ -209,7 +212,9 @@ class feedEntry
             
             <button id="openInfo{$this->fileData['id']}">INFO</button>
         returnCode;
-        if ($purp == 'profile') {
+        if ($purp == 'profile' && $this->perm->permission($_SESSION['userID'], 5)) {
+            $returnCode .= $this->profileEdit();
+        } elseif ($this->perm->permission($_SESSION['userID'], 4)) {
             $returnCode .= $this->profileEdit();
         }
         if ($this->fileData['monet'] == 1) {

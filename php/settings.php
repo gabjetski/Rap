@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once "autoload.php";
 try {
   //database connection
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
@@ -7,6 +8,15 @@ try {
   function filter(&$value)
   {
     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+  }
+
+  if (isset($_GET['admin'])) {
+    $_SESSION['header'] = "/user/{$_GET['userID']}/settings";
+    if (!$userPerm->permission($_SESSION['userID'], 6)) {
+      header("Location: /user/{$_GET['userID']}");
+    }
+  } else {
+    $_SESSION['header'] = "/user/my/settings";
   }
 
   // ANCHOR Username Validation
@@ -419,7 +429,7 @@ try {
     }
     //show username and id if logged in
     elseif ($_SESSION['userID'] > 0) {
-      /* $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
+      $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
       $stmntGetUserInfos->execute();
       $oldPassword = $pdo->prepare('SELECT Passwort from User where pk_user_id = ' . $_SESSION['userID']);
       // $oldPassword->execute();
@@ -434,7 +444,7 @@ try {
         $_SESSION['bio'] = $row['Bio'];
         $_SESSION['youtube'] = $row['YouTube'];
         $_SESSION['location'] = $row['Location'];
-      } */
+      }
 
       echo '<hr>';
       echo '<div class="profileForm"><i class="fa fa-user"> FirstName: ' . $_SESSION['firstName'] . '</i></div>';

@@ -1,23 +1,12 @@
 <!--//TODO Comment Code-->
 
 <?php
-if (isset($_GET['tset-submit'])) {
-    require 'editTracks.php';
-    //unset($_SESSION['trackEdit-error']);
-}
-if (isset($_SESSION['trackEdit-error'])) {
-    require 'editError.php';
-    //unset($_SESSION['trackEdit-error']);
-}
-if (isset($_GET['tset-del'])) {
-    require 'deleteTracks.php';
-}
 ?>
 
 <div id="settings" class="trackSettings" style="display: none;">
     <div id="blocker" onclick="closeSettings()" class="blocker"></div>
     <div class="form-popup">
-        <form id="trackSettingsForm" action="/user/my" method="get" class="form-popup" enctype="multipart/form-data">
+        <form id="trackSettingsForm" action="<?php echo $_SESSION['header']; ?>" method="get" class="form-popup" enctype="multipart/form-data">
             <!-- <form id="trackSettingsForm" action="<?php  // echo htmlspecialchars($_SERVER["PHP_SELF"]); 
                                                         ?>" method="post" class="form-popup" enctype="multipart/form-data"> -->
             <h1>Edit Track</h1>
@@ -425,4 +414,7 @@ foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {
     }
     $$id = new feedEntry($id, $feedPurp);
     echo $$id->getPlayerCode($feedPurp);
+    // echo "<pre>";
+    // var_dump(htmlspecialchars($$id->getPlayerCode($feedPurp)));
+    // echo "</pre>";
 } ?>

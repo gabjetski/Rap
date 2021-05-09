@@ -64,4 +64,4 @@ if (!isset($_SESSION['trackEdit-error'])) {
         $_SESSION['trackEdit-error']['get'] = $_GET;
 }
 
-header('location: /user/my');
+header('location: ' . $_SESSION['header']);

@@ -28,6 +28,9 @@ try {
     $_SESSION['userID'] = '4';
     header('Location:/user/' . $_GET['userID']);
   }
+  if ($_SESSION['userID'] == $_GET['userID']) {
+    header('Location:/user/my');
+  }
 ?>
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
@@ -78,8 +81,13 @@ try {
 
       </div>
     </div>
-    '; ?>
-    <?php
+    ';
+    if ($userPerm->permission($_SESSION['userID'], 6)) {
+      echo <<< setIcon
+      <a href="/user/{$_GET['userID']}/settings"><i class="fa fa-gear fa-5x"></i></a>
+      <hr>
+      setIcon;
+    }
     // ANCHOR: PHP Zeugs
     $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_GET['userID']);
     $stmntGetUserInfos->execute();

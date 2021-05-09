@@ -28,7 +28,10 @@ permission(**_User-Id_**, **_Modul-Nummer_**);
 | Download       | 1                |
 | Upload         | 2                |
 | LoginRegister  | 3                |
-| adminEdit      | 4                |
+| editSongs      | 4                |
+| editOwnSongs   | 5                |
+| editUsers      | 6                |
+| editOwnUser    | 7                |
 
 <br>
 <br>

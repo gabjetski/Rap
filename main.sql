@@ -190,16 +190,16 @@ DECLARE v_counter INTEGER;
   SET v_counter = v_counter + 1;
   END WHILE;
 END;
-INSERT INTO `module` (`pk_module_type_id`, `name`, `description`) VALUES (NULL, 'download', 'download von track'), (NULL, 'upload', 'upload von track'), (NULL, 'loginRegister', 'kann sich der User einloggen oder ist er schon'), (NULL, 'adminEdit', 'admin editet Track oder anderen User ');
+INSERT INTO `module` (`pk_module_type_id`, `name`, `description`) VALUES (NULL, 'download', 'download von track'), (NULL, 'upload', 'upload von track'), (NULL, 'loginRegister', 'kann sich der User einloggen oder ist er schon'), (NULL, 'editSongs', 'able to edit all songs'), (NULL, 'editOwnSongs', 'able to edit own songs'), (NULL, 'editUsers', 'able to edit all users'), (NULL, 'editOwnUser', 'able to edit own user');
 INSERT INTO `usertype` (`pk_user_type_id`, `description`) VALUES ('0', 'gast'), ('1', 'user'), ('2', 'admin');
-INSERT INTO `permission` (`pk_permission_id`, `fk_user_type_id`, `fk_module_type_id`) VALUES (NULL, '0', '1'), (NULL, '1', '2'), (NULL, '1', '1'), (NULL, '2', '1'), (NULL, '2', '2');
+INSERT INTO `permission` (`pk_permission_id`, `fk_user_type_id`, `fk_module_type_id`) VALUES (NULL, '0', '1'),(NULL, '0', '3'), (NULL, '1', '2'), (NULL, '1', '1'), (NULL, '1', '5'), (NULL, '1', '7'), (NULL, '2', '1'),(NULL, '2', '4'),(NULL, '2', '5'),(NULL, '2', '6'),(NULL, '2', '7');
 
-INSERT INTO `user` (`pk_user_id`, `FirstName`, `LastName`, `Username`, `Email`, `Passwort`, `Bio`, `Insta`, `Twitter`, `Soundcloud`) 
-    VALUES (1, 'Guest', 'Guest', 'guest', 'guest', 'guest', NULL, NULL, NULL, NULL);
-INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud)
-    VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', '12345', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123'),
-            ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', '12345', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123'),
-            ('fName', 'lName', 'user', 'email@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL);
+INSERT INTO `user` (`pk_user_id`, `FirstName`, `LastName`, `Username`, `Email`, `Passwort`, `Bio`, `Insta`, `Twitter`, `Soundcloud`, `fk_user_type_id`) 
+    VALUES (1, 'Guest', 'Guest', 'guest', 'guest', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 0);
+INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud, `fk_user_type_id`)
+    VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', 'b8736f4de6612d55c73c9648093ba0', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123', 2),
+            ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', 'b8736f4de6612d55c73c9648093ba0', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123', 1),
+            ('fName', 'lName', 'user', 'email@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1);
 CALL bpmValues();
 
 # -- TODO Nochmal überprüfen mit index.php Zeile 284 beginnend, 4 Augen Prinzip ^^ 
