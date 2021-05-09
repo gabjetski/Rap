@@ -1,4 +1,4 @@
-<form action="\Rap\Rap\php\output.php" method="get" class="form-container" id="searchBarForm">
+<form action="\php\output.php" method="get" class="form-container" id="searchBarForm">
   <div class="wrap">
     <div class="search">
       <input type="text" class="searchTerm" placeholder="Random Placeholder" name="searchTerm" id="searchTerm" required>

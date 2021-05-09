@@ -1,8 +1,3 @@
-
-/* main.sql zeile 27, sollte noch geändert werden zu not null oder? */
-/* UND in sql steht bei first und lastname z.B. varchar(30), in js aber mit regex {1,}, ändern auf {1,30}? 
-Falls ja -> muss ich dann in js ändern */
-
 #-- TESTS, DIE IN DAS REGISTER FORMULAR DER WEBSITE COPY PASTET WERDEN MÜSSEN ZUM TESTEN-- 
 
 #-- ANCHOR Validierung für die Tests
@@ -24,7 +19,7 @@ Hans1 Peter hanspeter2 hanspeter2@gmail.com HalloPeter123 HalloPeter123
 Hans: Peter hanspeter3 hanspeter3@gmail.com HalloPeter123 HalloPeter123
 
 # -- Falsche FirstName Validation expected - zu langer Vorname -- 
-HansHansHansHansHansHansHansHans Peter hanspeter4 hanspeter4@gmail.com HalloPeter123 HalloPeter123
+HansHansHansHansHansHansHansHansHansHansHansHansHan Peter hanspeter4 hanspeter4@gmail.com HalloPeter123 HalloPeter123
 
 # -- Falsche FirstName Validation expected - Firstname ist leer -- 
 '' Peter hanspeter5 hanspeter5@gmail.com HalloPeter123 HalloPeter123
@@ -44,7 +39,7 @@ Hans1 Peter hanspeter3 hanspeter3@gmail.com HalloPeter123 HalloPeter123
 Hans: Peter hanspeter3 hanspeter3@gmail.com HalloPeter123 HalloPeter123
 
 # -- Falsche LastName Validation expected - zu langer Vorname -- 
-Peter HansHansHansHansHansHansHansHans hanspeter4 hanspeter4@gmail.com HalloPeter123 HalloPeter123
+Peter HansHansHansHansHansHansHansHansHansHansHansHansHan hanspeter4 hanspeter4@gmail.com HalloPeter123 HalloPeter123
 
 # -- Falsche LastName Validation expected - LastName ist leer -- 
 Peter ''  hanspeter5 hanspeter5@gmail.com HalloPeter123 HalloPeter123
@@ -66,47 +61,61 @@ Bauer Güntherus günter%bauer!3 guenterus3@gmail.com Guntherus123 Guntherus123
 # -- Falsche Username Validation expected - Username bereits vergeben -- 
 Bauer Güntherus user guenterus3@gmail.com Guntherus123 Guntherus123
 
-# -- Kein Fehler expected -- 
+# -- ANCHOR E-Mail Validations -- 
+
+# -- Kein Fehler expected - E-Mail mit Special Character -- 
+Gab Jetski gabjetski gab-rie%l1@htl-rennweg1.at Hallo123 Hallo123 
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski gabjetski.gmail.com Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski gabjetski@gmail.a Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski gabjetski@gmail.commm Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski gäbjetskü@gmail.at Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski gab%jetski@gmail.at Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski @gmail.at Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski hallo1@gmail.at1 Hallo123 Hallo123
+
+# -- Falsche E-Mail Validation expected -- 
+Gab Jetski gabjetski hallo1@at Hallo123 Hallo123
+
+# -- ANCHOR Passwort Validations
+
+# -- Kein Fehler expected - Passwort mit Umlauten und Special Character -- 
+Elias Samuel eliassamuel eliassam@gmail.com 2äSamElias3Ni!?ce_.$ 2äSamElias3Ni!?ce_.$
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com Hi Hi
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com SamSamSamSamSamSamSamSamSamSamS SamSamSamSamSamSamSamSamSamSamS
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com hallo1234 hallo1234
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com HALLO1234 HALLO1234
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com Hallosamuel Hallosamuel
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com HalloSam123 HalloSam12
+
+# -- Falsche Passwort Validation expected -- 
+Eliass Saamuel eliassammuel eliassam1@gmail.com HalloSam12 HalloSam123
 
 
-# -- Kein Fehler expected -- 
 
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
-
-
-# -- Kein Fehler expected -- 
 

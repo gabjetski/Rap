@@ -2,8 +2,8 @@ Infos für die Tests Tests des Registrierungs-Formulars
 --------------------------------------------------
 Infos zur Anmeldung
 pk_use_id INTEGER PRIMARY KEY AUTO_INCREMENT 
-FirstName VARCHAR(30)
-LastName VARCHAR(30)
+FirstName VARCHAR(50) NOT NULL
+LastName VARCHAR(50) NOT NULL
 Username VARCHAR(20) NOT NULL
 Email VARCHAR(50) NOT NULL
 Passwort VARCHAR(40) NOT NULL
@@ -45,7 +45,7 @@ mind 1 Character lang, alle Buchstaben mit äöü, keine Special Character oder 
 Username Validation
 3 bis 20 lang, Zahlen, Buchstaben mit äöü und Special Character _ . und - 
 
-EMail Validation (Ohne äöü) ^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$
+E-Mail Validation (Ohne äöü) ^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$
 Zahlen Buchstaben Special Character % + - _ . dann @ Zahlen Buchstaben - . dann . und 2 bis 4 Endzahlen 
 z.B. gab-riel1@htl-rennweg1.at
 

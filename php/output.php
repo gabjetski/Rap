@@ -80,7 +80,7 @@ try {
     $stmntGetTags->execute();
     if ($stmntGetTags->rowCount() > 0) {
       foreach ($stmntGetTags->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        echo "Alle Tracks : " . $row['Title'] . "</a><br />\n";
+        echo "Tracks with Tag  : " . $row['Title'] . "</a><br />\n";
       }
     } else {
       echo "No Tags found with " . '"' . $_GET['searchTerm'] . '"';
