@@ -66,88 +66,144 @@ Peter ''  hanspeter5 hanspeter5@gmail.com HalloPeter123 HalloPeter123
 # -- ANCHOR Username Validations --
 
 # -- Kein Fehler expected - Username mit Umlauten und Special Character -- 
-Bauer Güntherus G_üntherus.2-bauer guenterus2@gmail.com Guntherus123 Guntherus123
+# -- -> Kein Fehler im Test - Wird in DB eingetragen -- 
+Bauer Güntherus G_üntherus.2-bauer guenterus7@gmail.com Guntherus123 Guntherus123
 
 # -- Falsche Username Validation expected - zu kurzer Username -- 
+# -- -> Kein Fehler im Test - "Username has to be between 3 and 20 characters long"  --
 Bauer Güntherus gü guenterus3@gmail.com Guntherus123 Guntherus123
 
 # -- Falsche Username Validation expected - zu langer Username -- 
+# -- -> Kein Fehler im Test - "Username has to be between 3 and 20 characters long"  --
 Bauer Güntherus günthergünthergünther guenterus3@gmail.com Guntherus123 Guntherus123
 
 # -- Falsche Username Validation expected - Special Character die wir nt unterstützen im Namen -- 
+# -- -> Kein Fehler im Test - "Invalid characters, make sure to only use _ . and . "  --
 Bauer Güntherus günter%bauer!3 guenterus3@gmail.com Guntherus123 Guntherus123
 
 # -- Falsche Username Validation expected - Username bereits vergeben -- 
+# -- -> Kein Fehler im Test - " This username is already taken! "  --
 Bauer Güntherus user guenterus3@gmail.com Guntherus123 Guntherus123
 
 # -- Falsche Username Validation expected - Leer -- 
+# -- -> Kein Fehler im Test - "Username has to be between 3 and 20 characters long"  --
 Bauer Güntherus '' guenterus3@gmail.com Guntherus123 Guntherus123
 
 
 # -- ANCHOR E-Mail Validations -- 
 
 # -- Kein Fehler expected - E-Mail mit Special Character -- 
+# -- -> Kein Fehler im Test - Wird in DB eingetragen -- 
 Gab Jetski gabjetski gab-rie%l1@htl-rennweg1.at Hallo123 Hallo123 
 
-# -- Falsche E-Mail Validation expected -- 
+# -- Falsche E-Mail Validation expected --
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
+/*FIXME kommt IMMER auch eine deutsche Validation Nachricht */
 Gab Jetski gabjetski gabjetski.gmail.com Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
 Gab Jetski gabjetski gabjetski@gmail.a Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
 Gab Jetski gabjetski gabjetski@gmail.commm Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
 Gab Jetski gabjetski gäbjetskü@gmail.at Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
-Gab Jetski gabjetski gab%jetski@gmail.at Hallo123 Hallo123
-
-# -- Falsche E-Mail Validation expected -- 
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
 Gab Jetski gabjetski @gmail.at Hallo123 Hallo123
 
-# -- Falsche E-Mail Validation expected -- 
+# -- Falsche E-Mail Validation expected --
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
 Gab Jetski gabjetski hallo1@gmail.at1 Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
+# -- -> Kein Fehler im Test - " Must contain a valid email "  --
 Gab Jetski gabjetski hallo1@at Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
+# -- -> Kein Fehler im Test - ABER FIXME auch da deutsche Nachricht "Füllen Sie das Feld aus"
 Gab Jetski gabjetskiii '' Hallo123 Hallo123
 
 # -- ANCHOR Passwort Validations
 
 # -- Kein Fehler expected - Passwort mit Umlauten und Special Character -- 
+# -- -> Kein Fehler im Test - Wird in DB eingetragen -- 
 Elias Samuel eliassamuel eliassam@gmail.com 2äSamElias3Ni!?ce_.$ 2äSamElias3Ni!?ce_.$
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Password has to be between 7 and 30 characters long"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com Hi Hi
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Password has to be between 7 and 30 characters long"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com SamSamSamSamSamSamSamSamSamSamS SamSamSamSamSamSamSamSamSamSamS
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Please make sure to use at least one upper and lowercase character and at least one digit"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com hallo1234 hallo1234
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Please make sure to use at least one upper and lowercase character and at least one digit"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com HALLO1234 HALLO1234
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Please make sure to use at least one upper and lowercase character and at least one digit"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com Hallosamuel Hallosamuel
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Password dont match"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com HalloSam123 HalloSam12
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Password dont match"  --
 Eliass Saamuel eliassammuel eliassam1@gmail.com HalloSam12 HalloSam123
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Password has to be between 7 and 30 characters long" --
+/* Wie gesagt, einheitlichkeit */
 Eliass Saamuel eliassammuel eliassam1@gmail.com '' HalloSam123
 
 # -- Falsche Passwort Validation expected -- 
+# -- -> Kein Fehler im Test - "Password dont match"  --
+/* Weiss nt ob man die nachricht will oder cant be empty, between 7 und 30...  */
 Eliass Saamuel eliassammuel eliassam1@gmail.com HalloSam12 ''
 
 
 
+/* TODO Weiteres was mir aufgefallen ist 
 
+1) Wenn man z.B. das Formular ganz ausfüllt, dann z.B. eine Mail verwendet, die bereits vergeben ist
+dann bleibt zwar alles im Formular gleich, bis auf Passwort und Passwort Repeat, die verschwinden nach Drücken von "Sign up"
+soll das so sein? denke ja ist mir nur so aufgefallen, denke es ist eh fürn user so sicherer wenn er es dann nochmal eingibt.
+
+2) Bei der Username Länge kommt folgende Fehlermeldung 
+- Username has to be between 3 and 20 characters long
+
+Bei First und Last Name allerdings entweder 
+wenn empty 
+- cant be empty 
+wenn zu lang 
+- too long 
+
+ist halt nt einheitlich, müsste sich dann auf eines einigen, meiner Meinung nach  
+
+3) Ist denk ich eh klar warum, wegen der datenbank abfrage, aber beim checken ob der username vergeben ist reloaded die Zeite und bei E-Mail, muss aber bestimmt so sein
+sonst bleibt die validation da, steht trd username vergeben obwohl es nt ist (auch wenn man einen z.B. zu kurzen Namen eingibt)
+
+4) Validations im Forms und Validations um zu checken, ob username/mail vergeben ist sind anders
+-> Last/FirstName/PW mit setValidity, die anderen wrsh als echo ausgegeben 
+
+5) Wenn username empty ist kommt 
+"Username has to be between 3 and 20 characters long"
+
+müsste dann halt wie auch vorhin gesagt einheitlich sein, entweder die Anzahl an Character, oder too long, to short, cant be empty... 
+
+6) Vll extra validations bei Email, die erklären, was genau falsch gemacht wurde 
+
+7) Bei PW dieses Dings machen, dass man sieht was man eingegeben hat
+*/
