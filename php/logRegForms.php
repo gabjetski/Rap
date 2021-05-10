@@ -35,22 +35,22 @@
             <fieldset>
                 <!-- First Name -->
                 <label for="firstName"><b>Your First Name</b></label>
-                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required value="fName">
+                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required>
                 <!-- Last Name -->
                 <label for="lastName"><b>Your Last Name</b></label>
-                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required value="lName">
+                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required >
                 <!-- Username -->
                 <label for="username"><b>Your Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" id="register-username" required value="user">
+                <input type="text" placeholder="Enter Username" name="username" id="register-username" required >
                 <!-- Email -->
                 <label for="email"><b>Your Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" id="register-email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Must contain a valid mail" required value="email@mail.com">
+                <input type="text" placeholder="Enter Email" name="email" id="register-email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Must contain a valid mail" required>
                 <!-- Password -->
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required value="passW1234567">
+                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required>
                 <!-- Password Repeat -->
                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required value="passW1234567">
+                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required >
                 <!-- TOS agreement -->
                 <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
                 <input type="checkbox" name="tos" id="register-tos" required checked></input>
