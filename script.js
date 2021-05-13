@@ -127,14 +127,23 @@ function wrongPassword(){
     }
 }
 
+function validateMail(){
+    let mail = document.getElementById("register-email");
+    const pattern = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/);
+
+    if(pattern.test(mail.value) === false) {
+    mail.setCustomValidity("Please use a valid email");
+    } else {
+    mail.setCustomValidity("");
+    }
+}
+
 // Funktion für Username Validation beim Registrieren, d.h. wenn der Username zu kurz bzw. zu lang ist und ob Special Character verwendet wurden, die nicht erlaubt sind
 function wrongUsername(){
     let registerUsername = document.getElementById("register-username");
     const pattern = new RegExp(/^[a-zA-Z0-9ÄÜÖäüö_.-]{3,20}$/);
 
-    if(registerUsername.value.length < 3){
-        registerUsername.setCustomValidity("Username has to be between 3 and 20 characters long");
-    } else if(registerUsername.value.length > 20){
+    if(registerUsername.value.length < 3 || registerUsername.value.length > 20){
         registerUsername.setCustomValidity("Username has to be between 3 and 20 characters long");
     } else if(pattern.test(registerUsername.value) === false) {
         registerUsername.setCustomValidity("Invalid characters, please make sure to only use _ . and -");
@@ -148,10 +157,8 @@ function fName(){
     let fName = document.getElementById("register-firstName");
     const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,50}$/);
 
-    if(fName.value.length < 1){
-        fName.setCustomValidity("Your first name can't be empty");
-    } else if(fName.value.length > 50){
-        fName.setCustomValidity("Your first name is too long");
+    if(fName.value.length > 50){
+        fName.setCustomValidity("Your first name mustn't be longer than 50 characters");
     } else if(pattern.test(fName.value) === false){
         fName.setCustomValidity("Please use a real first name");
     } else {
@@ -167,7 +174,7 @@ function lName(){
     if(lName.value.length < 1){
         lName.setCustomValidity("Your last name can't be empty");
     } else if(lName.value.length > 50){
-        lName.setCustomValidity("Your last is too long");
+        lName.setCustomValidity("Your last name is too long");
     } else if(pattern.test(lName.value) === false){
         lName.setCustomValidity("Please use a real last name");
     } else {
@@ -518,7 +525,7 @@ function fileValidation() {
     // Check if any file is selected.
     if (fi.files.length > 0) {
         for (let i = 0; i <= fi.files.length - 1; i++) {
-            let fsize = fi.files.item(i).size;
+            let fsize = fi.files[i].size;
             let file = Math.round((fsize / 1024));
             
             // The size of the file.
@@ -536,7 +543,7 @@ function fileValidation2() {
     // Check if any file is selected.
     if (fi.files.length > 0) {
         for (let i = 0; i <= fi.files.length - 1; i++) {
-            let fsize = fi.files.item(i).size;
+            let fsize = fi.files[i].size;
             let file = Math.round((fsize / 1024));
             
             // The size of the file.

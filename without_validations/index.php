@@ -144,16 +144,16 @@
         <p>Please fill in this form to create an account.</p>
         <fieldset>
             <!-- First Name -->
-            <label for="firstName"><b>Your First Name</b></label>
+            <label for="firstName"><b>First Name</b></label>
             <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" >
             <!-- Last Name -->
-            <label for="lastName"><b>Your Last Name</b></label>
+            <label for="lastName"><b>Last Name</b></label>
             <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName">
             <!-- Username -->
-            <label for="username"><b>Your Username</b></label>
+            <label for="username"><b>Username</b></label>
             <input type="text" placeholder="Enter Username" name="username" id="register-username">
             <!-- Email -->
-            <label for="email"><b>Your Email</b></label>
+            <label for="email"><b>Email</b></label>
             <input type="text" placeholder="Enter Email" name="email" id="register-email">
             <!-- Password -->
             <label for="psw"><b>Password</b></label>

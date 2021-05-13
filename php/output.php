@@ -93,11 +93,12 @@ try {
     $stmntGetUsernames->bindParam(':keyword', $keyword, PDO::PARAM_STR);
     echo "<br>";
     $stmntGetUsernames->execute();
-    echo "Usernames with " . '"' .  $_GET['searchTerm'] . '"';
     echo "<br>";
 
     if ($stmntGetUsernames->rowCount() > 0) {
       foreach ($stmntGetUsernames->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        echo "Usernames with " . '"' .  $_GET['searchTerm'] . '"';
+        echo "<br>";
         echo "<a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\">" . $row['Username'] . "</a><br />\n";
       }
     } else {

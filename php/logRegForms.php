@@ -35,17 +35,17 @@
             <p>Please fill in this form to create an account.</p>
             <fieldset>
                 <!-- First Name -->
-                <label for="firstName"><b>Your First Name</b></label>
+                <label for="firstName"><b>First Name</b></label>
                 <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required>
                 <!-- Last Name -->
-                <label for="lastName"><b>Your Last Name</b></label>
+                <label for="lastName"><b>Last Name</b></label>
                 <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required >
                 <!-- Username -->
-                <label for="username"><b>Your Username</b></label>
+                <label for="username"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" id="register-username" required >
                 <!-- Email -->
-                <label for="email"><b>Your Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" id="register-email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Must contain a valid mail" required>
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" id="register-email" required>
                 <!-- Password -->
                 <label for="psw"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required>
@@ -59,7 +59,7 @@
                 <input type="checkbox" name="tos" id="register-tos" required checked></input>
 
                 <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
-                <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName()" name="registerSubmit" value="Register">Sign Up</button>
+                <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName(); validateMail();" name="registerSubmit" value="Register">Sign Up</button>
                 <button type="button" class="signupButton" onclick="openLogin()">Do you have an account already? Log In here!</button>
                 <button type="button" class="cancelButton" onclick="closeRegister()">Cancel</button>
             </fieldset>
