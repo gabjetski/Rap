@@ -12,7 +12,6 @@ if (isset($_GET['downloaded_file'])) {
     // echo "yes2";
     require "download.php";
 }
-
 if (isset($_GET['tset-submit'])) {
     require 'editTracks.php';
     //unset($_SESSION['trackEdit-error']);

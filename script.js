@@ -512,8 +512,9 @@ function clearTaggedForm(){
 
 // Uploaddata Validations
 function fileValidation() {
-    let fi = document.getElementById('f4pUpload-file');
+    const fi = document.getElementById('f4pUpload-file');
 
+    
     // Check if any file is selected.
     if (fi.files.length > 0) {
         for (let i = 0; i <= fi.files.length - 1; i++) {
@@ -521,15 +522,14 @@ function fileValidation() {
             let file = Math.round((fsize / 1024));
             
             // The size of the file.
-            if (file >= 100000) {
+            if (file >= 1000) {
                 fi.value = '';
-                document.getElementById('errorFile').style.display = '';
+                document.getElementById('errorFile').style.display = 'block';
                 document.getElementById('errorFile').innerHTML = 'Select smaller file';
             } 
         }
     }
 }
-
 function fileValidation2() {
     let fi = document.getElementById('taggedUpload-file');
     
@@ -542,7 +542,7 @@ function fileValidation2() {
             // The size of the file.
             if (file >= 100000) {
                 fi.value = '';
-                document.getElementById('errorFile2').style.display = '';
+                document.getElementById('errorFile2').style.display = 'block';
                 document.getElementById('errorFile2').innerHTML = 'Select smaller file';
             } 
         }

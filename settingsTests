@@ -122,21 +122,61 @@ password:
         Y - Y
     ha@lL@o#du      --      ha@lL@o#du
         Y - N (validation-failed Error)
-    n0wIMg01ngFORth3THIRTYl3tt3rsTHATS4ctu4llyAl0t      --      
+    n0wIMg01ngFORth3THIRTYl3tt3rsTHATS4ctu4llyAl0t      --      n0wIMg01ngFORth3THIRTYl3tt3rsTHATS4ctu4llyAl0t
         N - to long - Y wird durch formular abgecutted
-    n0wIM           --      
-        N - to short
-    !"§$%&/()=?`^Lool   --      
-        N - wrong symbols
-    lets*tryTh1s    --      
-        Y
-    nötgüv1nGüP     --      
-        Y
-    ää--HHH--l00l   --      
-        Y
-    L00oo00l!!!     --      
-        Y
+    n0wIM           --      n0wIM
+        N - to short - N (validation-failed Error)
+    !"§$%&/()=?`^Lool   --      !"§$%&/()=?`^Lool
+        N - wrong symbols - N (validation-failed Error)
+    lets*tryTh1s    --      lets*tryTh1s
+        Y - Y
+    nötgüv1nGüP     --      nötgüv1nGüP
+        Y - Y
+    ää--HHH--l00l   --      ää--HHH--l00l
+        Y - Y
+    L00oo00l!!!     --      L00oo00l!!!
+        Y - Y
+    L00oo00l!!!     --      L00oo00l!!!abcd
+        N - don't match - N (don't-match Error)
 
 ## FIXME Error von Mail validation scheint bei passweordabfrage auf, da die get variable gesetzt ist i guess... 
         vllt is das das gleiche formular... sonst muss man bei den if abfragen auch abfragen welcher submit button gedrückt wurde
 
+
+    SELECT p_first_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_firstName_pattern;
+
+firstName:
+    firstName
+        Y - Y
+    STEFAN
+        Y - Y
+    ümit
+        Y - Y
+    St3f4n
+        N - number - N (failed-the-validation Error)
+    UIHOIUHASDlkuhdflaksuhdflaskuhPOIUHfsauh
+        Y - Y sollen wir länge limitieren
+    l<><>l
+        N - specialchar - N (failed-the-validation Error)
+    L00oo00l
+        N - number - N (failed-the-validation Error)
+    a
+        Y - Y sollen wir minlänge machen
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        X - wird abgeschnitten - X wird abgeschnitten
+    shortyyy
+        Y - Y
+    shor!t
+        N - specialchar - N (failed-the-validation Error)
+    tästmütümläütän
+        Y - Y
+    nice(name)
+        N - specialchar - N (failed-the-validation Error)
+    ll---lll
+        N - specialchar - N (failed-the-validation Error)
+    LL-----lll
+        N - specialchar - N (failed-the-validation Error)
+    abcdefghijklmnopqrstuvwxyz
+        Y - Y
+    emmit.emmit
+        N - specialchar - N (failed-the-validation Error)

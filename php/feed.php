@@ -395,7 +395,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     }
 } elseif ($feedPurp == 'search') {
     // select all songs which schould be displayed
-    $stmntGetSongs = $pdo->prepare('SELECT * FROM files where Title like :keyword');
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files where Title like :keyword OR Tag1 LIKE :keyword OR Tag2 LIKE :keyword OR Tag3 LIKE :keyword OR Tag4 LIKE :keyword OR Tag5 LIKE :keyword');
     $stmntGetSongs->bindParam(':keyword', $keyword, PDO::PARAM_STR);
     $stmntGetSongs->execute();
     $pathAddition = "../../";
@@ -403,7 +403,17 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     if ($stmntGetSongs->rowCount() == 0) {
         echo "No Tracks found with title " .  $_GET['searchTerm'];
     }
+} elseif($feedPurp == 'tags'){
+    $stmntGetSongs = $pdo->prepare('SELECT * FROM files where Tag1 LIKE :keyword OR Tag2 LIKE :keyword OR Tag3 LIKE :keyword OR Tag4 LIKE :keyword OR Tag5 LIKE :keyword');
+    $stmntGetSongs->bindParam(':keyword', $keyword, PDO::PARAM_STR);
+    $stmntGetSongs->execute();
+    $pathAddition = "../../";
+    //fetch the results
+    if ($stmntGetSongs->rowCount() == 0) {
+        echo "No Tracks found with tag " .  $_GET['searchTerm'];
+    }
 }
+
 
 
 foreach ($stmntGetSongs->fetchAll(PDO::FETCH_ASSOC) as $row) {

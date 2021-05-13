@@ -6,7 +6,8 @@
   <title>Rap</title>
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <script src="script.js" defer></script>
+  <script src="../script.js" defer></script>
+  <script src="../global.js" defer></script>
 </head>
 
 <body>
@@ -16,7 +17,60 @@
 
 </html>
 <?php
+session_start();
+require_once 'autoload.php';
 
+
+ //show login/register button if guest
+ if ($userPerm->permission($_SESSION['userID'], 3)) {
+  require_once './logRegForms.php';
+  echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
+  echo '<i class="fa fa-upload fa-3x" onclick="openUploadLogin()"></i>';
+}
+//show username and id if logged in
+elseif (!$userPerm->permission($_SESSION['userID'], 3)) {
+  $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
+  $stmntGetUserInfos->execute();
+  foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
+    $_SESSION['userUName'] = $row['Username'];
+  }
+  echo '
+<script src="global.js" defer></script>
+<div id="dropMenu">
+  <div class="dropContainer">
+
+    <div id="navToggle" class="nav-toggle">
+      <a href="user/my"><div class="openForm">' . $_SESSION['userID'] . ' - ' . $_SESSION['userUName'] . '</div></a>
+    </div>
+
+
+    <div id="dropNav" class="dropNav">
+      <ul id="list">
+        <li class="dropList">
+          <h3> <a href="user/my"> View Profile </a></h3>
+        </li>
+        <li class="dropList">
+          <h3> <a href="user/my/settings"> Settings </a></h3>
+        </li>
+        <li class="dropList">
+          <h3>
+            Notifications
+          </h3>
+        </li>
+        <li class="dropList">
+          <h3>
+            <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="get" class="form-container">
+              <input type="submit" value="Log Out" name="logout">
+            </form>
+          </h3>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+';
+}
 require 'searchbar.php';
 try {
   //database connection
@@ -39,12 +93,12 @@ try {
     $stmntGetUsernames->bindParam(':keyword', $keyword, PDO::PARAM_STR);
     echo "<br>";
     $stmntGetUsernames->execute();
-    echo "Usernames with " . $_GET['searchTerm'];
+    echo "Usernames with " . '"' .  $_GET['searchTerm'] . '"';
     echo "<br>";
 
     if ($stmntGetUsernames->rowCount() > 0) {
       foreach ($stmntGetUsernames->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        echo "Alle Usernames: <a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\">" . $row['Username'] . "</a><br />\n";
+        echo "<a href=\"http://{$_SERVER['SERVER_NAME']}/user/{$row['pk_user_id']}\">" . $row['Username'] . "</a><br />\n";
       }
     } else {
       echo "No Users found with " . '"' . $_GET['searchTerm'] . '"';
@@ -74,6 +128,7 @@ try {
     require "./feed.php";
 
     // ANCHOR Tags ausgeben 
+    
     $stmntGetTags = $pdo->prepare("SELECT Tag1, Tag2, Tag3, Tag4, Tag5, Title FROM files where Tag1 LIKE :keyword OR Tag2 LIKE :keyword OR Tag3 LIKE :keyword OR Tag4 LIKE :keyword OR Tag5 LIKE :keyword");
     $stmntGetTags->bindParam(':keyword', $keyword, PDO::PARAM_STR);
     echo "<br>";
@@ -85,6 +140,7 @@ try {
     } else {
       echo "No Tags found with " . '"' . $_GET['searchTerm'] . '"';
     }
+  
 
     // If keyword empty
 

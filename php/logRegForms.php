@@ -14,6 +14,7 @@
                 <!-- Password -->
                 <label for="login-psw"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="psw" id="login-psw" required value="passW1234567">
+                <input type="checkbox" id="showLoginPw">show pw
 
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen". -->
                 <button type="submit" class="loginButton" name="loginSubmit" value="Login" id="loginButton">Login</button>
@@ -51,6 +52,8 @@
                 <!-- Password Repeat -->
                 <label for="psw-repeat"><b>Repeat Password</b></label>
                 <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required >
+                <input type="checkbox" id="showRegisterPw">show pw
+                <br>
                 <!-- TOS agreement -->
                 <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
                 <input type="checkbox" name="tos" id="register-tos" required checked></input>
@@ -84,4 +87,28 @@
         </div>
     </form>
 </div>
+<script>
+    showLogPw = document.getElementById("showLoginPw");
+    showLogPw.addEventListener("click", function(){
+        logPw = document.getElementById("login-psw");
+        if(logPw.type === "password"){
+            logPw.type = "text";
+        } else {
+            logPw.type = "password";
+        }
+    });
+    
+    showRegPw = document.getElementById("showRegisterPw");
+    showRegPw.addEventListener("click", function(){
+        regPw = document.getElementById("register-psw");
+        regPwRep = document.getElementById("register-psw-repeat");
+        if(regPw.type === "password"){
+            regPw.type = "text";
+            regPwRep.type = "text";
+        } else {
+            regPw.type = "password";
+            regPwRep.type = "password";
+        }
+    });
+</script>
 </div>
