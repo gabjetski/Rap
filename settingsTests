@@ -180,3 +180,113 @@ firstName:
         Y - Y
     emmit.emmit
         N - specialchar - N (failed-the-validation Error)
+
+
+
+    SELECT p_last_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_lastName_pattern;
+
+lastname:
+    firstName
+        Y - Y
+    STEFAN
+        Y - Y
+    ümit
+        Y - Y
+    St3f4n
+        N - number - N (failed-the-validation Error)
+    UIHOIUHASDlkuhdflaksuhdflaskuhPOIUHfsauh
+        Y - Y sollen wir länge limitieren
+    l<><>l
+        N - specialchar - N (failed-the-validation Error)
+    L00oo00l
+        N - number - N (failed-the-validation Error)
+    a
+        Y - Y sollen wir minlänge machen
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        X - wird abgeschnitten - X wird abgeschnitten
+    shortyyy
+        Y - Y
+    shor!t
+        N - specialchar - N (failed-the-validation Error)
+    tästmütümläütän
+        Y - Y
+    nice(name)
+        N - specialchar - N (failed-the-validation Error)
+    ll---lll
+        N - specialchar - N (failed-the-validation Error)
+    LL-----lll
+        N - specialchar - N (failed-the-validation Error)
+    abcdefghijklmnopqrstuvwxyz
+        Y - Y
+    emmit.emmit
+        N - specialchar - N (failed-the-validation Error)
+
+
+Insta Usernames can contain letters, numbers, periods and underscores and mustnt be longer than 30 chars.
+
+insta name
+    walddda
+        Y - Y
+    sam_gerry
+        Y - Y
+    abdi_tornado
+        Y - Y
+    quentin-wessely
+        N - specialchar - N (failed-the-validation Error)
+    maxi1huber
+        Y - Y
+    peter!bezak
+        N - specialchar - N (failed-the-validation Error)
+    patrick/divos
+        N - specialchar - N (failed-the-validation Error)
+    christion<jovan>
+        N - specialchar - N (failed-the-validation Error)
+    gabriel(pos)lanovic
+        N - specialchar - N (failed-the-validation Error)
+    ad"ad"sowemimo
+        N - specialchar - N (failed-the-validation Error)
+    güntherKauer
+        N - specialchar - N (failed-the-validation Error)
+    v1kt4rK4rp1nsk1
+        Y - Y
+    gustl%hörandl
+        N - specialchar - N (failed-the-validation Error)
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        N - to long - X wird abgeschnitten
+
+    
+Twitter Username: <=15chars,A-Z, 0-9, _ 
+
+
+twitter name
+    walddda
+        Y - Y
+    sam_gerry
+        Y - Y
+    abdi_tornado
+        Y - Y
+    quentin-wessely
+        N - specialchar - N (failed-the-validation Error)
+    maxi1huber
+        Y - Y
+    peter!bezak
+        N - specialchar - N (failed-the-validation Error)
+    patrick/divos
+        N - specialchar - N (failed-the-validation Error)
+    christion<jovan>
+        N - specialchar - N (failed-the-validation Error)
+    gabriel(pos)lanovic
+        N - specialchar - N (failed-the-validation Error)
+    ad"ad"sowemimo
+        N - specialchar - N (failed-the-validation Error)
+    güntherKauer
+        N - specialchar - N (failed-the-validation Error)
+    v1kt4rK4rp1nsk1
+        Y - Y
+    gustl%hörandl
+        N - specialchar - N (failed-the-validation Error)
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        N - to long - X wird abgeschnitten
+
+
+Soundcloud & Youtube bringt testen nix, da wir link brauchen i guess
