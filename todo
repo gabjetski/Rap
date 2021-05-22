@@ -1,0 +1,43 @@
+General:
+
+// Liste mit Dinge, die für die Formulare noch zu erledigen sind
+    // Liste bezieht sich jetzt nur auf F4P, weil Tagged ja das selbe ist und einfach rübergepastet werden kann
+
+// FreeForProfit Upload
+    1) Funktionen 
+
+        a) Blacklist 
+        ja ka kanns nt erklären 
+
+        b) makeHashtag
+        Funktion hängt bisschen, manchmal kann man 6 Tags eingeben, manchmal nur 2, ... genereller Fix
+
+        c) editTags
+      Muss noch KOMPLETT gemacht werden, die Funktion erlaubt es, die Textarea mit den Tags wieder zu enablen und sollte es möglich machen, Tags zu löschen und neue reinzuschreiben (bei 
+       5 Tags sollte sie wieder disabled sein)
+
+       d) notesLength
+       Da bitte nichts machen, mache ich
+
+        e) clearF4PForm
+        gibt sicher eine schönere Variante um alles zu löschen, vielleicht findet wer was
+
+
+    // Am Ende 
+        Default Werte weggeben (bei Radio Buttons, Input Texte, Textareas, ...)
+
+// Tagged Upload
+    Nachdem bei F4P alles funktioniert, das meiste einfach rüberpasten, sonst gibts noch folgendes zu machen 
+
+    1) Richtiges Tag erstellen und als Download bereitstellen 
+
+    2) Schönere und ausführlichere Erklärung und vielleicht Einbindung ins Werk?
+
+
+Samuel:
+    - Check if user already downloaded file
+    - Error handling bei Up-/Download
+    - Uploadform Validation Serverside
+    - Filelength
+    - maybe handle download cancelling
+        https://bytes.com/topic/php/answers/551302-how-detect-if-file-download-completed-cancelled

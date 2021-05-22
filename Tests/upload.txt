@@ -1,0 +1,78 @@
+F4P-Upload
+
+
+
+---------------------------------------------------
+Kategorie
+required: WORKS
+Beat: 
+Sample: 
+---------------------------------------------------
+BPM
+required: WORKS
+custom validity: change message
+1-999: 0-999, server side WORKS
+---------------------------------------------------
+Key
+c-b: WORKS
+Vielleicht kein default value setzen weil sonst leute es ignorieren und der falsche key dort steht, is prly eh nur fuer testen jz i guess
+---------------------------------------------------
+Title
+required: WORKS
+custom validity: 
+max-length 60: 
+---------------------------------------------------
+Notes
+max-length 200: 
+special char: 
+---------------------------------------------------
+Tags
+max-length 30: 
+funktionalitaet:
+---------------------------------------------------
+File
+Size-Validation: fehler message kommt immer :(
+Duration-Validation: :(
+---------------------------------------------------
+
+
+
+Tagged-Upload
+
+
+
+---------------------------------------------------
+Kategorie
+required: WORKS
+Beat: WORKS
+Sample: WORKS
+Snippet: WORKS
+---------------------------------------------------
+Learn More About Tags
+WORKS
+Link zu tutorial hinzufuegen, how to get/make a tag
+---------------------------------------------------
+required: WORKS
+custom validity: change message
+1-999: 0-999, server side WORKS
+---------------------------------------------------
+Key
+c-b: WORKS
+---------------------------------------------------
+Title
+required: WORKS
+custom validity: fehlt, default msg
+max-length 60: WORKS
+---------------------------------------------------
+Notes
+max-length 200: works
+special char: WORKS
+---------------------------------------------------
+Tags
+max-length 30: WORKS
+funktionalitaet 1-5: WORKS
+---------------------------------------------------
+File
+Size-Validation: WORKS, message geht nicht weg
+Duration-Validation: :(
+---------------------------------------------------

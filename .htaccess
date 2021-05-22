@@ -1,0 +1,8 @@
+RewriteEngine on 
+RewriteRule ^feed$ index.php?page=home&%{QUERY_STRING} [NC,L]
+RewriteRule ^home$ index.php?page=home&%{QUERY_STRING} [NC,L]
+RewriteRule ^user/([0-9]+)$ /php/userpage.php?userID=$1&%{QUERY_STRING} [NC,L]
+RewriteRule ^user/my$ /php/profilesite.php?%{QUERY_STRING} [NC,L]
+RewriteRule ^user/([0-9]+)/settings$ /php/settings.php?admin=true&userID=$1&%{QUERY_STRING} [NC,L]
+RewriteRule ^user/my/settings$ /php/settings.php?%{QUERY_STRING} [NC,L]
+RewriteRule ^all index.php?%{QUERY_STRING} [NC,L]

@@ -1,0 +1,349 @@
+/* TODO use multiple css files for better overwiev */
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 16px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 20%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit/register button */
+.loginButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+/* Log In bzw. Sign Up Button, um sich anzumelden/zu registrieren */
+.openForm {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  width: 280px;
+  right: 10px;
+  top: 10px;
+}
+
+i {
+  float: right;
+}
+
+.registerbtn :hover {
+  opacity: -1;
+}
+
+a {
+  color: dodgerblue;
+}
+
+.loginButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.loginButton :hover {
+  opacity: -1;
+}
+
+.signupButton  {
+  background-color: #3631af;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.signupButton :hover {
+  opacity: -1;
+}
+
+.continueButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+#deleteAccountForm {
+  display: none;
+}
+
+.newAccountButton {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.newAccountButton :hover {
+  opacity: -1;
+}
+
+.form-popup {
+  position: fixed;
+  top: 25vh;
+  border: 3px solid #292931;
+  z-index: 9;
+  height: auto;
+  width: auto;
+  text-align: center;
+  background-color: white;
+  z-index: 10;
+}
+
+.cancelButton {
+  background-color: #af0006;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.blocker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  content: " ";
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Setzen aller Forms auf none, damit sie nicht bei jedem Refresh angezeigt werden */
+#loginForm {
+  display: none;
+}
+
+#registerForm {
+  display: none;
+}
+
+#uploadForm {
+  display: none;
+}
+#uploadLoginForm {
+  display: none;
+}
+
+#categoryForm {
+  display: none;
+}
+
+#freeForProfitForm {
+  display: none;
+}
+
+#taggedForm {
+  display: none;
+}
+
+#tagInfo {
+  display: none;
+}
+
+#uploadSuccess {
+  display: none;
+}
+
+/* Errors, thrown by database when register or login*/
+.error {
+  color: red;
+  font-size: 15px;
+}
+
+#tagDownload:hover {
+  color: red;
+}
+
+/* Styling for player */
+.songPlayer {
+  background-color: #f5edd1;
+  padding: 10px;
+  border: solid 2px black;
+  border-radius: 10px;
+}
+
+.songPlayPause {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+.tagsListing {
+  display: inline;
+  margin: 10px;
+  border: 1px solid black;
+}
+
+.fa-close {
+  float: none;
+  margin: 10px;
+}
+
+.btn {
+  background-color: DodgerBlue; /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 15px; /* Some padding */
+  font-size: 12px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
+
+/* info popup for tracks*/
+.songInfo {
+  display: none;
+  height: 0px;
+  overflow: hidden;
+}
+.songInfoOpen {
+  display: block;
+  height: min-content
+}
+.trackSettings {
+  display: none;
+  position: fixed;
+}
+
+.mainPlayer {
+  background-color: #f5edd1;
+  padding: 20px;
+  border: solid 2px black;
+  border-radius: 10px;
+  position: fixed;
+  bottom: 50px;
+}
+
+/* CSS for dropdown menu */
+
+.dropContainer {
+  display: flex;
+
+  justify-content: center;
+  text-align: center;
+}
+
+#list {
+  margin: 0;
+  padding: 0;
+  border: 2px solid black;
+}
+
+.dropList {
+  text-decoration: none;
+}
+
+.dropList {
+  list-style-type: none;
+  padding: 2px, 10px, 2px, 10px;
+}
+
+.dropNav {
+  margin-left: 80%;
+  left: 80%;
+  height: 0;
+  overflow: hidden;
+  transition: 350ms height ease-in-out;
+}
+
+.open {
+  height: 255px;
+}
+
+.navIcon {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* Search Bar */
+.search {
+  width: 100%;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 3px solid #00B4CC;
+  border-right: none;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 200%;
+  height:36px;
+}

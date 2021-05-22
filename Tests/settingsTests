@@ -1,0 +1,313 @@
+USer:
+    pk_user_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
+    FirstName VARCHAR(50) NOT NULL, 
+    LastName VARCHAR(50) NOT NULL, 
+    Username VARCHAR(20) NOT NULL, 
+    Email VARCHAR(50) NOT NULL, 
+    Passwort VARCHAR(40) NOT NULL, 
+    Bio VARCHAR(100), 
+    Insta VARCHAR(40), 
+    Twitter VARCHAR(40), 
+    Soundcloud VARCHAR(40),
+    YouTube VARCHAR(40),
+    Location VARCHAR(40),
+    user_added DATETIME,
+    fk_user_type_id INTEGER,
+    
+    SELECT p_username REGEXP "^[a-zA-Z0-9ÄÜÖäüö_.\-]{3,20}$" INTO v_username_pattern;
+
+
+usernames:
+    günther 
+        Y - Y
+    hansPeter12345
+        Y - Y
+    TestName@1
+        N - specialchar - Y (validation Error)
+    TestName!
+        N - specialchar - Y (validation Error)
+    testNameTestNameTestNameTestNameTestNameTestNameTestNameTestName
+        N - to long - Y (validation Error)
+    testName*5
+        N - specialchar - Y (validation Error)
+    testName
+        Y - Y
+    testName
+        N - used - Y (used Error)
+    admin
+        Y - Y
+    guest
+        N - used - Y (used Error)
+    us
+        N - to short - Y (validation Error)
+    a
+        N - to short - Y (validation Error)
+    _abcdef
+        Y - Y
+    ab-cdefgh
+        Y - Y
+    lol\lol
+        N - specialchar - Y (validation Error)
+    abc.defgh
+        Y - Y
+    12345678901234567890123
+        N - to long - Y (validation Error)
+    ähhh
+        Y - Y
+    testÜser
+        Y - Y
+    testÖser
+        Y - Y
+
+Validation bei fehler genauer angeben
+
+        
+SELECT p_email REGEXP "^[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$" 
+                INTO v_email_pattern;
+email:
+    günther@com
+        N - syntax - N (real-mail Error)
+    hansPeter12345@gmail.com
+        Y - N - (real-mail Error) regex for emails is case sensitive, real emails are not 
+    TestName@1
+        N - syntax - N (real-mail Error) 
+    TestName@.com
+        N - syntax - N (real-mail Error)
+    testnametestnametestnametestbametestbametestnbametestnametestname@gmxasdtev.com
+        Y - X geht durch wird aber abgecutted
+    testMail
+        N - syntax - N (real-mail Error)
+    testmail@testmail.testmail
+        N - syntax - N (real-mail Error)
+    test.name@gmail.com
+        Y - Y
+    admin@admin.com
+        Y - Y
+    guest
+        N - syntax - N (real-mail Error)
+    hp@gmail.com
+        N - used - N (used Error)
+    7141@htl.rennweg.at
+        Y - Y
+    abc_abcdef@gmail.com
+        N - specialchar - Y welche specialchars können in emails sein?
+    süßling@gmail.com
+        Y - N (real-mail Error) umlaute in emails?
+    lol/lol@gmail.com
+        N - specialchar - N (real-mail Error)
+    abc"gme@ial.com
+        N - specialchar - N (real-mail Error)
+    12345678901234567890123@gmail.com
+        Y - Y
+    ähhh@gmail.com
+        Y - N (real-mail Error) umlaute in emails?
+    testüser@üäö.cöm
+        Y - N (real-mail Error) umlaute in emails?
+    testöser@(abc).com
+        N - syntax - N (real-mail Error)
+
+großbuchsteban bei email regex
+länge bei datenbank
+
+
+Your Password must be 7 to 30 characters long and contain at least one uppercase, one lowercase and one number!
+^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$
+password:
+(pasword -- password repeat)
+    1234567         --      1234567
+        N - no Letters - N (validation-failed Error)
+    1_2A34fuenf     --      1_2A34fuenf
+        Y - Y
+    HaLlOlEuTe      --      HaLlOlEuTe
+        N - no number - N (validation-failed Error)
+    H1LLON1K1T4     --      H1LLON1K1T4
+        N - no LowerCase - N (validation-failed Error)
+    n31nj3tztn1c4t  --      n31nj3tztn1c4t
+        N - no UpperCase - N (validation-failed Error)
+    sEcUrEpa55wo3d  --      sEcUrEpa55wo3d
+        Y - Y
+    ha@lL@o#du      --      ha@lL@o#du
+        Y - N (validation-failed Error)
+    n0wIMg01ngFORth3THIRTYl3tt3rsTHATS4ctu4llyAl0t      --      n0wIMg01ngFORth3THIRTYl3tt3rsTHATS4ctu4llyAl0t
+        N - to long - Y wird durch formular abgecutted
+    n0wIM           --      n0wIM
+        N - to short - N (validation-failed Error)
+    !"§$%&/()=?`^Lool   --      !"§$%&/()=?`^Lool
+        N - wrong symbols - N (validation-failed Error)
+    lets*tryTh1s    --      lets*tryTh1s
+        Y - Y
+    nötgüv1nGüP     --      nötgüv1nGüP
+        Y - Y
+    ää--HHH--l00l   --      ää--HHH--l00l
+        Y - Y
+    L00oo00l!!!     --      L00oo00l!!!
+        Y - Y
+    L00oo00l!!!     --      L00oo00l!!!abcd
+        N - don't match - N (don't-match Error)
+
+## FIXME Error von Mail validation scheint bei passweordabfrage auf, da die get variable gesetzt ist i guess... 
+        vllt is das das gleiche formular... sonst muss man bei den if abfragen auch abfragen welcher submit button gedrückt wurde
+passwort länge (counter)
+validation erklären
+email error
+
+
+    SELECT p_first_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_firstName_pattern;
+
+firstName:
+    firstName
+        Y - Y
+    STEFAN
+        Y - Y
+    ümit
+        Y - Y
+    St3f4n
+        N - number - N (failed-the-validation Error)
+    UIHOIUHASDlkuhdflaksuhdflaskuhPOIUHfsauh
+        Y - Y sollen wir länge limitieren
+    l<><>l
+        N - specialchar - N (failed-the-validation Error)
+    L00oo00l
+        N - number - N (failed-the-validation Error)
+    a
+        Y - Y sollen wir minlänge machen
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        X - wird abgeschnitten - X wird abgeschnitten
+    shortyyy
+        Y - Y
+    shor!t
+        N - specialchar - N (failed-the-validation Error)
+    tästmütümläütän
+        Y - Y
+    nice(name)
+        N - specialchar - N (failed-the-validation Error)
+    ll---lll
+        N - specialchar - N (failed-the-validation Error)
+    LL-----lll
+        N - specialchar - N (failed-the-validation Error)
+    abcdefghijklmnopqrstuvwxyz
+        Y - Y
+    emmit.emmit
+        N - specialchar - N (failed-the-validation Error)
+
+länge
+"real firstname"
+
+    SELECT p_last_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_lastName_pattern;
+
+lastname:
+    firstName
+        Y - Y
+    STEFAN
+        Y - Y
+    ümit
+        Y - Y
+    St3f4n
+        N - number - N (failed-the-validation Error)
+    UIHOIUHASDlkuhdflaksuhdflaskuhPOIUHfsauh
+        Y - Y sollen wir länge limitieren
+    l<><>l
+        N - specialchar - N (failed-the-validation Error)
+    L00oo00l
+        N - number - N (failed-the-validation Error)
+    a
+        Y - Y sollen wir minlänge machen
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        X - wird abgeschnitten - X wird abgeschnitten
+    shortyyy
+        Y - Y
+    shor!t
+        N - specialchar - N (failed-the-validation Error)
+    tästmütümläütän
+        Y - Y
+    nice(name)
+        N - specialchar - N (failed-the-validation Error)
+    ll---lll
+        N - specialchar - N (failed-the-validation Error)
+    LL-----lll
+        N - specialchar - N (failed-the-validation Error)
+    abcdefghijklmnopqrstuvwxyz
+        Y - Y
+    emmit.emmit
+        N - specialchar - N (failed-the-validation Error)
+
+länge
+"real lastname"
+
+Insta Usernames can contain letters, numbers, periods and underscores and mustnt be longer than 30 chars.
+
+insta name
+    walddda
+        Y - Y
+    sam_gerry
+        Y - Y
+    abdi_tornado
+        Y - Y
+    quentin-wessely
+        N - specialchar - N (failed-the-validation Error)
+    maxi1huber
+        Y - Y
+    peter!bezak
+        N - specialchar - N (failed-the-validation Error)
+    patrick/divos
+        N - specialchar - N (failed-the-validation Error)
+    christion<jovan>
+        N - specialchar - N (failed-the-validation Error)
+    gabriel(pos)lanovic
+        N - specialchar - N (failed-the-validation Error)
+    ad"ad"sowemimo
+        N - specialchar - N (failed-the-validation Error)
+    güntherKauer
+        N - specialchar - N (failed-the-validation Error)
+    v1kt4rK4rp1nsk1
+        Y - Y
+    gustl%hörandl
+        N - specialchar - N (failed-the-validation Error)
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        N - to long - X wird abgeschnitten
+
+länge (30chars)
+"real instaname"
+    
+Twitter Username: <=15chars,A-Z, 0-9, _ 
+
+
+twitter name
+    walddda
+        Y - Y
+    sam_gerry
+        Y - Y
+    abdi_tornado
+        Y - Y
+    quentin-wessely
+        N - specialchar - N (failed-the-validation Error)
+    maxi1huber
+        Y - Y
+    peter!bezak
+        N - specialchar - N (failed-the-validation Error)
+    patrick/divos
+        N - specialchar - N (failed-the-validation Error)
+    christion<jovan>
+        N - specialchar - N (failed-the-validation Error)
+    gabriel(pos)lanovic
+        N - specialchar - N (failed-the-validation Error)
+    ad"ad"sowemimo
+        N - specialchar - N (failed-the-validation Error)
+    güntherKauer
+        N - specialchar - N (failed-the-validation Error)
+    v1kt4rK4rp1nsk1
+        Y - Y
+    gustl%hörandl
+        N - specialchar - N (failed-the-validation Error)
+    testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
+        N - to long - X wird abgeschnitten
+
+länge (15chars)
+"real instaname"
+
+
+Soundcloud & Youtube bringt testen nix, da wir link brauchen i guess
+
+sc und yt beides link eingabe
+yt link länger machen
+sonderzeichgen führen zu sql error
