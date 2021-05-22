@@ -59,6 +59,8 @@ usernames:
     testÖser
         Y - Y
 
+Validation bei fehler genauer angeben
+
         
 SELECT p_email REGEXP "^[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$" 
                 INTO v_email_pattern;
@@ -104,6 +106,10 @@ email:
     testöser@(abc).com
         N - syntax - N (real-mail Error)
 
+großbuchsteban bei email regex
+länge bei datenbank
+
+
 Your Password must be 7 to 30 characters long and contain at least one uppercase, one lowercase and one number!
 ^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$
 password:
@@ -141,6 +147,9 @@ password:
 
 ## FIXME Error von Mail validation scheint bei passweordabfrage auf, da die get variable gesetzt ist i guess... 
         vllt is das das gleiche formular... sonst muss man bei den if abfragen auch abfragen welcher submit button gedrückt wurde
+passwort länge (counter)
+validation erklären
+email error
 
 
     SELECT p_first_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_firstName_pattern;
@@ -181,7 +190,8 @@ firstName:
     emmit.emmit
         N - specialchar - N (failed-the-validation Error)
 
-
+länge
+"real firstname"
 
     SELECT p_last_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_lastName_pattern;
 
@@ -221,6 +231,8 @@ lastname:
     emmit.emmit
         N - specialchar - N (failed-the-validation Error)
 
+länge
+"real lastname"
 
 Insta Usernames can contain letters, numbers, periods and underscores and mustnt be longer than 30 chars.
 
@@ -254,6 +266,8 @@ insta name
     testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
         N - to long - X wird abgeschnitten
 
+länge (30chars)
+"real instaname"
     
 Twitter Username: <=15chars,A-Z, 0-9, _ 
 
@@ -288,5 +302,12 @@ twitter name
     testusernamedersehrlangtaberauchkleinistunddadurcheinengutentestdarstellt
         N - to long - X wird abgeschnitten
 
+länge (15chars)
+"real instaname"
+
 
 Soundcloud & Youtube bringt testen nix, da wir link brauchen i guess
+
+sc und yt beides link eingabe
+yt link länger machen
+sonderzeichgen führen zu sql error

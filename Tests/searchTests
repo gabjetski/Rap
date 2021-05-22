@@ -1,0 +1,51 @@
+Added some more Data in order to get more results
+
+User:
+id  username 
+1   guest
+2   hp
+3   hp2
+4   user
+5   samuelGerhartringer
+
+Tracks:
+id  title                                           tags                                    desc                            uploader
+1   test                                                                                                                    2
+2   Ã‚Â²Ã‚Â³$$&amp;%Ã‚Â§@Ã¢â€šÂ¬                                                                                            3
+3   Testt5itelderlangeistsehrlange,sehr,sehr,lange                                                                          4
+4   R u dumb, stupid or dumb huh                    #R u dumb stupid or dumb huh, #R u      R u dumb, stupid or dumb huh    4
+5   Hallo                                           #User, #Abcdefg                         Test                            4
+6   testTag                                         #Tag                                    hp                              4
+
+
+search Tests:
+
+g
+    user: 1,5 - Y
+    tracks: 3,5,6 - Y
+User 1 muss irgendwie aus select excluded werden, ist ja kein user sondern steht für alle guest user
+ebenso user die admins sind...
+eventuell nur user zeigen die uploads haben?
+
+user
+    user: 4 - Y
+    tracks: 3,4,5,6 - Y
+
+test
+    user: x - Y
+    tracks: 1,3, 6 (5 wenn wir desc auch dahaben) - Y (ohne 5)
+eventuell desc auch noch einbeziehen?
+
+hp
+    user: 2,3 - Y
+    tracks: 1,2 (6) - Y (o6)
+  
+h
+    user: 2,3,5 - Y
+    tracks: 1,2,3,4,5 (6) - Y
+
+&amp;
+    user: x
+    tracks: x - 2
+Suchbegriff htmlspecialcharen
+
