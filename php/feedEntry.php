@@ -11,11 +11,7 @@ class feedEntry
 
         if ($purp == 'main') {
             $pathAddition = "";
-        } elseif ($purp == 'user') {
-            $pathAddition = "../../";
-        } elseif ($purp == 'profile') {
-            $pathAddition = "../../";
-        } elseif ($purp == 'search') {
+        } elseif ($purp == 'user' || $purp == 'profile' || $purp == 'search') {
             $pathAddition = "../../";
         }
 

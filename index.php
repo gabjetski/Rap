@@ -228,7 +228,7 @@ try {
           <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" onkeypress="return noenter();" required>
           <!-- FreeForProfit  Upload - BPM -->
           <label for="f4pUpload-bpm"><b>BPM*</b></label>
-          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" pattern="^\d{2,3}$" maxlength="3" value="123" onkeypress="return noenter();" required>
+          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" maxlength="3" value="123" onkeypress="return noenter();" required>
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="f4pUpload-key"><b>Key</b></label>
           <select name="f4pUpload-key" id="f4pUpload-key">
@@ -317,7 +317,7 @@ try {
           <input type="radio" id="taggedUpload-type-snippet" name="taggedUpload-type" value="snippet">
           <!-- Tagged Upload - BPM -->
           <label for="taggedUpload-bpm"><b>BPM</b></label>
-          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" pattern="^\d{2,3}$" onkeypress="return noenter();" value="123" required>
+          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" onkeypress="return noenter();" value="123" required>
           <!-- Tagged Upload - Key -->
           <label for="taggedUpload-key"><b>Key</b></label>
           <select name="taggedUpload-key" id="taggedUpload-key">

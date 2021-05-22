@@ -216,7 +216,7 @@ INSERT INTO `keysignature` (`pk_key_signature_id`, `root_note`, `Addition`, `sho
             (NULL, 'E', 'minor', 'Em'),
             (NULL, 'F', 'Major', 'F'), 
             (NULL, 'F', 'minor', 'Fm'),
-            (NULL, 'G', 'Major', 'Gb'), 
+            (NULL, 'Gb', 'Major', 'Gb'), 
             (NULL, 'F#', 'minor', 'F#m'),
             (NULL, 'G', 'Major', 'G'), 
             (NULL, 'G', 'minor', 'Gm'),

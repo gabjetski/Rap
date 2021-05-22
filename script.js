@@ -247,11 +247,11 @@ function setInputFilter(textbox, inputFilter) {
 
 // F4P - Funktion, um den BPM Input einzugrenzen (von 1-999) 
 setInputFilter(document.getElementById("f4pUpload-bpm"), function(value) {
-    return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 999); });
+    return /^-?\d*$/.test(value)  && (value === "" || parseInt(value) <= 999); });
 
 // Tagged - Funktion, um den BPM Input einzugrenzen (von 1-999)     
 setInputFilter(document.getElementById("taggedUpload-bpm"), function(value) {
-    return /^-?\d*$/.test(value)  && (value === "" | parseInt(value) <= 999); });
+    return /^-?\d*$/.test(value)  && (value === "" || parseInt(value) <= 999); });
 
 
 // ANCHOR Grundlegende Funktionen die richtige Ausgabe der Tags bzw. der selbstdefinierten "Kategorien";
@@ -529,7 +529,7 @@ function fileValidation() {
             let file = Math.round((fsize / 1024));
             
             // The size of the file.
-            if (file >= 1000) {
+            if (file >= 100000) {
                 fi.value = '';
                 document.getElementById('errorFile').style.display = 'block';
                 document.getElementById('errorFile').innerHTML = 'Select smaller file';
