@@ -68,7 +68,7 @@ try {
     }
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
-    if (!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/u", $_GET['newEmail'])) {
+    if (!preg_match("/^[a-zA-z0-9._%+-]+@[a-zA-z0-9.-]+\.[a-z]{2,4}$/u", $_GET['newEmail'])) {
       echo "akdafuigidash";
       $_SESSION['emailChange-Error']['value'] = $_GET['newEmail'];
       $_SESSION['emailChange-Error']['id'] = -2;
@@ -132,7 +132,7 @@ try {
     // $stmntGetFirstNames->execute();
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
-    if (!preg_match("/^[a-zA-ZÄÜÖäüö]{1,}$/u", $_GET['newFirstName'])) {
+    if (!preg_match("/^[a-zA-ZÄÜÖäüö]{1,50}$/u", $_GET['newFirstName'])) {
       echo "akdafuigidash";
       $_SESSION['firstNameChange-Error']['value'] = $_GET['newFirstName'];
       $_SESSION['firstNameChange-Error']['id'] = -1;
@@ -161,7 +161,7 @@ try {
     // $stmntGetLastNames->execute();
 
     // neuer Username ist nicht vergeben hat aber Validations gefailed
-    if (!preg_match("/^[a-zA-ZÄÜÖäüö]{1,}$/u", $_GET['newLastName'])) {
+    if (!preg_match("/^[a-zA-ZÄÜÖäüö]{1,50}$/u", $_GET['newLastName'])) {
       echo "akdafuigidash";
       $_SESSION['lastNameChange-Error']['value'] = $_GET['newLastName'];
       $_SESSION['lastNameChange-Error']['id'] = -1;
@@ -489,6 +489,7 @@ try {
 
     <!-- Password Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+      <div class="box">
       <input type="password" placeholder="Enter Password" name="newPassword" id="change-password" maxlength="30" required>
       <input type="password" placeholder="Repeat Password" name="newPasswordRepeat" id="change-password-repeat" maxlength="30" required>
       <input type="submit" name="changePassword" id="changePassword" value="Change" />

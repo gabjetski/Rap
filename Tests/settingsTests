@@ -69,12 +69,14 @@ email:
         N - syntax - N (real-mail Error)
     hansPeter12345@gmail.com
         Y - N - (real-mail Error) regex for emails is case sensitive, real emails are not 
+        // FIXME Fixed 
     TestName@1
         N - syntax - N (real-mail Error) 
     TestName@.com
         N - syntax - N (real-mail Error)
     testnametestnametestnametestbametestbametestnbametestnametestname@gmxasdtev.com
         Y - X geht durch wird aber abgecutted
+        // FIXME max Laenge besprechen
     testMail
         N - syntax - N (real-mail Error)
     testmail@testmail.testmail
@@ -191,6 +193,7 @@ firstName:
         N - specialchar - N (failed-the-validation Error)
 
 länge
+// FIXME ist jz {1,50} in regex
 "real firstname"
 
     SELECT p_last_name REGEXP "^[a-zA-ZÄÜÖäüö]+$" INTO v_lastName_pattern;
@@ -232,6 +235,7 @@ lastname:
         N - specialchar - N (failed-the-validation Error)
 
 länge
+// FIXME ist jz {1,50} in regex
 "real lastname"
 
 Insta Usernames can contain letters, numbers, periods and underscores and mustnt be longer than 30 chars.
