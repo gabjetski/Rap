@@ -97,11 +97,11 @@ if (isset($_SESSION['uploadCheck']) && $_SESSION['uploadCheck'] == $_POST) {
 
 if (isset($_SESSION['uploadSuccess'])) {
   unset($_SESSION['uploadError']);
-  header('Location:index.php');
+  header('Location:/home');
 } elseif (isset($_SESSION['uploadError'])) {
   $_SESSION['uploadError']['name'] = basename($_FILES["f4pUpload-file"]["name"]);
   $_SESSION['uploadError']['type'] = 'f4p';
   $_SESSION['uploadError']['post'] = $_POST;
   $_SESSION['uploadError']['files'] = $_FILES;
-  header('Location:index.php');
+  header('Location:/home');
 }

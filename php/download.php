@@ -69,14 +69,14 @@ if (file_exists($filepath)) {
         if ($id < 0) {
             $_SESSION['downloadError'] = $id;
             $_SESSION['downloadError_GET'] = $_GET;
-            header('Location:index.php');
+            header('Location:/home');
         }
         //else store download in session and reload page
         else {
             $_SESSION['download'][$fileID] = true;
             $_SESSION['downloadSuccess'] = $fileID;
             unset($_SESSION['downloadError']);
-            header('Location:index.php');
+            header('Location:/home');
         }
     } else {
     }

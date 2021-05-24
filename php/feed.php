@@ -79,8 +79,7 @@
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
                 <button type="submit" class="continueButton" name="tset-submit" value="Finish" onclick="" class="continue" id="tset-submit">Finish</button>
                 <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
-                <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closetset(); openUpload();">Back</button>
-                <button type="button" class="cancelButton" onclick="closetset();">Cancel</button>
+                <button type="button" class="cancelButton" onclick="closeSettings();">Cancel</button>
             </div>
             <div class="delAsk" id="delAsk" style="display: none;">
                 <div id=" blocker" onclick="closeDelAsk()" class="blocker"></div>
@@ -409,7 +408,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     if ($stmntGetSongs->rowCount() == 0) {
         echo "No Tracks found with title " .  $_GET['searchTerm'];
     }
-} 
+}
 
 
 
