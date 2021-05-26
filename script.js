@@ -115,11 +115,11 @@ function wrongPassword(){
     const patternSpecial = new RegExp(/^[a-zA-Z0-9!?{}@#$%^&*_.\-ÄÜÖäüö]{7,30}$/);
 
     if(password.value.length < 7){
-        password.setCustomValidity("Password has to be between 7 and 30 characters long");
+        password.setCustomValidity("Password has to be between 7 and 30 characters long. Please make sure to use at least one upper and lowercase character and at least one digit");
     } else if (password.value.length > 30){
-        password.setCustomValidity("Username has to be between 7 and 30 characters long");
+        password.setCustomValidity("Password has to be between 7 and 30 characters long. Please make sure to use at least one upper and lowercase character and at least one digit");
     } else if(patternSpecial.test(password.value) === true && pattern.test(password.value) === false){
-        password.setCustomValidity("Please make sure to use at least one upper and lowercase character and at least one digit");
+        password.setCustomValidity("Password has to be between 7 and 30 characters long. Please make sure to use at least one upper and lowercase character and at least one digit");
     } else if(patternSpecial.test(password.value) === true && pattern.test(password.value) === true){
         password.setCustomValidity("");
     } else if(pattern.test(password.value) === false){

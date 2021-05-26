@@ -27,3 +27,9 @@ function addDownloadCount(id) {
     count.innerHTML = parseInt(oldNumber,10) + 1;
     //alert(oldNumber);
 }
+
+function delErrors(){
+    document.querySelectorAll('.error').forEach(element => {
+        element.innerHTML = '';
+    });
+}

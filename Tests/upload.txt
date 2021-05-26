@@ -5,8 +5,8 @@ F4P-Upload
 ---------------------------------------------------
 Kategorie
 required: WORKS
-Beat: 
-Sample: 
+Beat: WORKS
+Sample: WORKS
 ---------------------------------------------------
 BPM
 required: WORKS
@@ -19,19 +19,23 @@ Vielleicht kein default value setzen weil sonst leute es ignorieren und der fals
 ---------------------------------------------------
 Title
 required: WORKS
-custom validity: 
-max-length 60: 
+custom validity: WORKS
+special char: WORKS
+max-length 60: WORKS
 ---------------------------------------------------
 Notes
-max-length 200: 
-special char: 
+max-length 200: WORKS
+not required: WORKS
+special char: WORKS, error message bleibt angezeigt auch wenn die Zeichen entfernt werden man kann Track nicht gescheit hochladen upload fenster kommt immer wieder
 ---------------------------------------------------
 Tags
-max-length 30: 
-funktionalitaet:
+max-length 30: WORKS
+funktionalitaet: WORKS
+Custom-validity: kommt immer wenn man zwei mal das selbe Tag hat
 ---------------------------------------------------
 File
-Size-Validation: fehler message kommt immer :(
+required: WORKS
+Size-Validation: fehler message bleibt da auch wenn anderer Track hochgeladen wird
 Duration-Validation: :(
 ---------------------------------------------------
 
@@ -52,6 +56,7 @@ Learn More About Tags
 WORKS
 Link zu tutorial hinzufuegen, how to get/make a tag
 ---------------------------------------------------
+BPM
 required: WORKS
 custom validity: change message
 1-999: 0-999, server side WORKS
@@ -65,14 +70,18 @@ custom validity: fehlt, default msg
 max-length 60: WORKS
 ---------------------------------------------------
 Notes
+Bei Track heisst es Description und bei upload notes
+not-required: WORKS
 max-length 200: works
 special char: WORKS
 ---------------------------------------------------
 Tags
 max-length 30: WORKS
 funktionalitaet 1-5: WORKS
+not-required: WORKS
 ---------------------------------------------------
 File
-Size-Validation: WORKS, message geht nicht weg
+required: WORKS
+Size-Validation: WORKS, message geht nicht weg, Track kriegt Tags: #1, #2, #3, #4, #6 ka warum, manchmal kommt ein error ohne error id
 Duration-Validation: :(
 ---------------------------------------------------

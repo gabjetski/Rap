@@ -94,7 +94,6 @@ try {
     if (isset($_POST['taggedUpload-submit'])) {
       require "php/taggedUpload.php";
     }
-    var_dump($_SESSION);
     require "php/blacklist.php";
     if (isset($_SESSION['downloadSuccess'])) {
       // require "php/downloadSuccess.php";
@@ -175,6 +174,9 @@ try {
       echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
 
+    echo "<pre>";
+    var_dump($_SESSION);
+    echo "</pre>";
     /* View Profile Button als Test 
     echo '<h1> <a href="user/my"> View Profile </a></h1>';
 
@@ -284,7 +286,7 @@ try {
           <button type="button" onclick="clearF4PForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <p class="error" id="errorFile" style="display: none"></p>
-          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords(); radioButtonsF4P();  bpmF4P(); titleF4P(); fileF4P();" class="continue" id="f4pUpload-submit">Finish</button>
+          <button type="submit" class="continueButton" name="f4pUpload-submit" value="Finish" onclick="checkBanWords(); radioButtonsF4P();  bpmF4P(); titleF4P(); fileF4P();  delErrors()" class="continue" id="f4pUpload-submit">Finish</button>
           <!-- onclick="openUploadSuccess();" hinzufügen beim submit button-->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeF4P(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeF4P();">Cancel</button>
@@ -373,7 +375,7 @@ try {
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <p class="error" id="errorFile2" style="display: none"></p>
-          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" id="taggedUpload-submit">Finish</button>
+          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" id="taggedUpload-submit"  onclick="delErrors()">Finish</button>
           <!-- onclick="openUploadSuccess();" -->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeTagged();">Cancel</button>

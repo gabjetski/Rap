@@ -99,6 +99,7 @@ Gab Jetski gabjetski gab-rie%l1@htl-rennweg1.at Hallo123 Hallo123
 # -- Falsche E-Mail Validation expected --
 # -- -> Kein Fehler im Test - " Must contain a valid email "  --
 /*FIXME kommt IMMER auch eine deutsche Validation Nachricht */
+/* NOTE sollte erledigt sein */
 Gab Jetski gabjetski gabjetski.gmail.com Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
@@ -127,6 +128,7 @@ Gab Jetski gabjetski hallo1@at Hallo123 Hallo123
 
 # -- Falsche E-Mail Validation expected -- 
 # -- -> Kein Fehler im Test - ABER FIXME auch da deutsche Nachricht "Füllen Sie das Feld aus"
+/* NOTE Sollte erledigt sein */
 Gab Jetski gabjetskiii '' Hallo123 Hallo123
 
 # -- ANCHOR Passwort Validations
