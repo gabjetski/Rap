@@ -9,4 +9,4 @@ $stmtDelTrack->bindParam(1, $_GET['tset-track-id'], PDO::PARAM_INT);
 $stmtDelTrack->bindParam(2, $_GET['tset-track-id'], PDO::PARAM_INT);
 $stmtDelTrack->execute();
 
-header('location: /user/my');
+header('location: ' . $_SESSION['header']);
