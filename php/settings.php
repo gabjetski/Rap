@@ -12,7 +12,7 @@ try {
 
   if (isset($_GET['admin'])) {
     $_SESSION['header'] = "/user/{$_GET['userID']}/settings";
-    if (!$userPerm->permission($_SESSION['userID'], 6)) {
+    if (!Permissions::permission($_SESSION['userID'], 6)) {
       header("Location: /user/{$_GET['userID']}");
     }
   } else {
@@ -490,9 +490,9 @@ try {
     <!-- Password Change -->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <div class="box">
-      <input type="password" placeholder="Enter Password" name="newPassword" id="change-password" maxlength="30" required>
-      <input type="password" placeholder="Repeat Password" name="newPasswordRepeat" id="change-password-repeat" maxlength="30" required>
-      <input type="submit" name="changePassword" id="changePassword" value="Change" />
+        <input type="password" placeholder="Enter Password" name="newPassword" id="change-password" maxlength="30" required>
+        <input type="password" placeholder="Repeat Password" name="newPasswordRepeat" id="change-password-repeat" maxlength="30" required>
+        <input type="submit" name="changePassword" id="changePassword" value="Change" />
     </form>
 
 

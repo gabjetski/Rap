@@ -1,4 +1,5 @@
 <?php
+//represents a track and has functions which return the feed-code
 class feedEntry
 {
     public $fileData;
@@ -9,17 +10,18 @@ class feedEntry
     function __construct($id, $purp)
     {
 
+        //purp is the location, where the instance is created
+        //      is important for links 
         if ($purp == 'main') {
             $pathAddition = "";
         } elseif ($purp == 'user' || $purp == 'profile' || $purp == 'search') {
             $pathAddition = "../../";
         }
 
-        $this->perm = new Permissions;
-
-
+        //create database connection
         $this->pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
 
+        //get data of current track from database
         $stmntGetFileData = $this->pdo->prepare("SELECT * FROM files 
                                         INNER JOIN keysignature k ON fk_key_signature_id = k.pk_key_signature_id 
                                         INNER JOIN user u ON fk_user_id = u.pk_user_id 
@@ -27,6 +29,7 @@ class feedEntry
         $stmntGetFileData->bindParam('id', $id);
         $stmntGetFileData->execute();
 
+        //fetch this data and insert it into array
         foreach ($stmntGetFileData->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $this->fileData = array(
                 'id' => $row['pk_files_id'],
@@ -56,26 +59,32 @@ class feedEntry
             );
         }
 
+        //get download count from database
         $stmntGetDownloads = $this->pdo->prepare('SELECT * FROM user_downloaded_file WHERE fk_files_id = ?;');
         $stmntGetDownloads->bindParam(1, $this->fileData['id'], PDO::PARAM_STR, 5000);
         $stmntGetDownloads->execute();
         $this->fileData['downloads'] = $stmntGetDownloads->rowCount();
 
+        //check if user or session already downloaded this file
         $showDownload = true;
         if ($_SESSION['userID'] != 1) {
+            //check in database for simular download entry
             $stmntLookForSimularDownload = $this->pdo->prepare("SELECT * FROM user_downloaded_file WHERE fk_user_id = ? AND fk_files_id = ?");
             $stmntLookForSimularDownload->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
             $stmntLookForSimularDownload->bindParam(2, $this->fileData['id'], PDO::PARAM_STR, 5000);
             $stmntLookForSimularDownload->execute();
-
             $showDownload = $stmntLookForSimularDownload->rowCount() == 0;
         }
+        //check in session array for simular download entry
         if (isset($_SESSION['download'][$this->fileData['id']])) {
             $showDownload = false;
         }
+        // set header-var to home if empty
         if (!isset($_SESSION['header'])) {
             $_SESSION['header'] = '/home';
         }
+
+        //insert some more data into public var
         $this->otherInfo = array(
             'showDownload' => $showDownload,
             // {$_SERVER['PHP_SELF']}?downloaded_file={$this->fileData['downloadPath']}&username_file={$this->uploaderData['username']}&title_file={$this->fileData['title']}
@@ -85,6 +94,7 @@ class feedEntry
 
     function playerFunctions()
     {
+        //returns functions, which are required for listening/controlling in feed
         return <<< returnFunctions
         <script>
             const playBtn{$this->fileData['id']} = document.getElementById("playBtn{$this->fileData['id']}");
@@ -148,6 +158,7 @@ class feedEntry
 
     function infoTags()
     {
+        //return tags for infofield
         $tags = "";
         $notags = 0;
         for ($i = 1; $i <= 5; $i++) {
@@ -166,6 +177,7 @@ class feedEntry
 
     function profileEdit()
     {
+        //return functions, which are required to edit files
         return <<< returnCode
         <button id="openSettings{$this->fileData['id']}">Edit</button>
                     <script>
@@ -184,6 +196,7 @@ class feedEntry
 
     function getPlayerCode($purp)
     {
+        //return code for player
         $returnCode = <<< returnCode
         <!--Server: {$_SERVER['SERVER_NAME']}<br>
         Self: {$_SERVER['PHP_SELF']}-->
@@ -208,11 +221,14 @@ class feedEntry
             
             <button id="openInfo{$this->fileData['id']}">INFO</button>
         returnCode;
-        if ($purp == 'profile' && $this->perm->permission($_SESSION['userID'], 5)) {
+        if ($purp == 'profile' && Permissions::permission($_SESSION['userID'], 5)) {
+            //insert edit functions when user is allowed to
             $returnCode .= $this->profileEdit();
-        } elseif ($this->perm->permission($_SESSION['userID'], 4)) {
+        } elseif (Permissions::permission($_SESSION['userID'], 4)) {
+            //insert edit functions when user is admin
             $returnCode .= $this->profileEdit();
         }
+        //check if file is downloadable (f4p)
         if ($this->fileData['monet'] == 1) {
             $returnCode .= "<a href=\"{$this->otherInfo['downloadLink']}\" ";
             if ($this->otherInfo['showDownload']) {
@@ -224,6 +240,7 @@ class feedEntry
         } else {
             $returnCode .= "<span>Contact the Artist for access to this File!</span>";
         }
+        //insert player functions
         $returnCode .=
             "</div>
             {$this->playerFunctions()}

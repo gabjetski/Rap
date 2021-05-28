@@ -46,21 +46,21 @@ try {
 
   <body>
     <h2><a href="/home"> Rap Plattform</a></h2>
-    <?php 
-     //show login/register button if guest
- if ($userPerm->permission($_SESSION['userID'], 3)) {
-  require_once './logRegForms.php';
-  echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
-  echo '<i class="fa fa-upload fa-3x" onclick="openUploadLogin()"></i>';
-}
-//show username and id if logged in
-elseif (!$userPerm->permission($_SESSION['userID'], 3)) {
-  $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
-  $stmntGetUserInfos->execute();
-  foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
-    $_SESSION['userUName'] = $row['Username'];
-  }
-  echo '
+    <?php
+    //show login/register button if guest
+    if (Permissions::permission($_SESSION['userID'], 3)) {
+      require_once './logRegForms.php';
+      echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
+      echo '<i class="fa fa-upload fa-3x" onclick="openUploadLogin()"></i>';
+    }
+    //show username and id if logged in
+    elseif (!Permissions::permission($_SESSION['userID'], 3)) {
+      $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
+      $stmntGetUserInfos->execute();
+      foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $_SESSION['userUName'] = $row['Username'];
+      }
+      echo '
 <script src="../global.js" defer></script>
 <div id="dropMenu">
   <div class="dropContainer">
@@ -96,8 +96,8 @@ elseif (!$userPerm->permission($_SESSION['userID'], 3)) {
   </div>
 </div>
 ';
-}
-    if ($userPerm->permission($_SESSION['userID'], 6)) {
+    }
+    if (Permissions::permission($_SESSION['userID'], 6)) {
       echo <<< setIcon
       <a href="/user/{$_GET['userID']}/settings"><i class="fa fa-gear fa-5x"></i></a>
       <hr>
@@ -114,7 +114,7 @@ elseif (!$userPerm->permission($_SESSION['userID'], 3)) {
       $_SESSION['soundcloud'] = $row['Soundcloud'];
       $_SESSION['bio'] = $row['Bio'];
       $date = strtotime($row['user_added']);
-      $_SESSION['userSince'] = date("Y-m-d", $date); //FIXME DB new runnen
+      $_SESSION['userSince'] = date("Y-m-d", $date);
     }
     echo '<hr>';
     echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';

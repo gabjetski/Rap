@@ -39,10 +39,10 @@
                 <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required>
                 <!-- Last Name -->
                 <label for="lastName"><b>Last Name</b></label>
-                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required >
+                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required>
                 <!-- Username -->
                 <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" id="register-username" required >
+                <input type="text" placeholder="Enter Username" name="username" id="register-username" required>
                 <!-- Email -->
                 <label for="email"><b>Email</b></label>
                 <input type="text" placeholder="Enter Email" name="email" id="register-email" required>
@@ -51,7 +51,7 @@
                 <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required>
                 <!-- Password Repeat -->
                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required >
+                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required>
                 <input type="checkbox" id="showRegisterPw">show pw
                 <br>
                 <!-- TOS agreement -->
@@ -87,22 +87,24 @@
         </div>
     </form>
 </div>
+<!-- FIXME Prolly den code in script.js? oder sonst den ganzen logregform related js code da rein
+        auf jeden fall solts beinander sein -->
 <script>
     showLogPw = document.getElementById("showLoginPw");
-    showLogPw.addEventListener("click", function(){
+    showLogPw.addEventListener("click", function() {
         logPw = document.getElementById("login-psw");
-        if(logPw.type === "password"){
+        if (logPw.type === "password") {
             logPw.type = "text";
         } else {
             logPw.type = "password";
         }
     });
-    
+
     showRegPw = document.getElementById("showRegisterPw");
-    showRegPw.addEventListener("click", function(){
+    showRegPw.addEventListener("click", function() {
         regPw = document.getElementById("register-psw");
         regPwRep = document.getElementById("register-psw-repeat");
-        if(regPw.type === "password"){
+        if (regPw.type === "password") {
             regPw.type = "text";
             regPwRep.type = "text";
         } else {

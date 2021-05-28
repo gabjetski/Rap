@@ -11,10 +11,10 @@ try {
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
   // $_SESSION['pdo'] = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
   //function to htmlspecialchar Arrays -> prevent injections
-  function filter(&$value)
-  {
-    $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-  }
+  // function filter(&$value)
+  // {
+  //   $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+  // }
   require 'php/searchbar.php';
 ?>
   <!DOCTYPE html>
@@ -120,13 +120,13 @@ try {
     }
     //var_dump($_SESSION);
     //show login/register button if guest
-    if ($userPerm->permission($_SESSION['userID'], 3)) {
+    if (Permissions::permission($_SESSION['userID'], 3)) {
       require_once 'php/logRegForms.php';
       echo '<button class="openForm" onclick="openLogin()">Log In/Register</button>';
       echo '<i class="fa fa-upload fa-3x" onclick="openUploadLogin()"></i>';
     }
     //show username and id if logged in
-    elseif (!$userPerm->permission($_SESSION['userID'], 3)) {
+    elseif (!Permissions::permission($_SESSION['userID'], 3)) {
       $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
       $stmntGetUserInfos->execute();
       foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -170,7 +170,7 @@ try {
     ';
     }
 
-    if ($userPerm->permission($_SESSION['userID'], 2)) {
+    if (Permissions::permission($_SESSION['userID'], 2)) {
       echo '<i class="fa fa-upload fa-3x" onclick="openUpload()"></i>';
     }
 
@@ -375,7 +375,7 @@ try {
           <button type="button" onclick="clearTaggedForm();"> Clear All </button>
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <p class="error" id="errorFile2" style="display: none"></p>
-          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" id="taggedUpload-submit"  onclick="delErrors()">Finish</button>
+          <button type="submit" class="continueButton" name="taggedUpload-submit" value="Continue" class="continue" id="taggedUpload-submit" onclick="delErrors()">Finish</button>
           <!-- onclick="openUploadSuccess();" -->
           <button type="button" class="continueButton" name="Back" value="Back" class="continue" onclick="closeTagged(); openUpload();">Back</button>
           <button type="button" class="cancelButton" onclick="closeTagged();">Cancel</button>

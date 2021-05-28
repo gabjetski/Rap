@@ -1,25 +1,38 @@
 <?php
+//require the classes we need in many files
 require_once 'feedEntry.php';
 require_once 'permissions.php';
-$pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
-$userPerm = new Permissions;
 
+//setup connection to database
+$pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
+
+//if visitor is guest, set userID to 1 (important for permissions)
 if (!isset($_SESSION['userID'])) {
     $_SESSION['userID'] = 1;
 }
-// echo "yes1";
+
+//if visitor downloaded a file, include downloadphp
 if (isset($_GET['downloaded_file'])) {
-    // echo "yes2";
     require "download.php";
 }
+
+//if user edited tracks, include editTracks.php 
+//  this needs to be in autoload because admin can do it on 'every' page
 if (isset($_GET['tset-submit'])) {
     require 'editTracks.php';
-    //unset($_SESSION['trackEdit-error']);
 }
+
+//if user edited tracks, and error is thrown, include editError.php 
 if (isset($_SESSION['trackEdit-error'])) {
     require 'editError.php';
-    //unset($_SESSION['trackEdit-error']);
 }
+
+//if user deleted a track, include deleteTracks.php 
 if (isset($_GET['tset-del'])) {
     require 'deleteTracks.php';
+}
+//function to htmlspecialchar arrays (in combination with array_walk_recursive)
+function filter(&$value)
+{
+    $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }

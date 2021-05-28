@@ -1,9 +1,11 @@
 <?php
-class permissions
+class Permissions
 {
-    function permission($userId, $module)
+    //public static function cause it needs no instances
+    public static function permission($userId, $module)
     {
         $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
+        //select structure form database (permission-, usertype- and user-table)
         $stmntGetPermission = $pdo->prepare("SELECT * FROM `permission` 
         INNER JOIN usertype ON usertype.pk_user_type_id = fk_user_type_id 
         INNER JOIN user ON usertype.pk_user_type_id = user.fk_user_type_id
@@ -11,11 +13,11 @@ class permissions
         $stmntGetPermission->bindParam('usid', $userId);
         $stmntGetPermission->bindParam('mod', $module);
         $stmntGetPermission->execute();
-        // return $userType;
         if ($stmntGetPermission->rowCount() >= 1) {
+            //if usertype has permission for this module, return true
             return true;
         } else {
-            // echo $userId . ' ' . $module . '<br>';
+            //else return false
             return false;
         }
     }
