@@ -20,11 +20,11 @@ if (isset($_SESSION['loginError'])) {
         case '-1':  // -1 -> no such user
         case '-4':  // -4 -> wrong password
             //$posErrWarning = 'login-input'; -------------------------------mark field(s) which are written here red -> idk if its possible
-            $errMsg = 'Wrong login Information! <br> Username/Email or Password is wrong';
+            $errMsg = 'Wrong login information! <br> Username/Email or Password is wrong';
             break;
         case '-2':  // -2 -> input is taken as email AND username (should be impossible)
         case '-3':  // -3 -> something else went wrong
-            $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, pleas contact us.';
+            $errMsg = 'Something went wrong! Please try again. <br> If this happenes again, please contact us.';
             break;
         case '-11':  // -11 -> input empty
             //$errValues = ['login-input' => $_SESSION['loginError']['get']['input']];

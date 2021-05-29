@@ -194,6 +194,11 @@ a {
   display: none;
 }
 
+
+#notisForm {
+  display:none;
+}
+
 /* Errors, thrown by database when register or login*/
 .error {
   color: red;

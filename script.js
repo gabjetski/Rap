@@ -7,6 +7,7 @@ const f4p = document.getElementById("freeForProfitForm");
 const tag = document.getElementById("taggedForm");
 const tagInfo = document.getElementById("tagInfo");
 const uploadSuccess = document.getElementById("uploadSuccess");
+const notis = document.getElementById("notisForm");
 
 
 // ANCHOR !ALLE! Formulare, die mittels "PopUp" geöffnet und geschlossen werden können
@@ -92,8 +93,34 @@ function closeTagged(){
     tag.style.display = "none";
 }
 
+// Notification-Formular mit weiteren Informationen zum Beat öffnen
+function openNotisForm(){
+    notis.style.display = "block";
+}
+
+// Notification-Formular mit weiteren Informationen zum Beat schließen
+function closeNotisForm(){
+    notis.style.display = "none";
+}
+
 
 // ANCHOR Funktionen beim Anmelden bzw. Registrieren
+
+// Funktion um das Login Form zu valideiren 
+function validateLoginForm(){/*
+    let username = document.getElementById("login-input");
+    let password = document.getElementById("login-psw");
+
+    if(username.value.length < 1){
+        username.setCustomValidity("Please enter your username or e-mail");
+    } else if (password.value.length < 1){
+        password.setCustomValidity("Please enter your password");
+    } else {
+        username.setCustomValidity("");
+        password.setCustomValidity("");
+    }*/
+    
+}
 // Funktion, um beim Registrieren zu checken, ob beide Passwörter übereinstimmen (PW & Repeat PW)
 function validatePassword(){
     let password = document.getElementById("register-psw");
@@ -155,9 +182,11 @@ function wrongUsername(){
 // Funktion für Vornamen Validation beim Registrieren, d.h. wenn der Vorname zu kurz ist und ob Special Character verwendet wurden 
 function fName(){
     let fName = document.getElementById("register-firstName");
-    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,50}$/);
+    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{0,50}$/);
 
-    if(fName.value.length > 50){
+    if (fName.value.length == 0) {
+        fName.setCustomValidity("Your first name mustn't be empty");
+    } else if (fName.value.length > 50){
         fName.setCustomValidity("Your first name mustn't be longer than 50 characters");
     } else if(pattern.test(fName.value) === false){
         fName.setCustomValidity("Please use a real first name");
@@ -169,12 +198,12 @@ function fName(){
 // Funktion für Nachnamen Validation beim Registrieren, d.h. wenn der Nachname zu kurz ist und ob Special Character verwendet wurden 
 function lName(){
     let lName = document.getElementById("register-lastName");
-    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{1,50}$/);
+    const pattern = new RegExp(/^[a-zA-ZÄÜÖäüö]{0,50}$/);
 
-    if(lName.value.length < 1){
-        lName.setCustomValidity("Your last name can't be empty");
+    if (lName.value.length == 0) {
+        lName.setCustomValidity("Your last name mustn't be empty");
     } else if(lName.value.length > 50){
-        lName.setCustomValidity("Your last name is too long");
+        lName.setCustomValidity("Your last name mustn't be longer than 50 characters");
     } else if(pattern.test(lName.value) === false){
         lName.setCustomValidity("Please use a real last name");
     } else {

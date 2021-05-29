@@ -17,9 +17,9 @@
                 <input type="checkbox" id="showLoginPw">show pw
 
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen". -->
-                <button type="submit" class="loginButton" name="loginSubmit" value="Login" id="loginButton">Login</button>
-                <input type="button" class="signupButton" onclick="openRegister()" value="You don't have an account yet? Sign Up here!" />
-                <button type="button" class="cancelButton" onclick="closeLogin()">Cancel</button>
+                <button type="submit" class="loginButton" onclick="validateLoginForm();" name="loginSubmit" value="Login" id="loginButton">Login</button>
+                <input type="button" class="signupButton" onclick="openRegister(); " value="You don't have an account yet? Sign Up here!" />
+                <button type="button" class="cancelButton" onclick="closeLogin(); ">Cancel</button>
             </div>
         </form>
     </div>
@@ -36,22 +36,22 @@
             <fieldset>
                 <!-- First Name -->
                 <label for="firstName"><b>First Name</b></label>
-                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" required>
+                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" maxlength="50" value="Gab" required>
                 <!-- Last Name -->
                 <label for="lastName"><b>Last Name</b></label>
-                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" required>
+                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" maxlength="50" value="Gab" required>
                 <!-- Username -->
                 <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" id="register-username" required>
+                <input type="text" placeholder="Enter Username" name="username" id="register-username" maxlength="20" value="user123" required>
                 <!-- Email -->
                 <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" id="register-email" required>
+                <input type="text" placeholder="Enter Email" name="email" id="register-email" value="gab@gmail.com" required>
                 <!-- Password -->
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required>
+                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" value="Hallo123" id="register-psw" required>
                 <!-- Password Repeat -->
                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required>
+                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" value="Hallo123" required>
                 <input type="checkbox" id="showRegisterPw">show pw
                 <br>
                 <!-- TOS agreement -->

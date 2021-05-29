@@ -3,6 +3,8 @@ session_start();
 require_once 'php/autoload.php';
 $_SESSION['header'] = '/home';
 
+require 'php/notification.php';
+
 if (!isset($_SESSION['userID'])) {
   $_SESSION['userID'] = 1;
 }
@@ -152,7 +154,7 @@ try {
             </li>
             <li class="dropList">
               <h3>
-                Notifications
+                <button type="button" onclick="openNotisForm()">Notifications</button>
               </h3>
             </li>
             <li class="dropList">
