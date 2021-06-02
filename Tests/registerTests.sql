@@ -178,24 +178,5 @@ Eliass Saamuel eliassammuel eliassam1@gmail.com HalloSam12 ''
 
 
 /* TODO Weiteres was mir aufgefallen ist 
-
-2) Bei der Username Länge kommt folgende Fehlermeldung 
-- Username has to be between 3 and 20 characters long
-
-Bei First und Last Name allerdings entweder 
-wenn empty 
-- cant be empty 
-wenn zu lang 
-- too long 
-
-ist halt nt einheitlich, müsste sich dann auf eines einigen, meiner Meinung nach  
-
-bleiben bei "Range-validation", Beschreibung genauer 3-20
-
-3) Ist denk ich eh klar warum, wegen der datenbank abfrage, aber beim checken ob der username vergeben ist reloaded die Seite und bei E-Mail, muss aber bestimmt so sein
-sonst bleibt die validation da, steht trd username vergeben obwohl es nt ist (auch wenn man einen z.B. zu kurzen Namen eingibt)
-
-6) Vll extra validations bei Email, die erklären, was genau falsch gemacht wurde 
-
-7) Leerzeichen bei PW nicht mit "Wrong Special Character" behandeln
+3) Wenn man einen vergebenen username/vergebene email eingibt, bleibt die notification von php "username/email already taken" die ganze zeit, removen nach ner zeit/bzw. wenn email/username nt mehr taken ist 
 */

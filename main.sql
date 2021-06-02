@@ -176,6 +176,22 @@ CREATE OR REPLACE TABLE Feed(
         REFERENCES Files(pk_files_id) ON DELETE CASCADE
 );
 
+CREATE OR REPLACE TABLE Milestones(
+    pk_milestone_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    required_downloads INTEGER,
+    text VARCHAR(30)
+);
+
+CREATE OR REPLACE TABLE song_reaches_milestone(
+    pk_song_milestone_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    fk_song_id INTEGER,
+    fk_milestone_id INTEGER,
+    CONSTRAINT srm_song_id FOREIGN KEY (fk_song_id)
+        REFERENCES Files(pk_files_id) ON DELETE CASCADE,
+    CONSTRAINT srm_milestone_id FOREIGN KEY (fk_milestone_id)
+        REFERENCES Milestones(pk_milestone_id) ON DELETE CASCADE
+);
+
 
 #----------------------TESTDATA------------------------
 
@@ -242,10 +258,16 @@ INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Ta
             (3, 'Testt5itelderlangeistsehrlange,sehr,sehr,lange', '3#Testt5itel.mp3', '', NULL, NULL, NULL, NULL, '', 4, 123, 14, 1, 1),
             (4, 'R u dumb, stupid or dumb huh', '4#R u dumb, .mp3', '#R u dumb stupid or dumb huh ', '#R u ', NULL, NULL, NULL, 'R u dumb, stupid or dumb huh', 4, 123, 1, 1, 1);
 
-INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`) 
-    VALUES (NULL, '1', '1'), 
-            (NULL, '2', '1');
+-- INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`) 
+--     VALUES (NULL, '1', '1'), 
+--             (NULL, '2', '1');
 
+INSERT INTO Milestones (pk_milestone_id, required_downloads, text)
+    VALUES (NULL, '3', '3 Downloads'),
+           (NULL, '10', '10 Downloads'),
+           (NULL, '50', '50 Downloads'),
+           (NULL, '100', '100 Downloads'),
+           (NULL, '500', '500 Downloads');
 
 #----------------------Data Definition Statements------------------------
 
@@ -491,6 +513,10 @@ END;
     DECLARE v_count_track INT;
     DECLARE v_count_user INT;
     DECLARE v_count_same INT;
+    DECLARE v_count_download_new INT;
+    DECLARE v_i INT;
+    DECLARE v_milestone INT;
+    DECLARE v_milestone_id INT;
 
     SELECT COUNT(pk_files_id) INTO v_count_track FROM files
     WHERE pk_files_id = p_track_id;
@@ -512,5 +538,37 @@ END;
         WHERE fk_user_id = p_user_id AND fk_files_id = p_track_id
         ORDER BY pk_udf_id DESC
         LIMIT 1;
+
+    SELECT COUNT(pk_udf_id) FROM user_downloaded_file WHERE fk_files_id = p_track_id INTO v_count_download_new;
+    SET v_count_download_new = v_count_download_new+1;
+    SET v_i = 1;
+    -- loop_label: loop
+    --     SELECT COUNT(pk_milestone_id) FROM Milestones WHERE required_downloads = v_i INTO v_milestone;
+    --     IF (v_milestone = 1) THEN
+    --         SELECT pk_milestone_id FROM Milestones WHERE required_downloads = v_i INTO v_milestone_id;
+    --         INSERT INTO song_reaches_milestone (pk_song_milestone_id, fk_song_id, fk_milestone_id)
+    --             VALUES (NULL, p_track_id, v_milestone_id);
+    --     END IF;
+    --     if (v_i >= v_count_download_new) THEN
+    --         LEAVE loop_label;
+    --     END IF;
+    --     SET v_i = v_i + 1;
+    -- end loop;
+        SELECT COUNT(pk_milestone_id) FROM Milestones WHERE required_downloads = v_count_download_new INTO v_milestone;
+        IF (v_milestone = 1) THEN
+            SELECT pk_milestone_id FROM Milestones WHERE required_downloads = v_count_download_new INTO v_milestone_id;
+            INSERT INTO song_reaches_milestone (pk_song_milestone_id, fk_song_id, fk_milestone_id)
+                VALUES (NULL, p_track_id, v_milestone_id);
+        END IF;
+    -- WHILE v_i <= v_count_download_new
+    -- BEGIN
+    --     SELECT COUNT(pk_milestone_id) FROM Milestones WHERE required_downloads = v_i INTO v_milestone;
+    --     IF (v_milestone = 1) THEN
+    --         SELECT pk_milestone_id FROM Milestones WHERE required_downloads = v_i INTO v_milestone_id;
+    --         INSERT INTO song_reaches_milestone (pk_song_milestone_id, fk_song_id, fk_milestone_id)
+    --             VALUES (NULL, p_track_id, v_milestone_id);
+    --     END IF;
+    --     SET v_i = v_i + 1;
+    -- END;
     END IF;
 END;

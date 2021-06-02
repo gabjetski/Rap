@@ -81,7 +81,7 @@ a {
   opacity: -1;
 }
 
-.signupButton  {
+.signupButton {
   background-color: #3631af;
   color: white;
   padding: 16px 20px;
@@ -194,9 +194,8 @@ a {
   display: none;
 }
 
-
 #notisForm {
-  display:none;
+  display: none;
 }
 
 /* Errors, thrown by database when register or login*/
@@ -258,7 +257,7 @@ a {
 }
 .songInfoOpen {
   display: block;
-  height: min-content
+  height: min-content;
 }
 .trackSettings {
   display: none;
@@ -318,7 +317,6 @@ a {
   display: none;
 }
 
-
 /* Search Bar */
 .search {
   width: 100%;
@@ -327,7 +325,7 @@ a {
 
 .searchTerm {
   width: 100%;
-  border: 3px solid #00B4CC;
+  border: 3px solid #00b4cc;
   border-right: none;
   padding: 5px;
   height: 20px;
@@ -338,8 +336,8 @@ a {
 .searchButton {
   width: 40px;
   height: 36px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
+  border: 1px solid #00b4cc;
+  background: #00b4cc;
   text-align: center;
   color: #fff;
   border-radius: 0 5px 5px 0;
@@ -348,7 +346,10 @@ a {
 }
 
 /*Resize the wrap to see the search bar change!*/
-.wrap{
+.wrap {
   width: 100%;
-  height:36px;
+  height: 36px;
+}
+.notisFormular {
+  width: 700px;
 }

@@ -150,7 +150,7 @@ function wrongPassword(){
     } else if(patternSpecial.test(password.value) === true && pattern.test(password.value) === true){
         password.setCustomValidity("");
     } else if(pattern.test(password.value) === false){
-        password.setCustomValidity("We are sorry but we dont allow to use this special character");
+        password.setCustomValidity("Your password contains an unallowed special character or space");
     }
 }
 

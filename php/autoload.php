@@ -32,10 +32,10 @@ if (isset($_GET['tset-del'])) {
     require 'deleteTracks.php';
 }
 //function to htmlspecialchar arrays (in combination with array_walk_recursive)
-/*function filter(&$value)
-{
-    $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
-
+// function filter(&$value)
+// {
+//     $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+// }
+/*
 // WAS DAS, wegen dem konnte man nt zu den einzelnen bereichen wie settings, ... habens mal 
 auskommentiert*/

@@ -13,10 +13,7 @@ try {
   $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
   // $_SESSION['pdo'] = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
   //function to htmlspecialchar Arrays -> prevent injections
-  // function filter(&$value)
-  // {
-  //   $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-  // }
+
   require 'php/searchbar.php';
 ?>
   <!DOCTYPE html>
@@ -88,6 +85,11 @@ try {
     //if login button is pressed
     elseif (isset($_GET['loginSubmit'])) {
       require "php/login.php";
+    } else {
+      function filter(&$value)
+      {
+        $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+      }
     }
     // FIXME edge :(((
     if (isset($_POST['f4pUpload-submit'])) {
@@ -262,6 +264,7 @@ try {
             <option value="B">B Major</option>
             <option value="bm">B minor</option>
           </select>
+
           <!-- FreeForProfit - Title des Uploads -->
           <label for="f4pUpload-title"><b>Title*</b></label>
           <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" onkeypress="return noenter();" value="Hallo">

@@ -1,4 +1,8 @@
 <?php
+function filter(&$value)
+{
+    $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
 //htmlspecialchar Get Array to store it safely
 array_walk_recursive($_GET, "filter");
 
