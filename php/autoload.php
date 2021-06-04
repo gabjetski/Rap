@@ -2,6 +2,7 @@
 //require the classes we need in many files
 require_once 'feedEntry.php';
 require_once 'permissions.php';
+require_once 'notificationClass.php';
 
 //setup connection to database
 $pdo = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
@@ -30,6 +31,10 @@ if (isset($_SESSION['trackEdit-error'])) {
 //if user deleted a track, include deleteTracks.php 
 if (isset($_GET['tset-del'])) {
     require 'deleteTracks.php';
+}
+
+if (isset($_GET['deleteN'])) {
+    require 'deleteNotification.php';
 }
 //function to htmlspecialchar arrays (in combination with array_walk_recursive)
 // function filter(&$value)

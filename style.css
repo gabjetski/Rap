@@ -54,7 +54,11 @@ hr {
   right: 10px;
   top: 10px;
 }
-
+/* #dropMenu {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+} */
 i {
   float: right;
 }
@@ -280,6 +284,10 @@ a {
 
   justify-content: center;
   text-align: center;
+  position: fixed;
+  right: 10px;
+  top: 60px;
+  width: 280px;
 }
 
 #list {
@@ -294,12 +302,22 @@ a {
 
 .dropList {
   list-style-type: none;
-  padding: 2px, 10px, 2px, 10px;
+  padding: 2px 10px 2px 10px;
+  background-color: #555;
+  color: white;
+  /* cursor: pointer; */
+  opacity: 0.8;
+}
+.dropList > h3 {
+  margin-top: 12px;
+}
+.dropList > h3 > a {
+  color: white;
 }
 
 .dropNav {
-  margin-left: 80%;
-  left: 80%;
+  /* margin-left: 80%; */
+  /* left: 80%; */
   height: 0;
   overflow: hidden;
   transition: 350ms height ease-in-out;
@@ -352,4 +370,14 @@ a {
 }
 .notisFormular {
   width: 700px;
+}
+
+.notisBubble {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  font-size: 13;
 }

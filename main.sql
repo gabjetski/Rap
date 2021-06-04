@@ -215,7 +215,13 @@ INSERT INTO `user` (`pk_user_id`, `FirstName`, `LastName`, `Username`, `Email`, 
 INSERT INTO user (FirstName, LastName, Username, Email, Passwort, Bio, Insta, Twitter, Soundcloud, `fk_user_type_id`)
     VALUES ('Hans', 'Peter', 'hp', 'hp@gmail.com', 'b8736f4de6612d55c73c9648093ba0', 'I am Hans Peter', 'hansPeter123', 'hansPeter123', 'hansPeter123', 2),
             ('Hans', 'Peter2', 'hp2', 'hp2@gmail.com', 'b8736f4de6612d55c73c9648093ba0', 'I am Hans Peter 2', 'hansPeter2123', 'hansPeter2123', 'hansPeter2123', 1),
-            ('fName', 'lName', 'user', 'email@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1);
+            ('fName', 'lName', 'user', 'email@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1),
+            ('fName', 'lName', 'user2', 'email2@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1),
+            ('fName', 'lName', 'user3', 'email3@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1),
+            ('fName', 'lName', 'user4', 'email4@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1),
+            ('fName', 'lName', 'user5', 'email5@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1),
+            ('fName', 'lName', 'user6', 'email6@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1),
+            ('fName', 'lName', 'user7', 'email7@mail.com', 'b8736f4de6612d55c73c9648093ba0', NULL, NULL, NULL, NULL, 1);
 CALL bpmValues();
 
 # -- TODO Nochmal überprüfen mit index.php Zeile 284 beginnend, 4 Augen Prinzip ^^ 
