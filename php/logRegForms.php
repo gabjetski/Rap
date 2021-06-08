@@ -9,12 +9,12 @@
             <div>
                 <!-- Username bzw. Email Adresse -->
                 <label for="username"><b>Email/Username</b></label>
-                <input type="text" placeholder="Enter Email or Username" name="input" id="login-input" required value="user">
+                <input type="text" placeholder="Enter Email or Username" name="input" id="login-input" required>
 
                 <!-- Password -->
                 <label for="login-psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" id="login-psw" required value="passW1234567">
-                <input type="checkbox" id="showLoginPw">show pw
+                <input type="password" placeholder="Enter Password" name="psw" id="login-psw" required>
+                <input type="checkbox" id="showLoginPw"><label for="showLoginPw">show pw</label>
 
                 <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen". -->
                 <button type="submit" class="loginButton" onclick="validateLoginForm();" name="loginSubmit" value="Login" id="loginButton">Login</button>
@@ -36,27 +36,27 @@
             <fieldset>
                 <!-- First Name -->
                 <label for="firstName"><b>First Name</b></label>
-                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" maxlength="50" value="Gab" required>
+                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" maxlength="50"required>
                 <!-- Last Name -->
                 <label for="lastName"><b>Last Name</b></label>
-                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" maxlength="50" value="Gab" required>
+                <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" maxlength="50" required>
                 <!-- Username -->
                 <label for="username"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" id="register-username" maxlength="20" value="user123" required>
+                <input type="text" placeholder="Enter Username" name="username" id="register-username" maxlength="20" required>
                 <!-- Email -->
                 <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" id="register-email" value="gab@gmail.com" required>
+                <input type="text" placeholder="Enter Email" name="email" id="register-email" required>
                 <!-- Password -->
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" value="Hallo123" id="register-psw" required>
+                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw"id="register-psw" required>
                 <!-- Password Repeat -->
                 <label for="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" value="Hallo123" required>
-                <input type="checkbox" id="showRegisterPw">show pw
+                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required>
+                <input type="checkbox" id="showRegisterPw"><label for="showRegisterPw">show pw</label>
                 <br>
                 <!-- TOS agreement -->
                 <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
-                <input type="checkbox" name="tos" id="register-tos" required checked></input>
+                <input type="checkbox" name="tos" id="register-tos" required ></input>
 
                 <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
                 <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName(); validateMail();" name="registerSubmit" value="Register">Sign Up</button>

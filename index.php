@@ -131,7 +131,7 @@ try {
     }
 
     echo "<pre>";
-    var_dump($_SESSION);
+    //var_dump($_SESSION);
     echo "</pre>";
     /* View Profile Button als Test 
     echo '<h1> <a href="user/my"> View Profile </a></h1>';
@@ -180,18 +180,18 @@ try {
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
-          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" onkeypress="return noenter();" required checked>
+          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" onkeypress="return noenter();" required >
           <!-- FreeForProfit Upload - Auswahl Sample -->
           <label for="f4pUpload-type-sample"><b>Sample</b></label>
-          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" onkeypress="return noenter();" required>
+          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type"  onkeypress="return noenter();" required>
           <!-- FreeForProfit  Upload - BPM -->
           <label for="f4pUpload-bpm"><b>BPM*</b></label>
-          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" maxlength="3" value="123" onkeypress="return noenter();" required>
+          <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" maxlength="3" onkeypress="return noenter();" required>
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="f4pUpload-key"><b>Key</b></label>
           <select name="f4pUpload-key" id="f4pUpload-key">
-            <option value="0" disabled>Select a key</option>
-            <option value="C" selected>C Major</option>
+            <option value="0" selected>Select a key</option>
+            <option value="C" >C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db">Db Major</option>
             <option value="C#m">C# minor</option>
@@ -219,7 +219,7 @@ try {
 
           <!-- FreeForProfit - Title des Uploads -->
           <label for="f4pUpload-title"><b>Title*</b></label>
-          <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" onkeypress="return noenter();" value="Hallo">
+          <input type="text" id="f4pUpload-title" name="f4pUpload-title" required maxlength="60" onkeypress="return noenter();">
           <!-- Blacklist, checked Banned Words-->
           <!-- <button type="button" onclick="checkBanWords();"> Blacklist Check </button> -->
           <p>Maximum 200 Characters allowed</p>
@@ -406,20 +406,20 @@ try {
       }
       ?>
     </div>
-
-    <!------------------always at bottom for testing--------------- -->
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+    
+    <!------------------always at bottom for testing--------------- --> <!--
+    <form action="<?php /*echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="submit" value="Reset" name="reset">
-    </form>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+    </form> 
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); */?>" method="get" class="form-container">
       <input type="submit" value="Head" name="head">
-    </form>
+    </form>-->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="submit" value="quickLog" name="quickLog">
-    </form>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
+    </form> <!--
+    <form action="<? /* php echo htmlspecialchars($_SERVER["PHP_SELF"]); */ ?>" method="get" class="form-container">
       <input type="submit" value="withoutValidations" name="withoutValidations">
-    </form>
+    </form>-->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="submit" value="Run SQL" name="runsql">
     </form>

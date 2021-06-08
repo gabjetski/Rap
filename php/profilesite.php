@@ -59,7 +59,7 @@ try {
     }
     //show username and id if logged in
     elseif (!Permissions::permission($_SESSION['userID'], 3)) {
-      var_dump($_SESSION['userID']);
+      //var_dump($_SESSION['userID']);
       $stmntGetUserInfos = $pdo->prepare("SELECT * FROM user WHERE pk_user_id = " . $_SESSION['userID']);
       $stmntGetUserInfos->execute();
       foreach ($stmntGetUserInfos->fetchAll(PDO::FETCH_ASSOC) as $row) {
@@ -71,17 +71,17 @@ try {
   <div class="dropContainer">
 
     <div id="navToggle" class="nav-toggle">
-      <a href="user/my"><div class="openForm">' . $_SESSION['userID'] . ' - ' . $_SESSION['userUName'] . '</div></a>
+      <a href=""><div class="openForm">' . $_SESSION['userID'] . ' - ' . $_SESSION['userUName'] . '</div></a>
     </div>
 
 
     <div id="dropNav" class="dropNav">
       <ul id="list">
         <li class="dropList">
-          <h3> <a href="user/my"> View Profile </a></h3>
+          <h3> <a href=""> View Profile </a></h3>
         </li>
         <li class="dropList">
-          <h3> <a href="user/my/settings"> Settings </a></h3>
+          <h3> <a href="my/settings"> Settings </a></h3>
         </li>
         <li class="dropList">
           <h3>
@@ -111,7 +111,7 @@ try {
     }
     ?>
     <?php
-    var_dump($_SESSION);
+    //var_dump($_SESSION);
     // ANCHOR: PHP Zeugs
     //show login/register button if guest
     if (!isset($_SESSION['userID'])) {
@@ -131,21 +131,18 @@ try {
         $_SESSION['soundcloud'] = $row['Soundcloud'];
         $_SESSION['bio'] = $row['Bio'];
       }
-      echo '<hr>';
       echo '<div class="profileForm"><i class="fa fa-user"> FirstName: ' . $_SESSION['firstName'] . '</i></div>';
-      echo '<hr>';
+      echo '<br>';
       echo '<div class="profileForm"><i class="fa fa-user"> LastName: ' . $_SESSION['lastName'] . '</i></div>';
-      echo '<hr>';
+      echo '<br>';
       echo '<div class="profileForm"><i class="fa fa-user">' . $_SESSION['userName'] . '</i></div>';
       echo '<br>';
       echo '<div class="profileForm"> Bio: ' . $_SESSION['bio']  . '</div>';
-      echo '<hr>';
+      echo '<br>';
       echo (isset($_SESSION['instagram']) ? '<div class="profileForm"><a href="https://www.instagram.com/' . $_SESSION['instagram'] . '" target="_blank"><i class="fa fa-instagram">' . $_SESSION['instagram'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['twitter']) ? '<div class="profileForm"><a href="https://www.twitter.com/' . $_SESSION['twitter'] . '" target="_blank"><i class="fa fa-twitter">' . $_SESSION['twitter'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['soundcloud']) ? '<div class="profileForm"><a href="https://soundcloud.com/' . $_SESSION['soundcloud'] . '" target="_blank"><i class="fa fa-soundcloud">' . $_SESSION['soundcloud'] . '</i></a></div><br>' : '');
       echo (isset($_SESSION['email']) ? '<div class="profileForm"><i class="fa fa-envelope">' . $_SESSION['email'] . '</i></div><br>' : '');
-      echo '<hr>';
-      echo '<hr>';
     ?>
 
       <!--<input type="text" placeholder="Enter new Username" name="newUsername" id="newUsername" required>

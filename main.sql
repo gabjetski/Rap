@@ -259,14 +259,18 @@ INSERT INTO `monetizing` (`pk_monet_id`, `Name`)
     VALUES (NULL, 'Free for Profit'), 
             (NULL, 'Tagged');
 INSERT INTO `files` (`pk_files_id`, `Title`, `Path`, `Tag1`, `Tag2`, `Tag3`, `Tag4`, `Tag5`, `Description`, `fk_user_id`, `fk_bpm_id`, `fk_key_signature_id`, `fk_upload_type_id`, `fk_monet_id`) 
-    VALUES (1, 'Test', '1#Test.mp3','', NULL, NULL, NULL, NULL, '', 2, 123, 1, 1, 1),
-            (2, 'Â²Â³$$&amp;%Â§@â‚¬', '2#.mp3', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 1),
-            (3, 'Testt5itelderlangeistsehrlange,sehr,sehr,lange', '3#Testt5itel.mp3', '', NULL, NULL, NULL, NULL, '', 4, 123, 14, 1, 1),
-            (4, 'R u dumb, stupid or dumb huh', '4#R u dumb, .mp3', '#R u dumb stupid or dumb huh ', '#R u ', NULL, NULL, NULL, 'R u dumb, stupid or dumb huh', 4, 123, 1, 1, 1);
+    VALUES (1, 'Lil Uzi Type Beat', '1#Test.mp3','', NULL, NULL, NULL, NULL, '', 2, 123, 1, 1, 1),
+            (2, 'Summer vibes beat', '2#.mp3', '', NULL, NULL, NULL, NULL, '', 3, 123, 1, 1, 2),
+            (3, 'Trapbeat', '3#Testt5itel.mp3', '', NULL, NULL, NULL, NULL, '', 4, 123, 14, 1, 1),
+            (4, 'Piano-sample', '4#R u dumb, .mp3', '#piano', '#sample', '#slow', NULL, NULL, 'R u dumb, stupid or dumb huh', 4, 120, 1, 1, 1);
 
--- INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`) 
---     VALUES (NULL, '1', '1'), 
---             (NULL, '2', '1');
+INSERT INTO `user_downloaded_file` (`pk_udf_id`, `fk_user_id`, `fk_files_id`) 
+    VALUES (NULL, '1', '1'), 
+            (NULL, '2', '1'), 
+            (NULL, '2', '4'), 
+            (NULL, '1', '4'), 
+            (NULL, '3', '4'), 
+            (NULL, '4', '4');
 
 INSERT INTO Milestones (pk_milestone_id, required_downloads, text)
     VALUES (NULL, '3', '3 Downloads'),
