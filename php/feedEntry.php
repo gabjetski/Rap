@@ -23,7 +23,7 @@ class feedEntry
 
         //get data of current track from database
         $stmntGetFileData = $this->pdo->prepare("SELECT * FROM files 
-                                        INNER JOIN keysignature k ON fk_key_signature_id = k.pk_key_signature_id 
+                                        LEFT JOIN keysignature k ON fk_key_signature_id = k.pk_key_signature_id 
                                         INNER JOIN user u ON fk_user_id = u.pk_user_id 
                                         WHERE pk_files_id = :id");
         $stmntGetFileData->bindParam('id', $id);
@@ -216,7 +216,7 @@ class feedEntry
                 <button class="songPlayPause" id="playBtn{$this->fileData['id']}"> Play </button>
                 <button class="songPlayPause hidden" id="pauseBtn{$this->fileData['id']}"> Pause </button>
                 <input type="range" min="0" max="100" value="35" id="volume{$this->fileData['id']}">
-                <input type="range" id="progress{$this->fileData['id']}" value="0" max="100" style="width:400px;"></input>
+                <input type="range" id="progress{$this->fileData['id']}" value="0" max="100" style="width:400px;" />
             </div>
             
             <button id="openInfo{$this->fileData['id']}">INFO</button>

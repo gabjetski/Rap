@@ -36,7 +36,7 @@
             <fieldset>
                 <!-- First Name -->
                 <label for="firstName"><b>First Name</b></label>
-                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" maxlength="50"required>
+                <input type="text" placeholder="Enter First Name" name="firstName" id="register-firstName" maxlength="50" required>
                 <!-- Last Name -->
                 <label for="lastName"><b>Last Name</b></label>
                 <input type="text" placeholder="Enter Last Name" name="lastName" id="register-lastName" maxlength="50" required>
@@ -48,7 +48,7 @@
                 <input type="text" placeholder="Enter Email" name="email" id="register-email" required>
                 <!-- Password -->
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw"id="register-psw" required>
+                <input type="password" placeholder="Enter Password (Please use a secure one)" name="psw" id="register-psw" required>
                 <!-- Password Repeat -->
                 <label for="psw-repeat"><b>Repeat Password</b></label>
                 <input type="password" placeholder="Repeat Password" name="psw-repeat" id="register-psw-repeat" required>
@@ -56,7 +56,7 @@
                 <br>
                 <!-- TOS agreement -->
                 <label for="tos"><b>I have read and agree to OUR NAMEs <a href="./agb.html" target="_blank">Terms of Service</a> & <a href="./privacyPolicy.html" target="_blank">Privacy Policy</a>.</b></label>
-                <input type="checkbox" name="tos" id="register-tos" required ></input>
+                <input type="checkbox" name="tos" id="register-tos" required></input>
 
                 <!-- Buttons beim Register Form mit Funktionen "Sign Up", "zu Log In Form wechseln" und "Formular schließen". -->
                 <button type="submit" class="newAccountButton" id="registerButton" onclick="validatePassword(); wrongUsername(); wrongPassword(); fName(); lName(); validateMail();" name="registerSubmit" value="Register">Sign Up</button>

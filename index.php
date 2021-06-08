@@ -14,7 +14,6 @@ try {
   // $_SESSION['pdo'] = new PDO('mysql:host=localhost;dbname=rap', 'root', '');
   //function to htmlspecialchar Arrays -> prevent injections
 
-  require 'php/searchbar.php';
 ?>
   <!DOCTYPE html>
   <html lang="en" dir="ltr">
@@ -27,20 +26,23 @@ try {
     <script src="script.js" defer></script>
   </head>
 
-  <?php
-  //implement loginError.php if Procedure calls error (id < 0)
-  if (isset($_SESSION['registerError']['id']) || isset($_SESSION['loginError']['id'])) {
-    require "php/loginError.php";
-  }
-  if (isset($_SESSION['uploadError'])) {
-    require "php/uploadError.php";
-  }
-
-
-
-  ?>
-
   <body>
+
+    <?php
+    //implement loginError.php if Procedure calls error (id < 0)
+    if (isset($_SESSION['registerError']['id']) || isset($_SESSION['loginError']['id'])) {
+      require "php/loginError.php";
+    }
+    if (isset($_SESSION['uploadError'])) {
+      require "php/uploadError.php";
+    }
+
+
+
+    ?>
+
+    <?php require 'php/searchbar.php';
+    ?>
     <h2>Rap Plattform</h2>
 
 
@@ -159,10 +161,10 @@ try {
         <h1>Upload</h1>
         <div>
           <!-- Free For Profit Upload -->
-          <button type="button" id="f4p" class="continueButton" onclick="openF4P(); closeUpload();" name="F4P" value="f4p" class="continue">Free For Profit</button>
+          <button type="button" id="f4p" class="continueButton continue" onclick="openF4P(); closeUpload();" name="F4P" value="f4p">Free For Profit</button>
 
           <!-- Tagged Upload -->
-          <button type="button" id="taggedButton" class="continueButton" onclick="closeUpload(); openTagged();" name="Tagged" value="tagged" class="continue">Tagged</button>
+          <button type="button" id="taggedButton" class="continueButton continue" onclick="closeUpload(); openTagged();" name="Tagged" value="tagged">Tagged</button>
 
           <!-- Buttons beim Login Form mit Funktionen "Login", "zu Register Form wechseln" und "Formular schließen" -->
           <button type="button" class="cancelButton" onclick="closeUpload()">Cancel</button>
@@ -180,18 +182,18 @@ try {
         <div>
           <!-- FreeForProfit Upload - Auswahl Beat -->
           <label for="f4pUpload-type-beat"><b>Beat</b></label>
-          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" onkeypress="return noenter();" required >
+          <input type="radio" id="f4pUpload-type-beat" name="f4pUpload-type" value="beat" onkeypress="return noenter();" required>
           <!-- FreeForProfit Upload - Auswahl Sample -->
           <label for="f4pUpload-type-sample"><b>Sample</b></label>
-          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type"  onkeypress="return noenter();" required>
+          <input type="radio" id="f4pUpload-type-sample" name="f4pUpload-type" value="sample" onkeypress="return noenter();" required>
           <!-- FreeForProfit  Upload - BPM -->
           <label for="f4pUpload-bpm"><b>BPM*</b></label>
           <input type="text" id="f4pUpload-bpm" name="f4pUpload-bpm" maxlength="3" onkeypress="return noenter();" required>
           <!-- FreeForProfit Upload - Key ---- SQL hats nd so mit case sensitivity, maybe value C bei C Major-->
           <label for="f4pUpload-key"><b>Key</b></label>
           <select name="f4pUpload-key" id="f4pUpload-key">
-            <option value="0" selected>Select a key</option>
-            <option value="C" >C Major</option>
+            <option value="0" disabled selected>Select a key</option>
+            <option value="C">C Major</option>
             <option value="Cm">C minor</option>
             <option value="Db">Db Major</option>
             <option value="C#m">C# minor</option>
@@ -276,14 +278,14 @@ try {
           <input type="radio" id="taggedUpload-type-snippet" name="taggedUpload-type" value="snippet">
           <!-- Tagged Upload - BPM -->
           <label for="taggedUpload-bpm"><b>BPM</b></label>
-          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" onkeypress="return noenter();" value="123" required>
+          <input type="text" id="taggedUpload-bpm" name="taggedUpload-bpm" onkeypress="return noenter();" required>
           <!-- Tagged Upload - Key -->
           <label for="taggedUpload-key"><b>Key</b></label>
           <select name="taggedUpload-key" id="taggedUpload-key">
-            <option value="0" disabled>Select a key</option>
+            <option value="0" disabled selected>Select a key</option>
             <option value="C">C Major</option>
             <option value="Cm">C minor</option>
-            <option value="Db" selected>Db Major</option>
+            <option value="Db">Db Major</option>
             <option value="C#m">C# minor</option>
             <option value="D">D Major</option>
             <option value="Dm">D minor</option>
@@ -308,7 +310,7 @@ try {
           </select>
           <!-- Tagged - Title des Uploads -->
           <label for="taggedUpload-title"><b>Title*</b></label>
-          <input type="text" id="taggedUpload-title" name="taggedUpload-title" required maxlength="60" value="Hallo">
+          <input type="text" id="taggedUpload-title" name="taggedUpload-title" required maxlength="60">
           <!-- Blacklist, checked Banned Words-->
           <!-- <button type="button" onclick="checkBanWords();"> Blacklist Check </button> -->
           <p>Maximum 200 Characters allowed</p>
@@ -406,17 +408,19 @@ try {
       }
       ?>
     </div>
-    
-    <!------------------always at bottom for testing--------------- --> <!--
+
+    <!------------------always at bottom for testing--------------- -->
+    <!--
     <form action="<?php /*echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="submit" value="Reset" name="reset">
     </form> 
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); */?>" method="get" class="form-container">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); */ ?>" method="get" class="form-container">
       <input type="submit" value="Head" name="head">
     </form>-->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get" class="form-container">
       <input type="submit" value="quickLog" name="quickLog">
-    </form> <!--
+    </form>
+    <!--
     <form action="<? /* php echo htmlspecialchars($_SERVER["PHP_SELF"]); */ ?>" method="get" class="form-container">
       <input type="submit" value="withoutValidations" name="withoutValidations">
     </form>-->

@@ -357,7 +357,7 @@
 if (!isset($feedPurp) || $feedPurp == 'main') {
     // select all songs which schould be displayed
     $stmntGetSongs = $pdo->prepare('SELECT * FROM files INNER JOIN user ON user.pk_user_id = files.fk_user_id
-    INNER JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
+    LEFT JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id ORDER BY pk_files_id DESC'); // TODO Inner join mit feed, das nur Files auusm Feed gezeigt werden
     $stmntGetSongs->execute();
     $pathAddition = "";
     //fetch the results
@@ -368,7 +368,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     // select all songs which schould be displayed
     $stmntGetSongs = $pdo->prepare('SELECT * FROM files 
                                     INNER JOIN user ON user.pk_user_id = files.fk_user_id 
-                                    INNER JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id 
+                                    LEFT JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id 
                                     WHERE pk_user_id = ? 
                                     ORDER BY pk_files_id DESC');
     $stmntGetSongs->bindParam(1, $_GET['userID'], PDO::PARAM_STR, 5000);
@@ -382,7 +382,7 @@ if (!isset($feedPurp) || $feedPurp == 'main') {
     // select all songs which schould be displayed
     $stmntGetSongs = $pdo->prepare('SELECT * FROM files 
                                     INNER JOIN user ON user.pk_user_id = files.fk_user_id  
-                                    INNER JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id 
+                                    LEFT JOIN keysignature k ON files.fk_key_signature_id = k.pk_key_signature_id 
                                     WHERE pk_user_id = ? 
                                     ORDER BY pk_files_id DESC');
     $stmntGetSongs->bindParam(1, $_SESSION['userID'], PDO::PARAM_STR, 5000);
